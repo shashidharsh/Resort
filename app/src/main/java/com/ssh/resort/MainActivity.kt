@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Login::class.java)
             intent.putExtra("Login", "Admin")
             startActivity(intent)
-            finish()
         }
 
         var cvManager = findViewById<CardView>(R.id.cvManager)
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Login::class.java)
             intent.putExtra("Login", "Manager")
             startActivity(intent)
-            finish()
         }
     }
 }

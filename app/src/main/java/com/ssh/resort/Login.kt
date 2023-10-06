@@ -157,6 +157,7 @@ class Login : AppCompatActivity() {
         var dataJson: JSONObject = JSONObject()
         dataJson.put("userName", userName!!.text.toString())
         dataJson.put("password", password!!.text.toString())
+        dataJson.put("userType", loginType)
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()

@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Checkin"
+            android:exported="false" />
+        <activity
             android:name=".ManagerHomePage"
             android:exported="false" />
         <activity
