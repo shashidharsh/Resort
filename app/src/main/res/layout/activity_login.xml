@@ -48,8 +48,7 @@
                     android:layout_marginBottom="50dp"
                     android:text="@string/app_name" />
 
-                <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <androidx.cardview.widget.CardView
                     style="@style/loginCard"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/loginViewsMargin"

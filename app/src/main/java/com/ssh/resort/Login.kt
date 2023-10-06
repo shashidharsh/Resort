@@ -33,9 +33,13 @@ class Login : AppCompatActivity() {
     var userName: EditText? = null
     var password: EditText? = null
 
+    var loginType: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        loginType = intent.getStringExtra("Login")
 
         userName = findViewById(R.id.userName)
         password = findViewById(R.id.password)
@@ -84,10 +88,18 @@ class Login : AppCompatActivity() {
                 pd.cancel()
 
                 if (result.contains("Login Successful")){
-                    val intent = Intent(this@Login, AdminHomePage::class.java)
-                    intent.putExtra("UserName", userName!!.text.toString())
-                    startActivity(intent)
-                    finish()
+                    if (loginType!!.contains("Admin")) {
+                        val intent = Intent(this@Login, AdminHomePage::class.java)
+                        intent.putExtra("UserName", userName!!.text.toString())
+                        startActivity(intent)
+                        finish()
+                    }
+                    else{
+                        val intent = Intent(this@Login, ManagerHomePage::class.java)
+                        intent.putExtra("UserName", userName!!.text.toString())
+                        startActivity(intent)
+                        finish()
+                    }
                 }else{
                     Toast.makeText(this@Login, result, Toast.LENGTH_LONG).show()
                 }
