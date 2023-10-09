@@ -21,7 +21,7 @@ class AdminHomePage : AppCompatActivity() {
 
         var cvAgentRegistration = findViewById<CardView>(R.id.cvAgentRegistration)
         cvAgentRegistration.setOnClickListener{
-            val intent = Intent(this, AgentRegistration::class.java)
+            val intent = Intent(this, AdminAgentRegistration::class.java)
             startActivity(intent)
         }
     }

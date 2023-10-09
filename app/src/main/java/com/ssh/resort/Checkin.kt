@@ -24,10 +24,10 @@ class Checkin : AppCompatActivity() {
         setContentView(R.layout.activity_checkin)
 
         var layoutActivities = findViewById<RelativeLayout>(R.id.layoutActivities)
-        var driverCost = findViewById<EditText>(R.id.etDriverCost)
+        var layoutDriver = findViewById<LinearLayout>(R.id.layoutDriver)
 
         layoutActivities.visibility = View.GONE
-        driverCost.visibility = View.GONE
+        layoutDriver.visibility = View.GONE
 
         //radio Group Activities
         radioGroupActivities = findViewById(R.id.radioGroupActivities)
@@ -56,10 +56,10 @@ class Checkin : AppCompatActivity() {
         radioGroupDriver!!.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
             val radioButtonDriver = group.findViewById<View>(checkedId) as RadioButton
             if (radioButtonDriver.text.contains("Yes")){
-                driverCost.visibility = View.VISIBLE
+                layoutDriver.visibility = View.VISIBLE
             }
             else{
-                driverCost.visibility = View.GONE
+                layoutDriver.visibility = View.GONE
             }
         })
 

@@ -25,7 +25,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class AgentRegistration : AppCompatActivity() {
+class NewAgentRegistration : AppCompatActivity() {
 
     val TAG = "AgentRegistration"
 
@@ -36,7 +36,7 @@ class AgentRegistration : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.agent_registration)
+        setContentView(R.layout.new_agent_registration)
 
         agentName = findViewById(R.id.etAgentRegAgentName)
         agentMobile = findViewById(R.id.etAgentRegAgentMobile)
@@ -92,7 +92,7 @@ class AgentRegistration : AppCompatActivity() {
                 super.onPostExecute(result)
                 Log.d(TAG, "onPostExecute: result " + result)
                 pd.cancel()
-                Toast.makeText(this@AgentRegistration, result, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@NewAgentRegistration, result, Toast.LENGTH_LONG).show()
                 agentName!!.setText("")
                 agentMobile!!.setText("")
                 agentPhonePeNo!!.setText("")

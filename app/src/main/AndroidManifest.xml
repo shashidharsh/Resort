@@ -17,13 +17,23 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".AgentRegistration"
+            android:name=".UpdateExistingAgent"
             android:exported="false"
             android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
+            android:name=".ExistingAgent"
+            android:exported="false" />
+        <activity
+            android:name=".AdminAgentRegistration"
+            android:exported="false" />
+        <activity
+            android:name=".NewAgentRegistration"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".Checkin"
             android:exported="false"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ManagerHomePage"
             android:exported="false" />

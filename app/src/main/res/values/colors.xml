@@ -15,5 +15,8 @@
 
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
+    <color name="beige">#F5F5DC</color>
+    <color name="lightPink">#FFC0CB</color>
+    <color name="serenity">#B3CEE5</color>
 
 </resources>
