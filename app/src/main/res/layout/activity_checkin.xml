@@ -4,6 +4,502 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/loginBkColor"
     tools:context=".Checkin">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true"
+                android:weightSum="12">
+
+                <LinearLayout
+                    style="@style/parent"
+                    android:layout_weight="3"
+                    android:background="@drawable/login_shape_bk"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="80dp"
+                        android:layout_marginEnd="32dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Checkin"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        style="@style/parent"
+                        android:background="@drawable/ic_login_bk"
+                        android:contentDescription="login background" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Guest Name"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etAgentRegAgentName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter Guest Name"
+                    android:inputType="textPersonName"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No of Persons"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/etSignUpFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:ems="10"
+                        android:hint="Enter No of Persons"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No of Childrens"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/etSignUpLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edittext_background"
+                        android:ems="10"
+                        android:hint="Enter No of Childrens"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Package per head for Adult"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etPackagePerHeadForAdult"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter Package per head for Adult"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Package per head for Child"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etPackagePerHeadForChild"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter Package per head for Child"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp">
+
+                <TextView
+                    android:id="@+id/tvCo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="C/O"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvCo"
+                    android:paddingTop="8dp">
+
+                    <Spinner
+                        android:id="@+id/coSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edittext_background"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/edittext_background"
+                        android:spinnerMode="dropdown" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_arrow_drop_down" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="B2B Price"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etB2BPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter B2B Price"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Activities"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupActivities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <RadioButton
+                        android:id="@+id/radioYes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layoutActivities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp">
+
+                <Spinner
+                    android:id="@+id/activitiesSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_background"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@drawable/edittext_background"
+                    android:spinnerMode="dropdown" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_arrow_drop_down" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Room No"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etRoomNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter B2B Price"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Driver"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupDriver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <RadioButton
+                        android:id="@+id/radioDriverYes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yes"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioDriverNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Driver Cost"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etDriverCost"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter Driver Cost"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total: "
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvCheckinTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:hint="Total"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                style="@style/Button"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Submit" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

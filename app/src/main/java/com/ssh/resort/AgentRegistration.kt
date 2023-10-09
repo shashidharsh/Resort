@@ -31,6 +31,8 @@ class AgentRegistration : AppCompatActivity() {
 
     var agentName: EditText? = null
     var agentMobile: EditText? = null
+    var agentPhonePeNo: EditText? = null
+    var agentEmail: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +40,20 @@ class AgentRegistration : AppCompatActivity() {
 
         agentName = findViewById(R.id.etAgentRegAgentName)
         agentMobile = findViewById(R.id.etAgentRegAgentMobile)
+        agentPhonePeNo = findViewById(R.id.etAgentRegPhonePeNum)
+        agentEmail = findViewById(R.id.etAgentRegAgentEmail)
 
         var register = findViewById<Button>(R.id.btnRegister)
         register.setOnClickListener{
-            if (agentName!!.text.toString().equals("") || agentMobile!!.text.toString().equals("")) {
+            if (agentName!!.text.toString().equals("") || agentMobile!!.text.toString().equals("")
+                || agentPhonePeNo!!.text.toString().equals("") || agentEmail!!.text.toString().equals("")) {
                 Toast.makeText(this, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
             }
             else if (agentMobile!!.text.toString().length != 10){
                 agentMobile!!.setError("Enter Valid Mobile Number")
+            }
+            else if(!Patterns.EMAIL_ADDRESS.matcher(agentEmail!!.getText().toString()).matches()){
+                agentEmail!!.setError("Enter Valid Email")
             }
             else if (Utils.checkInternetConnectivity(this) == false){
                 Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
@@ -87,6 +95,8 @@ class AgentRegistration : AppCompatActivity() {
                 Toast.makeText(this@AgentRegistration, result, Toast.LENGTH_LONG).show()
                 agentName!!.setText("")
                 agentMobile!!.setText("")
+                agentPhonePeNo!!.setText("")
+                agentEmail!!.setText("")
             }
         }
         var saveData = RegisterData().execute()
@@ -142,6 +152,8 @@ class AgentRegistration : AppCompatActivity() {
         var dataJson: JSONObject = JSONObject()
         dataJson.put("name", agentName!!.text.toString())
         dataJson.put("mobile", agentMobile!!.text.toString())
+        dataJson.put("phonePe", agentPhonePeNo!!.text.toString())
+        dataJson.put("email", agentEmail!!.text.toString())
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()

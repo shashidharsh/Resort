@@ -15,15 +15,39 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Agent Registration"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true"
+                android:weightSum="12">
+
+                <LinearLayout
+                    style="@style/parent"
+                    android:layout_weight="3"
+                    android:background="@drawable/login_shape_bk"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="80dp"
+                        android:layout_marginEnd="32dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Agent Registration"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        style="@style/parent"
+                        android:background="@drawable/ic_login_bk"
+                        android:contentDescription="login background" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,6 +106,71 @@
                     android:hint="Enter Mobile Number"
                     android:inputType="phone"
                     android:maxLength="10"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PhonePe Number"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etAgentRegPhonePeNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter Mobile Number"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/etAgentRegAgentEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter Email Address"
+                    android:inputType="textEmailAddress"
                     android:padding="8dp"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
