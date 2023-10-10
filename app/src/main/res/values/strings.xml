@@ -7,4 +7,13 @@
     <string name="signup_login_hint">Already have an account? Sign In</string>
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
 
+    <string-array name="Activities">
+        <item>B + K (150)</item>
+        <item>B + K + S (250)</item>
+        <item>B + K + S + Z (400)</item>
+        <item>B + K + S + Zip (500)</item>
+        <item>B + K + S + Raft (550)</item>
+        <item>All Activities (1050)</item>
+    </string-array>
+
 </resources>

@@ -66,7 +66,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/etAgentRegAgentName"
+                    android:id="@+id/etCheckinGuestName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
@@ -104,7 +104,7 @@
                         android:textSize="18sp" />
 
                     <EditText
-                        android:id="@+id/etSignUpFirstName"
+                        android:id="@+id/etCheckinNoOfPersons"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="8dp"
@@ -135,7 +135,7 @@
                         android:textSize="18sp" />
 
                     <EditText
-                        android:id="@+id/etSignUpLastName"
+                        android:id="@+id/etCheckinNoOfChildrens"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="8dp"
@@ -375,13 +375,13 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/etRoomNumber"
+                    android:id="@+id/etCheckinRoomNumber"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_background"
                     android:ems="10"
-                    android:hint="Enter B2B Price"
+                    android:hint="Enter Room Number"
                     android:inputType="number"
                     android:padding="8dp"
                     android:textAlignment="center"
@@ -474,7 +474,69 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="B2B: "
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvCheckinB2B"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="B2B"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="TAC: "
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvCheckinTAC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="TAC"
+                    android:padding="8dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:text="Total: "
                     android:textColor="@color/colorAccent"
@@ -482,22 +544,49 @@
 
                 <TextView
                     android:id="@+id/tvCheckinTotal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
                     android:hint="Total"
+                    android:padding="8dp"
+                    android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnSubmit"
-                style="@style/Button"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="Submit" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnCalculate"
+                    style="@style/Button"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="5dp"
+                    android:text="Calculate"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    style="@style/Button"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Submit"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
