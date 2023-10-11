@@ -1,5 +1,6 @@
 package com.ssh.resort
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.AsyncTask
 import android.os.Bundle
@@ -21,6 +22,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.data.ExistingAgentListData
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.InputStreamReader
+import java.io.OutputStream
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 class Checkin : AppCompatActivity() {
 
@@ -43,6 +54,7 @@ class Checkin : AppCompatActivity() {
     var noOfPerson :EditText? = null
     var noOfChildren :EditText? = null
     var packagePerHeadAddult :EditText? = null
+    var driverCost :EditText? = null
     var tvB2B :TextView? = null
     var tvTAC :TextView? = null
     var tvTotal :TextView? = null
@@ -142,9 +154,7 @@ class Checkin : AppCompatActivity() {
         noOfPerson = findViewById(R.id.etCheckinNoOfPersons)
         noOfChildren = findViewById(R.id.etCheckinNoOfChildrens)
         packagePerHeadAddult = findViewById(R.id.etPackagePerHeadForAdult)
-        packagePerHeadAddult = findViewById(R.id.etPackagePerHeadForAdult)
-        packagePerHeadAddult = findViewById(R.id.etPackagePerHeadForAdult)
-        packagePerHeadAddult = findViewById(R.id.etPackagePerHeadForAdult)
+        driverCost = findViewById(R.id.etDriverCost)
         tvB2B = findViewById(R.id.tvCheckinB2B)
         tvTAC = findViewById(R.id.tvCheckinTAC)
         tvTotal = findViewById(R.id.tvCheckinTotal)
@@ -204,6 +214,8 @@ class Checkin : AppCompatActivity() {
                 radioButtonDriver = radioGroupDriver!!.findViewById(selectedDriverId)
                 Log.d(TAG, "RadioGroupActivity: " + radioButtonActivities!!.text)
                 Log.d(TAG, "RadioGroupDriver: " + radioButtonDriver!!.text)
+                getDataToJson()
+                //checkin()
             }
         })
     }
@@ -277,5 +289,132 @@ class Checkin : AppCompatActivity() {
             }
         }
         var result = AgentDetails().execute()
+    }
+
+    //Save Checkin Data in Server
+    @SuppressLint("LongLogTag")
+    fun checkin() {
+        Log.d(TAG, "checkin: ")
+
+        var pd = Dialog(this)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.progress, null)
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        pd.getWindow()?.setBackgroundDrawableResource(R.color.transparent)
+        pd.setContentView(view)
+        pd.setCancelable(false)
+
+        class CheckinData : AsyncTask<Void, Void, String>() {
+            override fun doInBackground(vararg params: Void?): String {
+                var response: String = getCheckinData()
+                Log.d(TAG, "response: " + response)
+                return response
+            }
+
+            override fun onPreExecute() {
+                super.onPreExecute()
+                pd.show()
+            }
+
+            override fun onPostExecute(result: String) {
+                super.onPostExecute(result)
+                Log.d(TAG, "onPostExecute: result " + result)
+                pd.cancel()
+                Toast.makeText(this@Checkin, result, Toast.LENGTH_LONG).show()
+                guestName!!.setText("")
+                noOfPerson!!.setText("")
+                noOfChildren!!.setText("")
+                packagePerHeadAddult!!.setText("")
+                packagePerHeadChild!!.setText("")
+                b2bPrice!!.setText("")
+                roomNumber!!.setText("")
+                driverCost!!.setText("")
+                tvB2B!!.setText("")
+                tvTAC!!.setText("")
+                tvTotal!!.setText("")
+
+            }
+        }
+        var saveData = CheckinData().execute()
+    }
+
+    //Export Checkin Data Using HTTP POST Method
+    @SuppressLint("LongLogTag")
+    fun getCheckinData(): String {
+
+        var response: String = ""
+
+        val url = URL("https://sshsoftwares.in/Resort/.php")
+        Log.d(TAG, "getCheckinData URL: " + url)
+        var client: HttpURLConnection? = null
+        try {
+            client = url.openConnection() as HttpURLConnection
+            client.setRequestMethod("POST")
+            client.setRequestProperty("Content-Type", "application/json")
+            client.setDoInput(true)
+            client.setDoOutput(true)
+            val os: OutputStream = client.getOutputStream()
+            val writer = BufferedWriter(OutputStreamWriter(os, "UTF-8"))
+            writer.write(getDataToJson())
+            writer.flush()
+            writer.close()
+            os.close()
+            val responseCode: Int = client.getResponseCode()
+            Log.d(TAG, "responseCode: " + responseCode)
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                val br = BufferedReader(InputStreamReader(client.getInputStream()))
+                var line: String? = br.readLine()
+                while (line != null) {
+                    response += line
+                    line = br.readLine()
+                    Log.d(TAG, "if true response: " + response)
+                }
+            } else {
+                response = ""
+                Log.d(TAG, "response empty: " + response)
+            }
+        } catch (e: MalformedURLException) {
+            e.printStackTrace()
+        } finally {
+            if (client != null) // Make sure the connection is not null.
+                client.disconnect()
+        }
+        return response
+    }
+
+    fun getDataToJson(): String {
+        var dataJson: JSONObject = JSONObject()
+        dataJson.put("GuestName", guestName!!.text.toString())
+        dataJson.put("NoOfPersons", noOfPerson!!.text.toString())
+        dataJson.put("NoOfChildrens", noOfChildren!!.text.toString())
+        dataJson.put("PackageForAdult", packagePerHeadAddult!!.text.toString())
+        dataJson.put("PackageForChild", packagePerHeadChild!!.text.toString())
+        dataJson.put("SelectedCo", currentAgent)
+        dataJson.put("B2BPrice", b2bPrice!!.text.toString())
+        dataJson.put("Activities", radioButtonActivities!!.text)
+
+        if (radioButtonActivities!!.text.equals("Yes")) {
+            dataJson.put("SelectedActivity", activities)
+        }
+        else{
+            dataJson.put("SelectedActivity", "Not Selected")
+        }
+
+        dataJson.put("RoomNumber", roomNumber!!.text.toString())
+        dataJson.put("Driver", radioButtonDriver!!.text)
+
+        if (radioButtonDriver!!.text.equals("Yes")) {
+            dataJson.put("DriverCost", driverCost!!.text.toString())
+        }
+        else{
+            dataJson.put("DriverCost", "0")
+        }
+
+        dataJson.put("B2B", tvB2B!!.text.toString())
+        dataJson.put("TAC", tvTAC!!.text.toString())
+        dataJson.put("Total", tvTotal!!.text.toString())
+
+        Log.d(TAG, "getDataToJson: " + dataJson.toString())
+        return dataJson.toString()
     }
 }
