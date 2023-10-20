@@ -171,12 +171,12 @@ class Checkin : AppCompatActivity() {
             else {
                 //Calculate B2B
                 b2b = ((b2bPrice!!.text.toString().toFloat() * noOfPerson!!.text.toString().toFloat()) +
-                        (noOfChildren!!.text.toString().toFloat() * packagePerHeadAddult!!.text.toString().toFloat())).toString()
+                        (noOfChildren!!.text.toString().toFloat() * packagePerHeadChild!!.text.toString().toFloat())).toString()
                 Log.d(TAG, "b2b: " + b2b)
                 tvB2B!!.setText(b2b)
 
                 //Calculate TAC
-                tac = ((b2b.toString().toFloat() * noOfPerson!!.text.toString().toFloat()) - packagePerHeadAddult!!.text.toString().toFloat()).toString()
+                tac = ((packagePerHeadAddult.toString().toFloat() - b2bPrice!!.text.toString().toFloat()) * noOfPerson!!.text.toString().toFloat()).toString()
                 Log.d(TAG, "tac: " + tac)
                 tvTAC!!.setText(tac)
 
