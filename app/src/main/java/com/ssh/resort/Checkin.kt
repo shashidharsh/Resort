@@ -176,7 +176,7 @@ class Checkin : AppCompatActivity() {
                 tvB2B!!.setText(b2b)
 
                 //Calculate TAC
-                tac = ((packagePerHeadAddult.toString().toFloat() - b2bPrice!!.text.toString().toFloat()) * noOfPerson!!.text.toString().toFloat()).toString()
+                tac = ((packagePerHeadAddult!!.text.toString().toFloat() - b2bPrice!!.text.toString().toFloat()) * noOfPerson!!.text.toString().toFloat()).toString()
                 Log.d(TAG, "tac: " + tac)
                 tvTAC!!.setText(tac)
 
