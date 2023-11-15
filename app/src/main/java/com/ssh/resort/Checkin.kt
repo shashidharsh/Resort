@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioButton
@@ -55,22 +56,32 @@ class Checkin : AppCompatActivity() {
     var noOfChildren :EditText? = null
     var packagePerHeadAddult :EditText? = null
     var driverCost :EditText? = null
+    var etNoOfPersonForActivity :EditText? = null
     var tvB2B :TextView? = null
+    var tvActivityPrice :TextView? = null
     var tvTAC :TextView? = null
     var tvTotal :TextView? = null
     var b2b :String? = null
+    var activityPrice :String? = null
     var tac :String? = null
     var total :String? = null
+
+    private var checkBoxCash: CheckBox? = null
+    private var checkBoxUPI: CheckBox? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_checkin)
 
         var layoutActivities = findViewById<RelativeLayout>(R.id.layoutActivities)
+        var noOfPersonActivity = findViewById<LinearLayout>(R.id.noOfPersonsForActivity)
         var layoutDriver = findViewById<LinearLayout>(R.id.layoutDriver)
+        var layoutPayment = findViewById<LinearLayout>(R.id.layoutPayment)
 
         layoutActivities.visibility = View.GONE
         layoutDriver.visibility = View.GONE
+        noOfPersonActivity.visibility = View.GONE
+        layoutPayment.visibility = View.GONE
 
         //Get Agent Details
         getAgentDetailsFromServer()
@@ -123,9 +134,11 @@ class Checkin : AppCompatActivity() {
             val radioButtonActivities = group.findViewById<View>(checkedId) as RadioButton
             if (radioButtonActivities.text.contains("Yes")){
                 layoutActivities.visibility = View.VISIBLE
+                noOfPersonActivity.visibility = View.VISIBLE
             }
             else{
                 layoutActivities.visibility = View.GONE
+                noOfPersonActivity.visibility = View.GONE
             }
         })
 
@@ -156,24 +169,96 @@ class Checkin : AppCompatActivity() {
         packagePerHeadAddult = findViewById(R.id.etPackagePerHeadForAdult)
         driverCost = findViewById(R.id.etDriverCost)
         tvB2B = findViewById(R.id.tvCheckinB2B)
+        tvActivityPrice = findViewById(R.id.tvCheckinActivityPrice)
         tvTAC = findViewById(R.id.tvCheckinTAC)
         tvTotal = findViewById(R.id.tvCheckinTotal)
+        etNoOfPersonForActivity = findViewById(R.id.etNoOfPersonsActivities)
+
+        //Check Box Initialization
+        checkBoxCash = findViewById(R.id.checkinCash) as CheckBox
+        checkBoxUPI = findViewById(R.id.checkinUPI) as CheckBox
+
+        if(checkBoxCash!!.isChecked() == true){
+            layoutPayment.visibility = View.VISIBLE
+        }
 
         //Calculate Data
         var calculate = findViewById<Button>(R.id.btnCalculate)
         calculate.setOnClickListener{
+            val selectedDriverId: Int = radioGroupDriver!!.getCheckedRadioButtonId()
+            radioButtonDriver = radioGroupDriver!!.findViewById(selectedDriverId)
+
+            val selectedActivitiesId: Int = radioGroupActivities!!.getCheckedRadioButtonId()
+            radioButtonActivities = radioGroupActivities!!.findViewById(selectedActivitiesId)
+
             if (guestName!!.text.toString().equals("") || packagePerHeadAddult!!.text.toString().equals("")
                 || packagePerHeadChild!!.text.toString().equals("") || noOfPerson!!.text.toString().equals("")
                 || noOfChildren!!.text.toString().equals("") || b2bPrice!!.text.toString().equals("")
                 || roomNumber!!.text.toString().equals("")) {
                 Toast.makeText(this, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
             }
+            else if (selectedActivitiesId == -1) {
+                Toast.makeText(this@Checkin, "No Activities has been selected", Toast.LENGTH_SHORT).show()
+            }
+            else if (selectedDriverId == -1){
+                Toast.makeText(this@Checkin, "No Driver has been selected", Toast.LENGTH_SHORT).show()
+            }
             else {
-                //Calculate B2B
-                b2b = ((b2bPrice!!.text.toString().toFloat() * noOfPerson!!.text.toString().toFloat()) +
-                        (noOfChildren!!.text.toString().toFloat() * packagePerHeadChild!!.text.toString().toFloat())).toString()
-                Log.d(TAG, "b2b: " + b2b)
-                tvB2B!!.setText(b2b)
+                //Driver Radio Button
+                if (radioButtonDriver!!.text.equals("Yes")) {
+                    if (driverCost!!.text.toString().equals("")) {
+                        Toast.makeText(this, "Please Enter Driver Cost", Toast.LENGTH_SHORT).show()
+                    } else {
+                        //Calculate B2B
+                        b2b = (((b2bPrice!!.text.toString().toFloat() * noOfPerson!!.text.toString().toFloat()) +
+                                (noOfChildren!!.text.toString().toFloat() * packagePerHeadChild!!.text.toString().toFloat())) + (driverCost!!.text.toString().toFloat())).toString()
+                        Log.d(TAG, "b2b: " + b2b)
+                        tvB2B!!.setText(b2b)
+                    }
+                } else {
+                    //Calculate B2B
+                    b2b = ((b2bPrice!!.text.toString().toFloat() * noOfPerson!!.text.toString().toFloat()) +
+                            (noOfChildren!!.text.toString().toFloat() * packagePerHeadChild!!.text.toString().toFloat())).toString()
+                    Log.d(TAG, "b2b: " + b2b)
+                    tvB2B!!.setText(b2b)
+                }
+
+                //Activities Radio Button
+                if (radioButtonActivities!!.text.contains("Yes")) {
+
+                    //Get Only Numbers
+                    val str = activities
+                    val amountOnly = str!!.replace("[^0-9]".toRegex(), "")
+
+                    //Calculate Activity Price
+                    if (amountOnly.toInt() == 150) {
+                        activityPrice = ((etNoOfPersonForActivity!!.text.toString().toFloat() * 150)).toString()
+                        Log.d(TAG, "activityPrice: " + activityPrice)
+                        tvActivityPrice!!.setText(activityPrice)
+                    } else if (amountOnly.toInt() == 250) {
+                        activityPrice = ((etNoOfPersonForActivity!!.text.toString().toFloat() * 250)).toString()
+                        Log.d(TAG, "activityPrice: " + activityPrice)
+                        tvActivityPrice!!.setText(activityPrice)
+                    } else if (amountOnly.toInt() == 400) {
+                        activityPrice = ((etNoOfPersonForActivity!!.text.toString().toFloat() * 400)).toString()
+                        Log.d(TAG, "activityPrice: " + activityPrice)
+                        tvActivityPrice!!.setText(activityPrice)
+                    } else if (amountOnly.toInt() == 500) {
+                        activityPrice = ((etNoOfPersonForActivity!!.text.toString().toFloat() * 500)).toString()
+                        Log.d(TAG, "activityPrice: " + activityPrice)
+                        tvActivityPrice!!.setText(activityPrice)
+                    } else if (amountOnly.toInt() == 550) {
+                        activityPrice = ((etNoOfPersonForActivity!!.text.toString().toFloat() * 550)).toString()
+                        Log.d(TAG, "activityPrice: " + activityPrice)
+                        tvActivityPrice!!.setText(activityPrice)
+                    } else {
+                        activityPrice = ((etNoOfPersonForActivity!!.text.toString().toFloat() * 1050)).toString()
+                        Log.d(TAG, "activityPrice: " + activityPrice)
+                        tvActivityPrice!!.setText(activityPrice)
+                    }
+                } else {
+                    tvActivityPrice!!.setText("0.0")
+                }
 
                 //Calculate TAC
                 tac = ((packagePerHeadAddult!!.text.toString().toFloat() - b2bPrice!!.text.toString().toFloat()) * noOfPerson!!.text.toString().toFloat()).toString()
@@ -181,8 +266,8 @@ class Checkin : AppCompatActivity() {
                 tvTAC!!.setText(tac)
 
                 //Calculate Total
-                total = ((noOfPerson!!.text.toString().toFloat() * packagePerHeadAddult!!.text.toString().toFloat()) +
-                        (noOfChildren!!.text.toString().toFloat() * packagePerHeadChild!!.text.toString().toFloat())).toString()
+                total = ((tvB2B!!.text.toString().toFloat() + tvActivityPrice!!.text.toString().toFloat()) +
+                        (tvTAC!!.text.toString().toFloat())).toString()
                 Log.d(TAG, "total: " + total)
                 tvTotal!!.setText(total)
             }
