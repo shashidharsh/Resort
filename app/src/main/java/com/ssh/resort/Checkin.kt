@@ -65,6 +65,7 @@ class Checkin : AppCompatActivity() {
     var activityPrice :String? = null
     var tac :String? = null
     var total :String? = null
+    var etCashAmount :EditText? = null
 
     private var checkBoxCash: CheckBox? = null
     private var checkBoxUPI: CheckBox? = null
@@ -173,14 +174,20 @@ class Checkin : AppCompatActivity() {
         tvTAC = findViewById(R.id.tvCheckinTAC)
         tvTotal = findViewById(R.id.tvCheckinTotal)
         etNoOfPersonForActivity = findViewById(R.id.etNoOfPersonsActivities)
+        etCashAmount = findViewById(R.id.etCashAmount)
 
         //Check Box Initialization
         checkBoxCash = findViewById(R.id.checkinCash) as CheckBox
         checkBoxUPI = findViewById(R.id.checkinUPI) as CheckBox
 
-        if(checkBoxCash!!.isChecked() == true){
-            layoutPayment.visibility = View.VISIBLE
-        }
+        checkBoxCash!!.setOnClickListener(View.OnClickListener {
+            if(checkBoxCash!!.isChecked() == true){
+                layoutPayment.visibility = View.VISIBLE
+            }
+            else{
+                layoutPayment.visibility = View.GONE
+            }
+        })
 
         //Calculate Data
         var calculate = findViewById<Button>(R.id.btnCalculate)
@@ -413,7 +420,9 @@ class Checkin : AppCompatActivity() {
                 b2bPrice!!.setText("")
                 roomNumber!!.setText("")
                 driverCost!!.setText("")
+                driverCost!!.setText("")
                 tvB2B!!.setText("")
+                tvActivityPrice!!.setText("")
                 tvTAC!!.setText("")
                 tvTotal!!.setText("")
 
@@ -475,17 +484,18 @@ class Checkin : AppCompatActivity() {
         dataJson.put("PackageForAdult", packagePerHeadAddult!!.text.toString())
         dataJson.put("PackageForChild", packagePerHeadChild!!.text.toString())
         dataJson.put("SelectedCo", currentAgent)
-        dataJson.put("B2BPrice", b2bPrice!!.text.toString())
+        dataJson.put("EnterB2BPrice", b2bPrice!!.text.toString())
         dataJson.put("Activities", radioButtonActivities!!.text)
 
         if (radioButtonActivities!!.text.equals("Yes")) {
             dataJson.put("SelectedActivity", activities)
+            dataJson.put("NoOfPersons", etNoOfPersonForActivity!!.text.toString())
         }
         else{
-            dataJson.put("SelectedActivity", "Not Selected")
+            dataJson.put("SelectedActivity", "No")
+            dataJson.put("NoOfPersons", "0")
         }
 
-        dataJson.put("RoomNumber", roomNumber!!.text.toString())
         dataJson.put("Driver", radioButtonDriver!!.text)
 
         if (radioButtonDriver!!.text.equals("Yes")) {
@@ -495,9 +505,12 @@ class Checkin : AppCompatActivity() {
             dataJson.put("DriverCost", "0")
         }
 
-        dataJson.put("B2B", tvB2B!!.text.toString())
-        dataJson.put("TAC", tvTAC!!.text.toString())
-        dataJson.put("Total", tvTotal!!.text.toString())
+        dataJson.put("RoomNumber", roomNumber!!.text.toString())
+
+        dataJson.put("TotalB2B", tvB2B!!.text.toString())
+        dataJson.put("TotalActivityPrice", tvActivityPrice!!.text.toString())
+        dataJson.put("TotalTAC", tvTAC!!.text.toString())
+        dataJson.put("GrandTotal", tvTotal!!.text.toString())
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()
