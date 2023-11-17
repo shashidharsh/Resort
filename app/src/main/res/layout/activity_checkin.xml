@@ -312,11 +312,12 @@
                     android:id="@+id/radioGroupActivities"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/radioYes"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Yes"
                         android:textColor="@color/colorAccent"
@@ -324,11 +325,12 @@
 
                     <RadioButton
                         android:id="@+id/radioNo"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="No"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp"/>
 
                 </RadioGroup>
 
@@ -445,11 +447,12 @@
                     android:id="@+id/radioGroupDriver"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/radioDriverYes"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Yes"
                         android:textColor="@color/colorAccent"
@@ -457,11 +460,12 @@
 
                     <RadioButton
                         android:id="@+id/radioDriverNo"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="No"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp"/>
 
                 </RadioGroup>
 
@@ -635,35 +639,44 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Payment Mode"
+                    android:text="Payment Type"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp" />
 
-                <LinearLayout
+                <RadioGroup
+                    android:id="@+id/radioGroupPaymentType"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
-                    <CheckBox
-                        android:id="@+id/checkinCash"
+                    <RadioButton
+                        android:id="@+id/radioPaymentCash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="Cash"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16dp" />
 
-                    <CheckBox
-                        android:id="@+id/checkinUPI"
+                    <RadioButton
+                        android:id="@+id/radioPaymentUPI"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
                         android:text="UPI"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16dp" />
 
-                </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/radioPaymentCashUPI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Cash + UPI"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="16dp" />
+
+                </RadioGroup>
 
             </LinearLayout>
 
@@ -679,7 +692,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Enter Amount"
+                    android:text="Enter Cash Amount"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp" />
 
@@ -726,7 +739,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
-                    android:text="Submit" />
+                    android:text="Pay" />
 
             </LinearLayout>
 

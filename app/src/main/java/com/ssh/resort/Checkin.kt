@@ -1,7 +1,12 @@
 package com.ssh.resort
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
@@ -38,10 +43,17 @@ class Checkin : AppCompatActivity() {
 
     val TAG = "Checkin"
 
+    var paymentStatus: String? = ""
+    var paymentAmount: String? = ""
+
+    internal val UPI_PAYMENT = 0
+
     var radioGroupActivities: RadioGroup? = null
     var radioGroupDriver: RadioGroup? = null
+    var radioGroupPaymentType: RadioGroup? = null
     var radioButtonActivities: RadioButton? = null
     var radioButtonDriver: RadioButton? = null
+    var radioButtonPaymentType: RadioButton? = null
 
     val agentList: ArrayList<ExistingAgentListData> = ArrayList()
     val agentShowList: ArrayList<String> = ArrayList()
@@ -66,9 +78,6 @@ class Checkin : AppCompatActivity() {
     var tac :String? = null
     var total :String? = null
     var etCashAmount :EditText? = null
-
-    private var checkBoxCash: CheckBox? = null
-    private var checkBoxUPI: CheckBox? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,7 +158,7 @@ class Checkin : AppCompatActivity() {
         // Uncheck or reset the radio buttons initially
         radioGroupDriver!!.clearCheck()
 
-        // Add the Listener to the RadioGroup Activities
+        // Add the Listener to the RadioGroup Driver
         radioGroupDriver!!.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
             val radioButtonDriver = group.findViewById<View>(checkedId) as RadioButton
             if (radioButtonDriver.text.contains("Yes")){
@@ -157,6 +166,23 @@ class Checkin : AppCompatActivity() {
             }
             else{
                 layoutDriver.visibility = View.GONE
+            }
+        })
+
+        //Radio Group Payment Type
+        radioGroupPaymentType = findViewById(R.id.radioGroupPaymentType)
+
+        // Uncheck or reset the radio buttons initially
+        radioGroupPaymentType!!.clearCheck()
+
+        // Add the Listener to the RadioGroup Payment Type
+        radioGroupPaymentType!!.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+            val radioButtonPaymentType = group.findViewById<View>(checkedId) as RadioButton
+            if (radioButtonPaymentType.text.contains("Cash + UPI")){
+                layoutPayment.visibility = View.VISIBLE
+            }
+            else{
+                layoutPayment.visibility = View.GONE
             }
         })
 
@@ -175,19 +201,6 @@ class Checkin : AppCompatActivity() {
         tvTotal = findViewById(R.id.tvCheckinTotal)
         etNoOfPersonForActivity = findViewById(R.id.etNoOfPersonsActivities)
         etCashAmount = findViewById(R.id.etCashAmount)
-
-        //Check Box Initialization
-        checkBoxCash = findViewById(R.id.checkinCash) as CheckBox
-        checkBoxUPI = findViewById(R.id.checkinUPI) as CheckBox
-
-        checkBoxCash!!.setOnClickListener(View.OnClickListener {
-            if(checkBoxCash!!.isChecked() == true){
-                layoutPayment.visibility = View.VISIBLE
-            }
-            else{
-                layoutPayment.visibility = View.GONE
-            }
-        })
 
         //Calculate Data
         var calculate = findViewById<Button>(R.id.btnCalculate)
@@ -285,12 +298,16 @@ class Checkin : AppCompatActivity() {
         submit.setOnClickListener(View.OnClickListener {
             val selectedActivitiesId: Int = radioGroupActivities!!.getCheckedRadioButtonId()
             val selectedDriverId: Int = radioGroupDriver!!.getCheckedRadioButtonId()
+            val selectedPaymentTypeId: Int = radioGroupPaymentType!!.getCheckedRadioButtonId()
 
             if (selectedActivitiesId == -1) {
                 Toast.makeText(this@Checkin, "No Activities has been selected", Toast.LENGTH_SHORT).show()
             }
             else if (selectedDriverId == -1){
                 Toast.makeText(this@Checkin, "No Driver has been selected", Toast.LENGTH_SHORT).show()
+            }
+            else if (selectedPaymentTypeId == -1){
+                Toast.makeText(this@Checkin, "Please Select Payment Type", Toast.LENGTH_SHORT).show()
             }
             else if (guestName!!.text.toString().equals("") || packagePerHeadAddult!!.text.toString().equals("")
                 || packagePerHeadChild!!.text.toString().equals("") || noOfPerson!!.text.toString().equals("")
@@ -304,10 +321,29 @@ class Checkin : AppCompatActivity() {
             else {
                 radioButtonActivities = radioGroupActivities!!.findViewById(selectedActivitiesId)
                 radioButtonDriver = radioGroupDriver!!.findViewById(selectedDriverId)
+                radioButtonPaymentType = radioGroupPaymentType!!.findViewById(selectedPaymentTypeId)
                 Log.d(TAG, "RadioGroupActivity: " + radioButtonActivities!!.text)
                 Log.d(TAG, "RadioGroupDriver: " + radioButtonDriver!!.text)
+                Log.d(TAG, "RadioGroupPaymentType: " + radioButtonPaymentType!!.text)
                 getDataToJson()
-                //checkin()
+
+                if (radioButtonPaymentType!!.text.equals("Cash")) {
+                    paymentAmount = tvTotal!!.text.toString()
+                }
+                else if (radioButtonPaymentType!!.text.equals("UPI")){
+                    paymentAmount = tvTotal!!.text.toString()
+                    payUsingUpi(paymentAmount!!, "Q256470699@ybl", "", "Pay")
+                }
+                else{
+                    paymentAmount = tvTotal!!.text.toString()
+                    if (etCashAmount!!.text.toString().equals("")){
+                        Toast.makeText(this, "Please Enter Amount", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        var payAmount = paymentAmount!!.toFloat() - etCashAmount!!.text.toString().toFloat()
+                        payUsingUpi(payAmount.toString(), "Q256470699@ybl", "", "Pay")
+                    }
+                }
             }
         })
     }
@@ -514,5 +550,108 @@ class Checkin : AppCompatActivity() {
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()
+    }
+
+    fun payUsingUpi(amount: String, upiId: String, name: String, note: String) {
+
+        val uri = Uri.parse("upi://pay").buildUpon()
+            .appendQueryParameter("pa", upiId)
+            .appendQueryParameter("pn", name)
+            .appendQueryParameter("tn", note)
+            .appendQueryParameter("am", amount)
+            .appendQueryParameter("cu", "INR")
+            .build()
+
+
+        val upiPayIntent = Intent(Intent.ACTION_VIEW)
+        upiPayIntent.data = uri
+
+        // will always show a dialog to user to choose an app
+        val chooser = Intent.createChooser(upiPayIntent, "Pay with")
+
+        // check if intent resolves
+        if (null != chooser.resolveActivity(packageManager)) {
+            startActivityForResult(chooser, UPI_PAYMENT)
+        } else {
+            Toast.makeText(this@Checkin, "No UPI app found, please install one to continue", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun upiPaymentDataOperation(data: ArrayList<String>) {
+        if (isConnectionAvailable(this@Checkin)) {
+            var str: String? = data[0]
+            Log.d("UPIPAY", "upiPaymentDataOperation: " + str!!)
+            var paymentCancel = ""
+            if (str == null) str = "discard"
+            var status = ""
+            var approvalRefNo = ""
+            val response = str.split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            for (i in response.indices) {
+                val equalStr = response[i].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                if (equalStr.size >= 2) {
+                    if (equalStr[0].toLowerCase() == "Status".toLowerCase()) {
+                        status = equalStr[1].toLowerCase()
+                    } else if (equalStr[0].toLowerCase() == "ApprovalRefNo".toLowerCase() || equalStr[0].toLowerCase() == "txnRef".toLowerCase()) {
+                        approvalRefNo = equalStr[1]
+                    }
+                } else {
+                    paymentCancel = "Payment cancelled by user."
+                }
+            }
+
+            if (status == "success") {
+                //Code to handle successful transaction here.
+                paymentStatus = "Success"
+                //placeOrder()
+                Log.d("UPI", "responseStr: $approvalRefNo")
+            } else if ("Payment cancelled by user." == paymentCancel) {
+                Toast.makeText(this@Checkin, "Payment cancelled by user.", Toast.LENGTH_SHORT).show()
+                paymentStatus = "Cancelled"
+            } else {
+                Toast.makeText(this@Checkin, "Transaction Failed.", Toast.LENGTH_SHORT).show()
+                paymentStatus = "Failed"
+            }
+        } else {
+            Toast.makeText(this@Checkin, "Internet connection is not available. Please check and try again", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            UPI_PAYMENT -> if (Activity.RESULT_OK == resultCode || resultCode == 11) {
+                if (data != null) {
+                    val trxt = data.getStringExtra("response")
+                    Log.d("UPI", "onActivityResult: $trxt")
+                    val dataList = ArrayList<String>()
+                    dataList.add(trxt!!)
+                    upiPaymentDataOperation(dataList)
+                } else {
+                    Log.d("UPI", "onActivityResult: " + "Return data is null")
+                    val dataList = ArrayList<String>()
+                    dataList.add("nothing")
+                    upiPaymentDataOperation(dataList)
+                }
+            } else {
+                Log.d("UPI", "onActivityResult: " + "Return data is null") //when user simply back without payment
+                val dataList = ArrayList<String>()
+                dataList.add("nothing")
+                upiPaymentDataOperation(dataList)
+            }
+        }
+    }
+
+    companion object {
+        fun isConnectionAvailable(context: Context): Boolean {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (connectivityManager != null) {
+                val netInfo = connectivityManager.activeNetworkInfo
+                if (netInfo != null && netInfo.isConnected && netInfo.isConnectedOrConnecting && netInfo.isAvailable) {
+                    return true
+                }
+            }
+            return false
+        }
     }
 }
