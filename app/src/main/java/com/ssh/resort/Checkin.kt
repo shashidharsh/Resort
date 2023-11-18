@@ -326,7 +326,6 @@ class Checkin : AppCompatActivity() {
                 Log.d(TAG, "RadioGroupActivity: " + radioButtonActivities!!.text)
                 Log.d(TAG, "RadioGroupDriver: " + radioButtonDriver!!.text)
                 Log.d(TAG, "RadioGroupPaymentType: " + radioButtonPaymentType!!.text)
-                getDataToJson()
 
                 if (radioButtonPaymentType!!.text.equals("Cash")) {
                     paymentAmount = tvTotal!!.text.toString()
@@ -353,6 +352,8 @@ class Checkin : AppCompatActivity() {
                         }
                     }
                 }
+
+                getDataToJson()
             }
         })
     }
@@ -529,18 +530,19 @@ class Checkin : AppCompatActivity() {
         dataJson.put("PackageForAdult", packagePerHeadAddult!!.text.toString())
         dataJson.put("PackageForChild", packagePerHeadChild!!.text.toString())
         dataJson.put("SelectedCo", currentAgent)
-        dataJson.put("EnterB2BPrice", b2bPrice!!.text.toString())
+        dataJson.put("B2BPrice", b2bPrice!!.text.toString())
         dataJson.put("Activities", radioButtonActivities!!.text)
 
         if (radioButtonActivities!!.text.equals("Yes")) {
             dataJson.put("SelectedActivity", activities)
-            dataJson.put("NoOfPersons", etNoOfPersonForActivity!!.text.toString())
+            dataJson.put("NoPersons", etNoOfPersonForActivity!!.text.toString())
         }
         else{
-            dataJson.put("SelectedActivity", "No")
-            dataJson.put("NoOfPersons", "0")
+            dataJson.put("SelectedActivity", "Nothing")
+            dataJson.put("NoPersons", "0")
         }
 
+        dataJson.put("RoomNumber", roomNumber!!.text.toString())
         dataJson.put("Driver", radioButtonDriver!!.text)
 
         if (radioButtonDriver!!.text.equals("Yes")) {
@@ -550,12 +552,24 @@ class Checkin : AppCompatActivity() {
             dataJson.put("DriverCost", "0")
         }
 
-        dataJson.put("RoomNumber", roomNumber!!.text.toString())
-
         dataJson.put("TotalB2B", tvB2B!!.text.toString())
         dataJson.put("TotalActivityPrice", tvActivityPrice!!.text.toString())
         dataJson.put("TotalTAC", tvTAC!!.text.toString())
         dataJson.put("GrandTotal", tvTotal!!.text.toString())
+
+        dataJson.put("PaymentType", radioButtonPaymentType!!.text)
+        if (radioButtonPaymentType!!.text.equals("Cash")) {
+            dataJson.put("Cash", tvTotal!!.text.toString())
+            dataJson.put("UPI", "0")
+        }
+        else if (radioButtonPaymentType!!.text.equals("UPI")){
+            dataJson.put("Cash", "0")
+            dataJson.put("UPI", tvTotal!!.text.toString())
+        }
+        else{
+            dataJson.put("Cash", etCashAmount!!.text.toString())
+            dataJson.put("UPI", tvTotal!!.text.toString().toFloat() - etCashAmount!!.text.toString().toFloat())
+        }
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()
