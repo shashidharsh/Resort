@@ -26,6 +26,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.data.ExistingAgentListData
 import org.json.JSONObject
@@ -339,9 +340,17 @@ class Checkin : AppCompatActivity() {
                     if (etCashAmount!!.text.toString().equals("")){
                         Toast.makeText(this, "Please Enter Amount", Toast.LENGTH_SHORT).show()
                     }
+                    else if (etCashAmount!!.text.toString() > tvTotal!!.text.toString()){
+                        moreAmountEnteredDialog()
+                    }
                     else{
                         var payAmount = paymentAmount!!.toFloat() - etCashAmount!!.text.toString().toFloat()
-                        payUsingUpi(payAmount.toString(), "Q256470699@ybl", "", "Pay")
+                        if (payAmount != 0.0f){
+                            payUsingUpi(payAmount.toString(), "Q256470699@ybl", "", "Pay")
+                        }
+                        else{
+                            enteredFullAmountDialog()
+                        }
                     }
                 }
             }
@@ -653,5 +662,30 @@ class Checkin : AppCompatActivity() {
             }
             return false
         }
+    }
+
+    //More Amount Entered Dialog
+    fun moreAmountEnteredDialog(){
+        MaterialAlertDialogBuilder(this, R.style.MyAlertDialogTheme)
+            .setIcon(R.drawable.ic_announcement)
+            //.setView(R.layout.edit_text)
+            .setMessage("Please Enter Amount Less Than or Equal to Total Amount..!")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    fun enteredFullAmountDialog(){
+        MaterialAlertDialogBuilder(this, R.style.MyAlertDialogTheme)
+            .setIcon(R.drawable.ic_announcement)
+            //.setView(R.layout.edit_text)
+            .setMessage("If you want to pay full cash amount then please select cash option..!")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
     }
 }
