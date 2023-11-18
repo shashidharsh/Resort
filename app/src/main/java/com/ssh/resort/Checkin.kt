@@ -28,6 +28,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ssh.appdataremotedb.HTTPDownload
+import com.ssh.appdataremotedb.Utils
 import com.ssh.resort.data.ExistingAgentListData
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -294,9 +295,9 @@ class Checkin : AppCompatActivity() {
             }
         }
 
-        // Add the Listener to the Submit Button
-        var submit = findViewById<Button>(R.id.btnSubmit)
-        submit.setOnClickListener(View.OnClickListener {
+        // Pay Button
+        var pay = findViewById<Button>(R.id.btnPay)
+        pay.setOnClickListener(View.OnClickListener {
             val selectedActivitiesId: Int = radioGroupActivities!!.getCheckedRadioButtonId()
             val selectedDriverId: Int = radioGroupDriver!!.getCheckedRadioButtonId()
             val selectedPaymentTypeId: Int = radioGroupPaymentType!!.getCheckedRadioButtonId()
@@ -319,6 +320,9 @@ class Checkin : AppCompatActivity() {
             else if (tvB2B!!.text.toString().equals("") || tvTAC!!.text.toString().equals("") || tvTotal!!.text.toString().equals("")) {
                 Toast.makeText(this, "Please Calculate Total", Toast.LENGTH_SHORT).show()
             }
+            else if (Utils.checkInternetConnectivity(this) == false){
+                Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
+            }
             else {
                 radioButtonActivities = radioGroupActivities!!.findViewById(selectedActivitiesId)
                 radioButtonDriver = radioGroupDriver!!.findViewById(selectedDriverId)
@@ -329,6 +333,7 @@ class Checkin : AppCompatActivity() {
 
                 if (radioButtonPaymentType!!.text.equals("Cash")) {
                     paymentAmount = tvTotal!!.text.toString()
+                    insertCheckin()
                 }
                 else if (radioButtonPaymentType!!.text.equals("UPI")){
                     paymentAmount = tvTotal!!.text.toString()
@@ -352,8 +357,6 @@ class Checkin : AppCompatActivity() {
                         }
                     }
                 }
-
-                getDataToJson()
             }
         })
     }
@@ -431,8 +434,8 @@ class Checkin : AppCompatActivity() {
 
     //Save Checkin Data in Server
     @SuppressLint("LongLogTag")
-    fun checkin() {
-        Log.d(TAG, "checkin: ")
+    fun insertCheckin() {
+        Log.d(TAG, "insertCheckin: ")
 
         var pd = Dialog(this)
         val view: View = LayoutInflater.from(this).inflate(R.layout.progress, null)
@@ -469,9 +472,10 @@ class Checkin : AppCompatActivity() {
                 driverCost!!.setText("")
                 tvB2B!!.setText("")
                 tvActivityPrice!!.setText("")
+                etNoOfPersonForActivity!!.setText("")
                 tvTAC!!.setText("")
                 tvTotal!!.setText("")
-
+                etCashAmount!!.setText("")
             }
         }
         var saveData = CheckinData().execute()
@@ -483,7 +487,7 @@ class Checkin : AppCompatActivity() {
 
         var response: String = ""
 
-        val url = URL("https://sshsoftwares.in/Resort/.php")
+        val url = URL("https://sshsoftwares.in/Resort/InsertCheckin.php")
         Log.d(TAG, "getCheckinData URL: " + url)
         var client: HttpURLConnection? = null
         try {
@@ -561,14 +565,20 @@ class Checkin : AppCompatActivity() {
         if (radioButtonPaymentType!!.text.equals("Cash")) {
             dataJson.put("Cash", tvTotal!!.text.toString())
             dataJson.put("UPI", "0")
+            dataJson.put("CashPayStatus", "Received")
+            dataJson.put("UPIPayStatus", "No")
         }
         else if (radioButtonPaymentType!!.text.equals("UPI")){
             dataJson.put("Cash", "0")
             dataJson.put("UPI", tvTotal!!.text.toString())
+            dataJson.put("CashPayStatus", "No")
+            dataJson.put("UPIPayStatus", paymentStatus)
         }
         else{
             dataJson.put("Cash", etCashAmount!!.text.toString())
             dataJson.put("UPI", tvTotal!!.text.toString().toFloat() - etCashAmount!!.text.toString().toFloat())
+            dataJson.put("CashPayStatus", "Received")
+            dataJson.put("UPIPayStatus", paymentStatus)
         }
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
@@ -625,7 +635,7 @@ class Checkin : AppCompatActivity() {
             if (status == "success") {
                 //Code to handle successful transaction here.
                 paymentStatus = "Success"
-                //placeOrder()
+                insertCheckin()
                 Log.d("UPI", "responseStr: $approvalRefNo")
             } else if ("Payment cancelled by user." == paymentCancel) {
                 Toast.makeText(this@Checkin, "Payment cancelled by user.", Toast.LENGTH_SHORT).show()
@@ -633,6 +643,7 @@ class Checkin : AppCompatActivity() {
             } else {
                 Toast.makeText(this@Checkin, "Transaction Failed.", Toast.LENGTH_SHORT).show()
                 paymentStatus = "Failed"
+                insertCheckin()
             }
         } else {
             Toast.makeText(this@Checkin, "Internet connection is not available. Please check and try again", Toast.LENGTH_SHORT).show()

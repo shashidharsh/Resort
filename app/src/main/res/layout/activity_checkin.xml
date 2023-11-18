@@ -732,7 +732,7 @@
                     android:text="Calculate" />
 
                 <Button
-                    android:id="@+id/btnSubmit"
+                    android:id="@+id/btnPay"
                     style="@style/Button"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
