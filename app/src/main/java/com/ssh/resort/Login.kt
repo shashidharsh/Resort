@@ -21,6 +21,7 @@ import java.io.BufferedWriter
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.OutputStreamWriter
+import java.net.ConnectException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -146,6 +147,11 @@ class Login : AppCompatActivity() {
             }
         } catch (e: MalformedURLException) {
             e.printStackTrace()
+            Log.d(TAG, "MalformedURLException: " + e)
+        } catch (ce: ConnectException) {
+            ce.printStackTrace()
+            Log.d(TAG, "ConnectException: Connection Timeout" + ce)
+            response = "Connection Timeout"
         } finally {
             if (client != null) // Make sure the connection is not null.
                 client.disconnect()
