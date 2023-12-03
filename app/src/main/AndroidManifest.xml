@@ -17,9 +17,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".TransactionDetails"
+            android:exported="false" />
+        <activity
+            android:name=".Transactions"
+            android:exported="false" />
+        <activity
             android:name=".UpdateExistingAgent"
             android:exported="false"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ExistingAgent"
             android:exported="false" />

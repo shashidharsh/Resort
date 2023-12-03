@@ -24,5 +24,11 @@ class AdminHomePage : AppCompatActivity() {
             val intent = Intent(this, AdminAgentRegistration::class.java)
             startActivity(intent)
         }
+
+        var cvTransaction = findViewById<CardView>(R.id.cvTransaction)
+        cvTransaction.setOnClickListener{
+            val intent = Intent(this, Transactions::class.java)
+            startActivity(intent)
+        }
     }
 }

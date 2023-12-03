@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="5dp"
+    android:backgroundTint="@color/white"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:orientation="vertical"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <FrameLayout
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:id="@+id/transactionsGuestName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="Guest Name"
+                android:textColor="@color/colorAccent"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/tvTransactionsAgentName"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/text_view_custom"
+                android:text="Agent:"
+                android:padding="3dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tvTransactionsColon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/text_view_custom"
+                android:text=":"
+                android:padding="3dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:layout_toRightOf="@+id/tvTransactionsAgentName"/>
+
+            <TextView
+                android:id="@+id/transactionsAgentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_view_custom"
+                android:hint="Agent Name"
+                android:padding="3dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:layout_toRightOf="@+id/tvTransactionsColon1"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/tvTransactionsTotal"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/text_view_custom"
+                android:text="Total:"
+                android:padding="3dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tvTransactionsColon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/text_view_custom"
+                android:text=":"
+                android:padding="3dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:layout_toRightOf="@+id/tvTransactionsTotal"/>
+
+            <TextView
+                android:id="@+id/transactionsTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/text_view_custom"
+                android:hint="Total"
+                android:padding="3dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:layout_toRightOf="@+id/tvTransactionsColon2"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
