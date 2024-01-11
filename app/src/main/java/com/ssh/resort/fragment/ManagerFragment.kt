@@ -1,20 +1,28 @@
-package com.ssh.resort
+package com.ssh.resort.fragment
 
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.Utils
+import com.ssh.resort.AdminHomePage
+import com.ssh.resort.ManagerHomePage
+import com.ssh.resort.NetworkConnection
+import com.ssh.resort.R
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -27,31 +35,56 @@ import java.net.MalformedURLException
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class Login : AppCompatActivity() {
+class ManagerFragment : Fragment() {
 
-    val TAG = "Login"
+    private val TAG = "ManagerFragment"
 
     var userName: EditText? = null
     var password: EditText? = null
 
-    var loginType: String? = ""
+    var loginType: String? = "Manager"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
-        loginType = intent.getStringExtra("Login")
+    }
 
-        userName = findViewById(R.id.userName)
-        password = findViewById(R.id.password)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_manager, container, false)
+    }
 
-        var login = findViewById<Button>(R.id.btnLogin)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated: $view")
+        initUI()
+    }
+
+    fun initUI() {
+
+        val networkConnection = NetworkConnection(requireView().context)
+        networkConnection.observe(viewLifecycleOwner) { isConnected ->
+            if (isConnected) {
+                //getOrderDetailsFromServer()
+            } else {
+                getActivity()?.let { Snackbar.make(it.findViewById(android.R.id.content), "No Internet Connection", Snackbar.LENGTH_SHORT)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.colorAccent))
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .show() }
+            }
+        }
+
+        userName = requireView().findViewById(R.id.managerUserName)
+        password = requireView().findViewById(R.id.managerPassword)
+
+        var login = requireView().findViewById<Button>(R.id.btnManagerLogin)
         login.setOnClickListener{
             if (userName!!.text.toString().equals("") || password!!.text.toString().equals("")) {
-                Toast.makeText(this, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireView().context, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
             }
-            else if (Utils.checkInternetConnectivity(this) == false){
-                Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
+            else if (Utils.checkInternetConnectivity(requireView().context) == false){
+                Toast.makeText(requireView().context, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
             }
             else {
                 login()
@@ -64,8 +97,8 @@ class Login : AppCompatActivity() {
     fun login() {
         Log.d(TAG, "login: ")
 
-        var pd = Dialog(this)
-        val view: View = LayoutInflater.from(this).inflate(R.layout.progress, null)
+        var pd = Dialog(requireView().context)
+        val view: View = LayoutInflater.from(requireView().context).inflate(R.layout.progress, null)
         pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
         pd.getWindow()?.setBackgroundDrawableResource(R.color.transparent)
         pd.setContentView(view)
@@ -89,20 +122,12 @@ class Login : AppCompatActivity() {
                 pd.cancel()
 
                 if (result.contains("Login Successful")){
-                    if (loginType!!.contains("Admin")) {
-                        val intent = Intent(this@Login, AdminHomePage::class.java)
-                        intent.putExtra("UserName", userName!!.text.toString())
-                        startActivity(intent)
-                        finish()
-                    }
-                    else{
-                        val intent = Intent(this@Login, ManagerHomePage::class.java)
-                        intent.putExtra("UserName", userName!!.text.toString())
-                        startActivity(intent)
-                        finish()
-                    }
+                    val intent = Intent(requireView().context, ManagerHomePage::class.java)
+                    intent.putExtra("UserName", userName!!.text.toString())
+                    startActivity(intent)
+                    requireActivity().finish()
                 }else{
-                    Toast.makeText(this@Login, result, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireView().context, result, Toast.LENGTH_LONG).show()
                 }
             }
         }
