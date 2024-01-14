@@ -11,6 +11,39 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/searchViewAgent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/edittext_background"
+                android:drawableLeft="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Enter Name or Mobile"
+                android:textColorHint="@color/colorAccent"
+                android:padding="12dp"
+                android:textColor="@color/colorAccent"/>
+
+            <ImageView
+                android:id="@+id/ivVoiceSearchAgent"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="24dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_voice" />
+
+        </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvExistingAgent"
             android:layout_width="match_parent"

@@ -25,10 +25,11 @@
         <activity
             android:name=".UpdateExistingAgent"
             android:exported="false"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".ExistingAgent"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".AdminAgentRegistration"
             android:exported="false" />

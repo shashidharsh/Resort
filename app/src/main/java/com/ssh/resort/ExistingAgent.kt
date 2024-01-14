@@ -2,20 +2,28 @@ package com.ssh.resort
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import android.speech.RecognizerIntent
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ExistingAgentListAdapter
 import com.ssh.resort.data.ExistingAgentListData
+import java.lang.Exception
+import java.util.Locale
 
 class ExistingAgent : AppCompatActivity() {
 
@@ -26,6 +34,9 @@ class ExistingAgent : AppCompatActivity() {
     var adapter: ExistingAgentListAdapter? = null
 
     val agentList: ArrayList<ExistingAgentListData> = ArrayList()
+
+    private val SPEECH_REQUEST_CODE = 1
+    var searchCustomerEditText : EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +55,40 @@ class ExistingAgent : AppCompatActivity() {
 
         adapter = ExistingAgentListAdapter(applicationContext, agentList)
         agentListRecyclerView!!.adapter = adapter
+
+        //Search Agent
+        searchCustomerEditText = findViewById(R.id.searchViewAgent) as EditText
+        searchCustomerEditText!!.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                //SEARCH FILTER
+                adapter!!.getFilter()!!.filter(charSequence)
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+
+            }
+        })
+
+        //Search Agent Using Voice Search
+        var searchCustomerVoice = findViewById(R.id.ivVoiceSearchAgent) as ImageView
+        searchCustomerVoice.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak To Text")
+                try {
+                    startActivityForResult(intent, SPEECH_REQUEST_CODE)
+                }
+                catch (e: Exception) {
+                    Toast.makeText(this@ExistingAgent, " " + e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
     //Download Agent Details from Server
@@ -113,5 +158,15 @@ class ExistingAgent : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         getAgentDetailsFromServer()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SPEECH_REQUEST_CODE) {
+            if (resultCode == RESULT_OK && data != null) {
+                val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                searchCustomerEditText!!.setText(java.util.Objects.requireNonNull(result)?.get(0))
+            }
+        }
     }
 }
