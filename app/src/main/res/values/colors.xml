@@ -19,5 +19,7 @@
     <color name="beige">#F5F5DC</color>
     <color name="lightPink">#FFC0CB</color>
     <color name="serenity">#B3CEE5</color>
+    <color name="darkOrange">#FF5733</color>
+    <color name="darkPink">#FF3383</color>
 
 </resources>
