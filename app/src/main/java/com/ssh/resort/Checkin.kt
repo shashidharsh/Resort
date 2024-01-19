@@ -66,6 +66,7 @@ class Checkin : AppCompatActivity() {
     var packagePerHeadChild :EditText? = null
     var roomNumber :EditText? = null
     var b2bPrice :EditText? = null
+    var advanceAmount :EditText? = null
     var noOfPerson :EditText? = null
     var noOfChildren :EditText? = null
     var packagePerHeadAddult :EditText? = null
@@ -75,10 +76,12 @@ class Checkin : AppCompatActivity() {
     var tvActivityPrice :TextView? = null
     var tvTAC :TextView? = null
     var tvTotal :TextView? = null
+    var tvGrandTotal :TextView? = null
     var b2b :String? = null
     var activityPrice :String? = null
     var tac :String? = null
     var total :String? = null
+    var grandTotal :String? = null
     var etCashAmount :EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,6 +196,7 @@ class Checkin : AppCompatActivity() {
         packagePerHeadChild = findViewById(R.id.etPackagePerHeadForChild)
         roomNumber = findViewById(R.id.etCheckinRoomNumber)
         b2bPrice = findViewById(R.id.etB2BPrice)
+        advanceAmount = findViewById(R.id.etAdvanceAmount)
         noOfPerson = findViewById(R.id.etCheckinNoOfPersons)
         noOfChildren = findViewById(R.id.etCheckinNoOfChildrens)
         packagePerHeadAddult = findViewById(R.id.etPackagePerHeadForAdult)
@@ -201,6 +205,7 @@ class Checkin : AppCompatActivity() {
         tvActivityPrice = findViewById(R.id.tvCheckinActivityPrice)
         tvTAC = findViewById(R.id.tvCheckinTAC)
         tvTotal = findViewById(R.id.tvCheckinTotal)
+        tvGrandTotal = findViewById(R.id.tvCheckinGrandTotal)
         etNoOfPersonForActivity = findViewById(R.id.etNoOfPersonsActivities)
         etCashAmount = findViewById(R.id.etCashAmount)
 
@@ -216,7 +221,7 @@ class Checkin : AppCompatActivity() {
             if (guestName!!.text.toString().equals("") || packagePerHeadAddult!!.text.toString().equals("")
                 || packagePerHeadChild!!.text.toString().equals("") || noOfPerson!!.text.toString().equals("")
                 || noOfChildren!!.text.toString().equals("") || b2bPrice!!.text.toString().equals("")
-                || roomNumber!!.text.toString().equals("")) {
+                || advanceAmount!!.text.toString().equals("") || roomNumber!!.text.toString().equals("")) {
                 Toast.makeText(this, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
             }
             else if (selectedActivitiesId == -1) {
@@ -292,6 +297,11 @@ class Checkin : AppCompatActivity() {
                         (tvTAC!!.text.toString().toFloat())).toString()
                 Log.d(TAG, "total: " + total)
                 tvTotal!!.setText(total)
+
+                //Calculate Grand Total
+                grandTotal = (total!!.toFloat() - advanceAmount!!.text.toString().toFloat()).toString()
+                Log.d(TAG, "grandTotal: " + grandTotal)
+                tvGrandTotal!!.setText(grandTotal)
             }
         }
 
@@ -314,7 +324,7 @@ class Checkin : AppCompatActivity() {
             else if (guestName!!.text.toString().equals("") || packagePerHeadAddult!!.text.toString().equals("")
                 || packagePerHeadChild!!.text.toString().equals("") || noOfPerson!!.text.toString().equals("")
                 || noOfChildren!!.text.toString().equals("") || b2bPrice!!.text.toString().equals("")
-                || roomNumber!!.text.toString().equals("")) {
+                || advanceAmount!!.text.toString().equals("") || roomNumber!!.text.toString().equals("")) {
                 Toast.makeText(this, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
             }
             else if (tvB2B!!.text.toString().equals("") || tvTAC!!.text.toString().equals("") || tvTotal!!.text.toString().equals("")) {
@@ -336,15 +346,15 @@ class Checkin : AppCompatActivity() {
                     insertCheckin()
                 }
                 else if (radioButtonPaymentType!!.text.equals("UPI")){
-                    paymentAmount = tvTotal!!.text.toString()
+                    paymentAmount = tvGrandTotal!!.text.toString()
                     payUsingUpi(paymentAmount!!, "Q256470699@ybl", "", "Pay")
                 }
                 else{
-                    paymentAmount = tvTotal!!.text.toString()
+                    paymentAmount = tvGrandTotal!!.text.toString()
                     if (etCashAmount!!.text.toString().equals("")){
                         Toast.makeText(this, "Please Enter Amount", Toast.LENGTH_SHORT).show()
                     }
-                    else if (etCashAmount!!.text.toString() > tvTotal!!.text.toString()){
+                    else if (etCashAmount!!.text.toString().toFloat() > tvGrandTotal!!.text.toString().toFloat()){
                         moreAmountEnteredDialog()
                     }
                     else{
@@ -467,6 +477,7 @@ class Checkin : AppCompatActivity() {
                 packagePerHeadAddult!!.setText("")
                 packagePerHeadChild!!.setText("")
                 b2bPrice!!.setText("")
+                advanceAmount!!.setText("")
                 roomNumber!!.setText("")
                 driverCost!!.setText("")
                 driverCost!!.setText("")
@@ -475,6 +486,7 @@ class Checkin : AppCompatActivity() {
                 etNoOfPersonForActivity!!.setText("")
                 tvTAC!!.setText("")
                 tvTotal!!.setText("")
+                tvGrandTotal!!.setText("")
                 etCashAmount!!.setText("")
             }
         }
@@ -535,6 +547,7 @@ class Checkin : AppCompatActivity() {
         dataJson.put("PackageForChild", packagePerHeadChild!!.text.toString())
         dataJson.put("SelectedCo", currentAgent)
         dataJson.put("B2BPrice", b2bPrice!!.text.toString())
+        dataJson.put("Advance", advanceAmount!!.text.toString())
         dataJson.put("Activities", radioButtonActivities!!.text)
 
         if (radioButtonActivities!!.text.equals("Yes")) {
@@ -559,24 +572,25 @@ class Checkin : AppCompatActivity() {
         dataJson.put("TotalB2B", tvB2B!!.text.toString())
         dataJson.put("TotalActivityPrice", tvActivityPrice!!.text.toString())
         dataJson.put("TotalTAC", tvTAC!!.text.toString())
-        dataJson.put("GrandTotal", tvTotal!!.text.toString())
+        dataJson.put("Total", tvTotal!!.text.toString())
+        dataJson.put("GrandTotal", tvGrandTotal!!.text.toString())
 
         dataJson.put("PaymentType", radioButtonPaymentType!!.text)
         if (radioButtonPaymentType!!.text.equals("Cash")) {
-            dataJson.put("Cash", tvTotal!!.text.toString())
+            dataJson.put("Cash", tvGrandTotal!!.text.toString())
             dataJson.put("UPI", "0")
             dataJson.put("CashPayStatus", "Received")
             dataJson.put("UPIPayStatus", "No")
         }
         else if (radioButtonPaymentType!!.text.equals("UPI")){
             dataJson.put("Cash", "0")
-            dataJson.put("UPI", tvTotal!!.text.toString())
+            dataJson.put("UPI", tvGrandTotal!!.text.toString())
             dataJson.put("CashPayStatus", "No")
             dataJson.put("UPIPayStatus", paymentStatus)
         }
         else{
             dataJson.put("Cash", etCashAmount!!.text.toString())
-            dataJson.put("UPI", tvTotal!!.text.toString().toFloat() - etCashAmount!!.text.toString().toFloat())
+            dataJson.put("UPI", tvGrandTotal!!.text.toString().toFloat() - etCashAmount!!.text.toString().toFloat())
             dataJson.put("CashPayStatus", "Received")
             dataJson.put("UPIPayStatus", paymentStatus)
         }
@@ -694,7 +708,7 @@ class Checkin : AppCompatActivity() {
         MaterialAlertDialogBuilder(this, R.style.MyAlertDialogTheme)
             .setIcon(R.drawable.ic_announcement)
             //.setView(R.layout.edit_text)
-            .setMessage("Please Enter Amount Less Than or Equal to Total Amount..!")
+            .setMessage("Please Enter Amount Less Than or Equal to Grand Total Amount..!")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
