@@ -5,6 +5,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.AsyncTask
@@ -16,8 +18,8 @@ import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -27,6 +29,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.appdataremotedb.Utils
 import com.ssh.resort.data.ExistingAgentListData
@@ -44,6 +50,8 @@ import javax.net.ssl.HttpsURLConnection
 class Checkin : AppCompatActivity() {
 
     val TAG = "Checkin"
+
+    var UPI_ID: String? = "8088756868@ybl"
 
     var paymentStatus: String? = ""
     var paymentAmount: String? = ""
@@ -83,6 +91,8 @@ class Checkin : AppCompatActivity() {
     var total :String? = null
     var grandTotal :String? = null
     var etCashAmount :EditText? = null
+
+    var ivQrCode: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -208,6 +218,7 @@ class Checkin : AppCompatActivity() {
         tvGrandTotal = findViewById(R.id.tvCheckinGrandTotal)
         etNoOfPersonForActivity = findViewById(R.id.etNoOfPersonsActivities)
         etCashAmount = findViewById(R.id.etCashAmount)
+        ivQrCode = findViewById(R.id.idIVQrcode)
 
         //Calculate Data
         var calculate = findViewById<Button>(R.id.btnCalculate)
@@ -342,12 +353,12 @@ class Checkin : AppCompatActivity() {
                 Log.d(TAG, "RadioGroupPaymentType: " + radioButtonPaymentType!!.text)
 
                 if (radioButtonPaymentType!!.text.equals("Cash")) {
-                    paymentAmount = tvTotal!!.text.toString()
+                    paymentAmount = tvGrandTotal!!.text.toString()
                     insertCheckin()
                 }
                 else if (radioButtonPaymentType!!.text.equals("UPI")){
                     paymentAmount = tvGrandTotal!!.text.toString()
-                    payUsingUpi(paymentAmount!!, "Q256470699@ybl", "", "Pay")
+                    payUsingUpi(paymentAmount!!, UPI_ID!!, "", "Pay")
                 }
                 else{
                     paymentAmount = tvGrandTotal!!.text.toString()
@@ -360,7 +371,7 @@ class Checkin : AppCompatActivity() {
                     else{
                         var payAmount = paymentAmount!!.toFloat() - etCashAmount!!.text.toString().toFloat()
                         if (payAmount != 0.0f){
-                            payUsingUpi(payAmount.toString(), "Q256470699@ybl", "", "Pay")
+                            payUsingUpi(payAmount.toString(), UPI_ID!!, "", "Pay")
                         }
                         else{
                             enteredFullAmountDialog()
@@ -369,6 +380,97 @@ class Checkin : AppCompatActivity() {
                 }
             }
         })
+
+        //Generate QR Code Button
+        var generateQR = findViewById<Button>(R.id.idBtnGenerateQR)
+        generateQR.setOnClickListener{
+            val selectedPaymentTypeId: Int = radioGroupPaymentType!!.getCheckedRadioButtonId()
+
+            if (selectedPaymentTypeId == -1){
+                Toast.makeText(this@Checkin, "Please Select Payment Type", Toast.LENGTH_SHORT).show()
+            }
+            else if (tvB2B!!.text.toString().equals("") || tvTAC!!.text.toString().equals("") || tvTotal!!.text.toString().equals("")) {
+                Toast.makeText(this, "Please Calculate Total", Toast.LENGTH_SHORT).show()
+            }
+            else if (Utils.checkInternetConnectivity(this) == false){
+                Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
+            }
+            else {
+                radioButtonPaymentType = radioGroupPaymentType!!.findViewById(selectedPaymentTypeId)
+                Log.d(TAG, "RadioGroupPaymentType: " + radioButtonPaymentType!!.text)
+
+                if (radioButtonPaymentType!!.text.equals("Cash")) {
+                    paymentAmount = tvTotal!!.text.toString()
+                    cashPayQRDialog()
+                }
+                else if (radioButtonPaymentType!!.text.equals("UPI")){
+                    paymentAmount = tvGrandTotal!!.text.toString()
+                    generateQR(paymentAmount)
+                }
+                else{
+                    paymentAmount = tvGrandTotal!!.text.toString()
+                    if (etCashAmount!!.text.toString().equals("")){
+                        Toast.makeText(this, "Please Enter Amount", Toast.LENGTH_SHORT).show()
+                    }
+                    else if (etCashAmount!!.text.toString().toFloat() > tvGrandTotal!!.text.toString().toFloat()){
+                        moreAmountEnteredDialog()
+                    }
+                    else{
+                        var payAmount = paymentAmount!!.toFloat() - etCashAmount!!.text.toString().toFloat()
+                        if (payAmount != 0.0f){
+                            generateQR(payAmount.toString())
+                        }
+                        else{
+                            enteredFullAmountDialog()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun generateQR(amount: String?) {
+        val url = "upi://pay?pa=" +   // payment method.
+                UPI_ID!! +         // VPA number.
+                "&am="+ amount +       // this param is for fixed amount (non editable).
+                "&pn=HillStone%20Resort"+      // to showing your name in app.
+                "&cu=INR" +                  // Currency code.
+                "&mode=02"                // mode O2 for Secure QR Code.
+//                "&orgid=189999" +            //If the transaction is initiated by any PSP app then the respective orgID needs to be passed.
+//                "&sign=MEYCIQC8bLDdRbDhpsPAt9wR1a0pcEssDaV" +   // Base 64 encoded Digital signature needs to be passed in this tag
+//                "Q7lugo8mfJhDk6wIhANZkbXOWWR2lhJOH2Qs/OQRaRFD2oBuPCGtrMaVFR23t"
+
+        try {
+            val bitmap = textToImageEncode(url)
+            ivQrCode!!.setImageBitmap(bitmap)
+            ivQrCode!!.invalidate()
+        } catch (e: WriterException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun textToImageEncode(Value: String): Bitmap? {
+        val bitMatrix: BitMatrix
+        try {
+            bitMatrix = MultiFormatWriter().encode(Value, BarcodeFormat.QR_CODE, 400, 400, null)
+        } catch (Illegalargumentexception: IllegalArgumentException) {
+            return null
+        }
+        val bitMatrixWidth = bitMatrix.getWidth()
+        val bitMatrixHeight = bitMatrix.getHeight()
+        val pixels = IntArray(bitMatrixWidth * bitMatrixHeight)
+        for (y in 0 until bitMatrixHeight) {
+            val offset = y * bitMatrixWidth
+            for (x in 0 until bitMatrixWidth) {
+                pixels[offset + x] = if (bitMatrix.get(x, y))
+                    Color.parseColor("#000000")
+                else
+                    Color.parseColor("#ffffff")
+            }
+        }
+        val bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444)
+        bitmap.setPixels(pixels, 0, 400, 0, 0, 400, 400)
+        return bitmap
     }
 
     //Download Agent Details from Server
@@ -721,6 +823,18 @@ class Checkin : AppCompatActivity() {
             .setIcon(R.drawable.ic_announcement)
             //.setView(R.layout.edit_text)
             .setMessage("If you want to pay full cash amount then please select cash option..!")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    fun cashPayQRDialog(){
+        MaterialAlertDialogBuilder(this, R.style.MyAlertDialogTheme)
+            .setIcon(R.drawable.ic_announcement)
+            //.setView(R.layout.edit_text)
+            .setMessage("Please select UPI or UPI+Cash Payment Type to Generate QR Code..")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
