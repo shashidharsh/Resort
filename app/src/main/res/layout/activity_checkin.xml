@@ -790,7 +790,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:gravity="center">
 
@@ -805,10 +805,24 @@
                     android:id="@+id/idBtnGenerateQR"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Generate QR Code"
-                    android:layout_toRightOf="@+id/idIVQrcode"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:layout_centerVertical="true"/>
+                    android:layout_toRightOf="@+id/idIVQrcode"
+                    android:text="Generate QR Code" />
+
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/expanded_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="description_zoom_touch_close"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
 
             </RelativeLayout>
 
