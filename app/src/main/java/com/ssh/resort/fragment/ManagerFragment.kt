@@ -140,7 +140,7 @@ class ManagerFragment : Fragment() {
 
         var response: String = ""
 
-        val url = URL("https://sshsoftwares.in/Resort/AdminLogin.php")
+        val url = URL("https://hillstoneresort.com/Resorts/AdminLogin.php")
         Log.d(TAG, "loginData URL: " + url)
         var client: HttpURLConnection? = null
         try {

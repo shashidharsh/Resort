@@ -105,7 +105,7 @@ class ExistingAgent : AppCompatActivity() {
         class AgentDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val agentDetailsUrl = "https://sshsoftwares.in/Resort/GetAgents.php"
+                val agentDetailsUrl = "https://hillstoneresort.com/Resorts/GetAgents.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(agentDetailsUrl)

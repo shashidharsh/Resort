@@ -52,6 +52,8 @@ import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.net.ssl.HttpsURLConnection
 
 class Checkin : AppCompatActivity() {
@@ -62,6 +64,8 @@ class Checkin : AppCompatActivity() {
 
     var paymentStatus: String? = ""
     var paymentAmount: String? = ""
+
+    var currentDateTime : String? = ""
 
     internal val UPI_PAYMENT = 0
 
@@ -127,6 +131,10 @@ class Checkin : AppCompatActivity() {
 
         //Get Agent Details
         getAgentDetailsFromServer()
+
+        //Current Date
+        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy h:mm a")
+        currentDateTime = simpleDateFormat.format(Date())
 
         //access the items of the list
         var activity = resources.getStringArray(R.array.Activities)
@@ -641,7 +649,7 @@ class Checkin : AppCompatActivity() {
         class AgentDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val agentDetailsUrl = "https://sshsoftwares.in/Resort/GetAgents.php"
+                val agentDetailsUrl = "https://hillstoneresort.com/Resorts/GetAgents.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(agentDetailsUrl)
@@ -755,7 +763,7 @@ class Checkin : AppCompatActivity() {
 
         var response: String = ""
 
-        val url = URL("https://sshsoftwares.in/Resort/InsertCheckin.php")
+        val url = URL("https://hillstoneresort.com/Resorts/InsertCheckin.php")
         Log.d(TAG, "getCheckinData URL: " + url)
         var client: HttpURLConnection? = null
         try {
@@ -850,6 +858,8 @@ class Checkin : AppCompatActivity() {
             dataJson.put("CashPayStatus", "Received")
             dataJson.put("UPIPayStatus", paymentStatus)
         }
+
+        dataJson.put("TxnDate", currentDateTime)
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()

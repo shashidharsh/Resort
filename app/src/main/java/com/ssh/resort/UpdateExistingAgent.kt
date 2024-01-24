@@ -131,7 +131,7 @@ class UpdateExistingAgent : AppCompatActivity() {
 
         var response: String = ""
 
-        val url = URL("https://sshsoftwares.in/Resort/UpdateAgent.php")
+        val url = URL("https://hillstoneresort.com/Resort/UpdateAgent.php")
         Log.d(TAG, "updateData URL: " + url)
         var client: HttpURLConnection? = null
         try {
@@ -193,7 +193,7 @@ class UpdateExistingAgent : AppCompatActivity() {
 
         class DownloadAgentDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
-                val profileDetailsUrl = "https://sshsoftwares.in/Resort/GetPerticularAgent.php?mobile=" + mobile
+                val profileDetailsUrl = "https://hillstoneresort.com/Resorts/GetPerticularAgent.php?mobile=" + mobile
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(profileDetailsUrl)
