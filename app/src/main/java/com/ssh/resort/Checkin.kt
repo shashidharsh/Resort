@@ -72,13 +72,18 @@ class Checkin : AppCompatActivity() {
     var radioGroupActivities: RadioGroup? = null
     var radioGroupDriver: RadioGroup? = null
     var radioGroupPaymentType: RadioGroup? = null
+    var radioGroupType: RadioGroup? = null
     var radioButtonActivities: RadioButton? = null
     var radioButtonDriver: RadioButton? = null
     var radioButtonPaymentType: RadioButton? = null
+    var radioButtonType: RadioButton? = null
 
     val agentList: ArrayList<ExistingAgentListData> = ArrayList()
+    val agentsList: ArrayList<ExistingAgentListData> = ArrayList()
     val agentShowList: ArrayList<String> = ArrayList()
+    val agentsShowList: ArrayList<String> = ArrayList()
     var currentAgent : String = ""
+    var currentAgents : String = ""
     var activities :String? = null
 
     var guestName :EditText? = null
@@ -123,17 +128,19 @@ class Checkin : AppCompatActivity() {
         var noOfPersonActivity = findViewById<LinearLayout>(R.id.noOfPersonsForActivity)
         var layoutDriver = findViewById<LinearLayout>(R.id.layoutDriver)
         var layoutPayment = findViewById<LinearLayout>(R.id.layoutPayment)
+        var layoutType = findViewById<RelativeLayout>(R.id.layoutType)
 
         layoutActivities.visibility = View.GONE
         layoutDriver.visibility = View.GONE
         noOfPersonActivity.visibility = View.GONE
         layoutPayment.visibility = View.GONE
+        layoutType.visibility = View.GONE
 
         //Get Agent Details
         getAgentDetailsFromServer()
 
         //Current Date
-        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy h:mm a")
+        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
         currentDateTime = simpleDateFormat.format(Date())
 
         //access the items of the list
@@ -149,6 +156,24 @@ class Checkin : AppCompatActivity() {
                 //view!!.setBackgroundColor(Color.rgb(30,144,255))
                 parent?.getItemAtPosition(position) as String
                 currentAgent = agentShowList[position]
+                Log.d(TAG, "onItemSelected: agent" + currentAgent)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+
+        //Set Agents List Dropdown Spinner
+        var agentAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, agentShowList)
+        val agentListDropDownSpinner = findViewById(R.id.agentsSpinner) as Spinner
+        agentListDropDownSpinner.adapter = agentAdapter
+
+        agentListDropDownSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                parent?.getItemAtPosition(position) as String
+                currentAgents = agentsShowList[position]
+                Log.d(TAG, "onItemSelected: agents" + currentAgents)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -226,6 +251,23 @@ class Checkin : AppCompatActivity() {
             }
         })
 
+        //radio Group Type
+        radioGroupType = findViewById(R.id.radioGroupType)
+
+        // Uncheck or reset the radio buttons initially
+        radioGroupType!!.clearCheck()
+
+        // Add the Listener to the RadioGroup Type
+        radioGroupType!!.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+            val radioButtonType = group.findViewById<View>(checkedId) as RadioButton
+            if (radioButtonType.text.contains("Partner")){
+                layoutType.visibility = View.VISIBLE
+            }
+            else{
+                layoutType.visibility = View.GONE
+            }
+        })
+
         //Initialization
         guestName = findViewById(R.id.etCheckinGuestName)
         packagePerHeadChild = findViewById(R.id.etPackagePerHeadForChild)
@@ -256,6 +298,9 @@ class Checkin : AppCompatActivity() {
             val selectedActivitiesId: Int = radioGroupActivities!!.getCheckedRadioButtonId()
             radioButtonActivities = radioGroupActivities!!.findViewById(selectedActivitiesId)
 
+            val selectedTypeId: Int = radioGroupType!!.getCheckedRadioButtonId()
+            radioButtonType = radioGroupType!!.findViewById(selectedTypeId)
+
             if (guestName!!.text.toString().equals("") || packagePerHeadAddult!!.text.toString().equals("")
                 || packagePerHeadChild!!.text.toString().equals("") || noOfPerson!!.text.toString().equals("")
                 || noOfChildren!!.text.toString().equals("") || b2bPrice!!.text.toString().equals("")
@@ -267,6 +312,9 @@ class Checkin : AppCompatActivity() {
             }
             else if (selectedDriverId == -1){
                 Toast.makeText(this@Checkin, "No Driver has been selected", Toast.LENGTH_SHORT).show()
+            }
+            else if (selectedTypeId == -1){
+                Toast.makeText(this@Checkin, "No Type has been selected", Toast.LENGTH_SHORT).show()
             }
             else {
                 //Driver Radio Button
@@ -349,6 +397,7 @@ class Checkin : AppCompatActivity() {
             val selectedActivitiesId: Int = radioGroupActivities!!.getCheckedRadioButtonId()
             val selectedDriverId: Int = radioGroupDriver!!.getCheckedRadioButtonId()
             val selectedPaymentTypeId: Int = radioGroupPaymentType!!.getCheckedRadioButtonId()
+            val selectedTypeId: Int = radioGroupType!!.getCheckedRadioButtonId()
 
             if (selectedActivitiesId == -1) {
                 Toast.makeText(this@Checkin, "No Activities has been selected", Toast.LENGTH_SHORT).show()
@@ -358,6 +407,9 @@ class Checkin : AppCompatActivity() {
             }
             else if (selectedPaymentTypeId == -1){
                 Toast.makeText(this@Checkin, "Please Select Payment Type", Toast.LENGTH_SHORT).show()
+            }
+            else if (selectedTypeId == -1){
+                Toast.makeText(this@Checkin, "Please Select Type", Toast.LENGTH_SHORT).show()
             }
             else if (guestName!!.text.toString().equals("") || packagePerHeadAddult!!.text.toString().equals("")
                 || packagePerHeadChild!!.text.toString().equals("") || noOfPerson!!.text.toString().equals("")
@@ -375,9 +427,11 @@ class Checkin : AppCompatActivity() {
                 radioButtonActivities = radioGroupActivities!!.findViewById(selectedActivitiesId)
                 radioButtonDriver = radioGroupDriver!!.findViewById(selectedDriverId)
                 radioButtonPaymentType = radioGroupPaymentType!!.findViewById(selectedPaymentTypeId)
+                radioButtonType = radioGroupType!!.findViewById(selectedTypeId)
                 Log.d(TAG, "RadioGroupActivity: " + radioButtonActivities!!.text)
                 Log.d(TAG, "RadioGroupDriver: " + radioButtonDriver!!.text)
                 Log.d(TAG, "RadioGroupPaymentType: " + radioButtonPaymentType!!.text)
+                Log.d(TAG, "RadioGroupType: " + radioButtonType!!.text)
 
                 if (radioButtonPaymentType!!.text.equals("Cash")) {
                     paymentAmount = tvGrandTotal!!.text.toString()
@@ -664,6 +718,7 @@ class Checkin : AppCompatActivity() {
                     return false
                 }
                 agentList.clear()
+                agentsList.clear()
 
                 for (i in 0 until agentResult.length()) {
                     val json_data = agentResult.getJSONObject(i)
@@ -674,6 +729,7 @@ class Checkin : AppCompatActivity() {
                         json_data.getString("phonePe"),
                         json_data.getString("email"))
                     agentList.add(agentListData)
+                    agentsList.add(agentListData)
                     Log.d(TAG, "getAgentDetailsFromServer agentData: " + agentListData)
                 }
                 return true
@@ -693,13 +749,19 @@ class Checkin : AppCompatActivity() {
                 }
                 else {
                     agentShowList.clear()
+                    agentsShowList.clear()
                     for (i in 0 until agentList.size) {
                         agentShowList.add(agentList.get(i).name)
+                        agentsShowList.add(agentsList.get(i).name)
                     }
 
                     var arrayAdapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, agentShowList)
                     val coDropDownSpinner = findViewById(R.id.coSpinner) as Spinner
                     coDropDownSpinner.adapter = arrayAdapter
+
+                    var agentsAdapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, agentsShowList)
+                    val agentsDropDownSpinner = findViewById(R.id.agentsSpinner) as Spinner
+                    agentsDropDownSpinner.adapter = agentsAdapter
                 }
             }
         }
@@ -831,6 +893,14 @@ class Checkin : AppCompatActivity() {
         }
         else{
             dataJson.put("DriverCost", "0")
+        }
+
+        dataJson.put("Type", radioButtonType!!.text)
+        if (radioButtonType!!.text.equals("Owner")) {
+            dataJson.put("SelectedPartner", "Owner")
+        }
+        else{
+            dataJson.put("SelectedPartner", currentAgents)
         }
 
         dataJson.put("TotalB2B", tvB2B!!.text.toString())
