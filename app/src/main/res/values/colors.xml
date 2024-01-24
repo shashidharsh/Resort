@@ -22,4 +22,8 @@
     <color name="darkOrange">#FF5733</color>
     <color name="darkPink">#FF3383</color>
 
+    <color name="azure">#F0FFFF</color>
+    <color name="honeydew">#F0FFF0</color>
+    <color name="palegreen3">#7CCD7C</color>
+
 </resources>

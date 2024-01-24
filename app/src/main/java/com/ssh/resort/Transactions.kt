@@ -94,6 +94,8 @@ class Transactions : AppCompatActivity() {
                         json_data.getString("RoomNumber"),
                         json_data.getString("Driver"),
                         json_data.getString("DriverCost"),
+                        json_data.getString("Type"),
+                        json_data.getString("Partner"),
                         json_data.getString("B2B"),
                         json_data.getString("TotActivityPrice"),
                         json_data.getString("TAC"),
@@ -102,7 +104,8 @@ class Transactions : AppCompatActivity() {
                         json_data.getString("Cash"),
                         json_data.getString("UPI"),
                         json_data.getString("CashPayStatus"),
-                        json_data.getString("UPIPayStatus"))
+                        json_data.getString("UPIPayStatus"),
+                        json_data.getString("Date"))
                     transactionList.add(transactionListData)
                     Log.d(TAG, "getTransactionDetailsFromServer transactionData: " + transactionListData)
                 }

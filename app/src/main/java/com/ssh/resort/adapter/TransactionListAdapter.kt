@@ -42,6 +42,8 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
                 intent.putExtra("roomNumber", transactionList.roomNumber)
                 intent.putExtra("driver", transactionList.driver)
                 intent.putExtra("driverCost", transactionList.driverCost)
+                intent.putExtra("type", transactionList.type)
+                intent.putExtra("partner", transactionList.partner)
                 intent.putExtra("totB2B", transactionList.totalB2B)
                 intent.putExtra("totActivityPrice", transactionList.totActivityPrice)
                 intent.putExtra("tac", transactionList.tac)
@@ -51,6 +53,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
                 intent.putExtra("upi", transactionList.upi)
                 intent.putExtra("cashStatus", transactionList.cashStatus)
                 intent.putExtra("upiStatus", transactionList.upiStatus)
+                intent.putExtra("date", transactionList.date)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context!!.startActivity(intent)
             }
@@ -63,6 +66,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
         Log.d("TAG", "onBindViewHolder:" + transactionList[position])
 
         holder.guestName.setText(transactionList[position].guestName)
+        holder.txnDate.setText(transactionList[position].date)
         holder.agentName.setText(transactionList[position].selectedCo)
         holder.total.setText(transactionList[position].total)
     }
@@ -80,6 +84,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
         private val TAG = "TransactionListAdapter"
 
         var guestName: TextView
+        var txnDate: TextView
         var agentName: TextView
         var total: TextView
 
@@ -95,6 +100,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
 
         init {
             guestName = itemView.findViewById(R.id.transactionsGuestName)
+            txnDate = itemView.findViewById(R.id.transactionsDate)
             agentName = itemView.findViewById(R.id.transactionsAgentName)
             total = itemView.findViewById(R.id.transactionsTotal)
 

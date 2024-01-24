@@ -30,5 +30,11 @@ class AdminHomePage : AppCompatActivity() {
             val intent = Intent(this, Transactions::class.java)
             startActivity(intent)
         }
+
+        var cvTAC = findViewById<CardView>(R.id.cvTAC)
+        cvTAC.setOnClickListener{
+            val intent = Intent(this, TAC::class.java)
+            startActivity(intent)
+        }
     }
 }
