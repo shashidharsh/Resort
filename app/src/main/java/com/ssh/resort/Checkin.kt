@@ -66,6 +66,7 @@ class Checkin : AppCompatActivity() {
     var paymentAmount: String? = ""
 
     var currentDateTime : String? = ""
+    var currentDate : String? = ""
 
     internal val UPI_PAYMENT = 0
 
@@ -139,9 +140,13 @@ class Checkin : AppCompatActivity() {
         //Get Agent Details
         getAgentDetailsFromServer()
 
-        //Current Date
+        //Current Date Time
         val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
         currentDateTime = simpleDateFormat.format(Date())
+
+        //Current Date
+        val smplDateFormat = SimpleDateFormat("dd-MM-yyyy")
+        currentDate = smplDateFormat.format(Date())
 
         //access the items of the list
         var activity = resources.getStringArray(R.array.Activities)
@@ -929,7 +934,8 @@ class Checkin : AppCompatActivity() {
             dataJson.put("UPIPayStatus", paymentStatus)
         }
 
-        dataJson.put("TxnDate", currentDateTime)
+        dataJson.put("TxnDateTime", currentDateTime)
+        dataJson.put("TxnDate", currentDate)
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()

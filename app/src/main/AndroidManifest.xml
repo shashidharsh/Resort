@@ -17,8 +17,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".TAC"
+            android:name=".TacAgentTransactions"
             android:exported="false" />
+        <activity
+            android:name=".TAC"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".TransactionDetails"
             android:exported="false" />

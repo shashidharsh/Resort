@@ -105,6 +105,7 @@ class Transactions : AppCompatActivity() {
                         json_data.getString("UPI"),
                         json_data.getString("CashPayStatus"),
                         json_data.getString("UPIPayStatus"),
+                        json_data.getString("DateTime"),
                         json_data.getString("Date"))
                     transactionList.add(transactionListData)
                     Log.d(TAG, "getTransactionDetailsFromServer transactionData: " + transactionListData)

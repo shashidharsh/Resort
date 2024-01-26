@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TacAgentTransactions">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tacAgentTransactionDate"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:background="@drawable/edittext_background"
+                android:drawableRight="@drawable/ic_date"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="12dp" />
+
+            <Button
+                android:id="@+id/tacAgentTransactionshow"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/edittext_background"
+                android:backgroundTint="@color/colorAccent"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:text="Show Data"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <!--<androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/passBookTransactionList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/colorDivider"
+                android:dividerHeight="1px"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/sb_passbook_list_item" />-->
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

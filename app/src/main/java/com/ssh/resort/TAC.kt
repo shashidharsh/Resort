@@ -71,20 +71,10 @@ class TAC : AppCompatActivity() {
 
         // Adding on item click listener for our grid view.
         agentsGV!!.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            /*val intent = Intent(this, ProductInfo::class.java)
-            intent.putExtra("ProductID", clothingList[position].productID)
-            intent.putExtra("Image", clothingList[position].image)
-            intent.putExtra("ProductName", clothingList[position].productName)
-            intent.putExtra("Category", clothingList[position].category)
-            intent.putExtra("Price", clothingList[position].price)
-            intent.putExtra("MRP", clothingList[position].mrp)
-            intent.putExtra("Description1", clothingList[position].description1)
-            intent.putExtra("Description2", clothingList[position].description2)
-            intent.putExtra("Description3", clothingList[position].description3)
-            intent.putExtra("Email", loginEmail)
-            intent.putExtra("ProductStatus", clothingList[position].productStatus)
-            intent.putExtra("ProductShopName", clothingList[position].productShopName)
-            startActivity(intent)*/
+            val intent = Intent(this, TacAgentTransactions::class.java)
+            intent.putExtra("AgentID", agentsList[position].id)
+            intent.putExtra("AgentName", agentsList[position].name)
+            startActivity(intent)
         }
 
         //Search Products Using Edit Text

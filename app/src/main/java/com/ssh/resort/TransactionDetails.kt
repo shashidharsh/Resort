@@ -33,7 +33,7 @@ class TransactionDetails : AppCompatActivity() {
     var upi : String? = ""
     var cashStatus : String? = ""
     var upiStatus : String? = ""
-    var date : String? = ""
+    var dateTime : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,12 +64,12 @@ class TransactionDetails : AppCompatActivity() {
         upi = intent.getStringExtra("upi")
         cashStatus = intent.getStringExtra("cashStatus")
         upiStatus = intent.getStringExtra("upiStatus")
-        date = intent.getStringExtra("date")
+        dateTime = intent.getStringExtra("dateTime")
 
         var tvGuestName = findViewById<TextView>(R.id.transactionDetailsGuestName)
         tvGuestName.setText(guestName)
-        var tvTxnDate = findViewById<TextView>(R.id.transactionDetailsDate)
-        tvTxnDate.setText(date)
+        var tvTxnDateTime = findViewById<TextView>(R.id.transactionDetailsDate)
+        tvTxnDateTime.setText(dateTime)
         var tvNoOfPersons = findViewById<TextView>(R.id.transactionDetailsNoOfPersons)
         tvNoOfPersons.setText(noOfPersons)
         var tvNoOfChildrens = findViewById<TextView>(R.id.transactionDetailsNofChildrens)

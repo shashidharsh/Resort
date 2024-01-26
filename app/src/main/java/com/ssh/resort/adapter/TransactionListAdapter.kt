@@ -53,7 +53,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
                 intent.putExtra("upi", transactionList.upi)
                 intent.putExtra("cashStatus", transactionList.cashStatus)
                 intent.putExtra("upiStatus", transactionList.upiStatus)
-                intent.putExtra("date", transactionList.date)
+                intent.putExtra("dateTime", transactionList.dateTime)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context!!.startActivity(intent)
             }
@@ -66,7 +66,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
         Log.d("TAG", "onBindViewHolder:" + transactionList[position])
 
         holder.guestName.setText(transactionList[position].guestName)
-        holder.txnDate.setText(transactionList[position].date)
+        holder.txnDateTime.setText(transactionList[position].dateTime)
         holder.agentName.setText(transactionList[position].selectedCo)
         holder.total.setText(transactionList[position].total)
     }
@@ -84,7 +84,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
         private val TAG = "TransactionListAdapter"
 
         var guestName: TextView
-        var txnDate: TextView
+        var txnDateTime: TextView
         var agentName: TextView
         var total: TextView
 
@@ -100,7 +100,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
 
         init {
             guestName = itemView.findViewById(R.id.transactionsGuestName)
-            txnDate = itemView.findViewById(R.id.transactionsDate)
+            txnDateTime = itemView.findViewById(R.id.transactionsDateTime)
             agentName = itemView.findViewById(R.id.transactionsAgentName)
             total = itemView.findViewById(R.id.transactionsTotal)
 
