@@ -81,9 +81,12 @@ class Checkin : AppCompatActivity() {
 
     val agentList: ArrayList<ExistingAgentListData> = ArrayList()
     val agentsList: ArrayList<ExistingAgentListData> = ArrayList()
-    val agentShowList: ArrayList<String> = ArrayList()
-    val agentsShowList: ArrayList<String> = ArrayList()
-    var currentAgent : String = ""
+
+    val agentMobileList: ArrayList<String> = ArrayList()
+    val agentsNameList: ArrayList<String> = ArrayList()
+
+    var currentAgentName : String = ""
+    var currentAgentMobile : String = ""
     var currentAgents : String = ""
     var activities :String? = null
 
@@ -152,16 +155,16 @@ class Checkin : AppCompatActivity() {
         var activity = resources.getStringArray(R.array.Activities)
 
         //Set Agent Dropdown Spinner
-        var arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, agentShowList)
+        var arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, agentsNameList)
         val agentDropDownSpinner = findViewById(R.id.coSpinner) as Spinner
         agentDropDownSpinner.adapter = arrayAdapter
 
         agentDropDownSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                //view!!.setBackgroundColor(Color.rgb(30,144,255))
-                parent?.getItemAtPosition(position) as String
-                currentAgent = agentShowList[position]
-                Log.d(TAG, "onItemSelected: agent" + currentAgent)
+                currentAgentName = agentsNameList[position]
+                currentAgentMobile = agentMobileList[position]
+                Log.d(TAG, "onItemSelected: agentName: " + currentAgentName)
+                Log.d(TAG, "onItemSelected: agentMobile: " + currentAgentMobile)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -170,14 +173,14 @@ class Checkin : AppCompatActivity() {
         }
 
         //Set Agents List Dropdown Spinner
-        var agentAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, agentShowList)
+        var agentAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, agentsNameList)
         val agentListDropDownSpinner = findViewById(R.id.agentsSpinner) as Spinner
         agentListDropDownSpinner.adapter = agentAdapter
 
         agentListDropDownSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 parent?.getItemAtPosition(position) as String
-                currentAgents = agentsShowList[position]
+                currentAgents = agentsNameList[position]
                 Log.d(TAG, "onItemSelected: agents" + currentAgents)
             }
 
@@ -524,6 +527,12 @@ class Checkin : AppCompatActivity() {
         shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
     }
 
+    // Function to remove all the digit from string
+    fun removeAllDigit(str: String): String {
+        // Replaces all the sequence of characters that matches the given regex with the given replacement string
+        return str.replace("\\d".toRegex(), "")
+    }
+
     private fun generateQR(amount: String?) {
         val url = "upi://pay?pa=" +   // payment method.
                 UPI_ID!! +         // VPA number.
@@ -753,18 +762,18 @@ class Checkin : AppCompatActivity() {
                     Toast.makeText(applicationContext, "$result", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    agentShowList.clear()
-                    agentsShowList.clear()
+                    agentMobileList.clear()
+                    agentsNameList.clear()
                     for (i in 0 until agentList.size) {
-                        agentShowList.add(agentList.get(i).name)
-                        agentsShowList.add(agentsList.get(i).name)
+                        agentMobileList.add(agentList.get(i).mobile)
+                        agentsNameList.add(agentsList.get(i).name)
                     }
 
-                    var arrayAdapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, agentShowList)
+                    var arrayAdapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, agentsNameList)
                     val coDropDownSpinner = findViewById(R.id.coSpinner) as Spinner
                     coDropDownSpinner.adapter = arrayAdapter
 
-                    var agentsAdapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, agentsShowList)
+                    var agentsAdapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, agentsNameList)
                     val agentsDropDownSpinner = findViewById(R.id.agentsSpinner) as Spinner
                     agentsDropDownSpinner.adapter = agentsAdapter
                 }
@@ -876,7 +885,7 @@ class Checkin : AppCompatActivity() {
         dataJson.put("NoOfChildrens", noOfChildren!!.text.toString())
         dataJson.put("PackageForAdult", packagePerHeadAddult!!.text.toString())
         dataJson.put("PackageForChild", packagePerHeadChild!!.text.toString())
-        dataJson.put("SelectedCo", currentAgent)
+        dataJson.put("SelectedCo", currentAgentName)
         dataJson.put("B2BPrice", b2bPrice!!.text.toString())
         dataJson.put("Advance", advanceAmount!!.text.toString())
         dataJson.put("Activities", radioButtonActivities!!.text)

@@ -74,6 +74,7 @@ class TAC : AppCompatActivity() {
             val intent = Intent(this, TacAgentTransactions::class.java)
             intent.putExtra("AgentID", agentsList[position].id)
             intent.putExtra("AgentName", agentsList[position].name)
+            intent.putExtra("AgentMobile", agentsList[position].mobile)
             startActivity(intent)
         }
 
