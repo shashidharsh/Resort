@@ -87,7 +87,7 @@ class Checkin : AppCompatActivity() {
 
     var currentAgentName : String = ""
     var currentAgentMobile : String = ""
-    var currentAgents : String = ""
+    var currentAgentsName : String = ""
     var activities :String? = null
 
     var guestName :EditText? = null
@@ -180,8 +180,8 @@ class Checkin : AppCompatActivity() {
         agentListDropDownSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 parent?.getItemAtPosition(position) as String
-                currentAgents = agentsNameList[position]
-                Log.d(TAG, "onItemSelected: agents" + currentAgents)
+                currentAgentsName = agentsNameList[position]
+                Log.d(TAG, "onItemSelected: currentAgentsName: " + currentAgentsName)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -886,6 +886,7 @@ class Checkin : AppCompatActivity() {
         dataJson.put("PackageForAdult", packagePerHeadAddult!!.text.toString())
         dataJson.put("PackageForChild", packagePerHeadChild!!.text.toString())
         dataJson.put("SelectedCo", currentAgentName)
+        dataJson.put("SelectedCoMobile", currentAgentMobile)
         dataJson.put("B2BPrice", b2bPrice!!.text.toString())
         dataJson.put("Advance", advanceAmount!!.text.toString())
         dataJson.put("Activities", radioButtonActivities!!.text)
@@ -914,7 +915,7 @@ class Checkin : AppCompatActivity() {
             dataJson.put("SelectedPartner", "Owner")
         }
         else{
-            dataJson.put("SelectedPartner", currentAgents)
+            dataJson.put("SelectedPartner", currentAgentsName)
         }
 
         dataJson.put("TotalB2B", tvB2B!!.text.toString())

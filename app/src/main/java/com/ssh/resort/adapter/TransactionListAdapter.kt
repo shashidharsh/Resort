@@ -35,6 +35,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
                 intent.putExtra("packageAdult", transactionList.packageAdult)
                 intent.putExtra("packageChild", transactionList.packageChild)
                 intent.putExtra("selectedCo", transactionList.selectedCo)
+                intent.putExtra("selectedCoMobile", transactionList.selectedCoMobile)
                 intent.putExtra("enterB2B", transactionList.enterB2B)
                 intent.putExtra("activities", transactionList.activities)
                 intent.putExtra("selectedActivity", transactionList.selectedActivity)

@@ -16,6 +16,7 @@ class TacAgentTransactions : AppCompatActivity() {
 
     var agentID : String? = ""
     var agentName : String? = ""
+    var agentMobile : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,7 @@ class TacAgentTransactions : AppCompatActivity() {
 
         agentID = intent.getStringExtra("AgentID")
         agentName = intent.getStringExtra("AgentName")
+        agentMobile = intent.getStringExtra("AgentMobile")
 
         //Set From Date and End Date
         val calendar = Calendar.getInstance()

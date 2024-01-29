@@ -15,6 +15,7 @@ class TransactionDetails : AppCompatActivity() {
     var packageAdult : String? = ""
     var packageChild : String? = ""
     var selectedCo : String? = ""
+    var selectedCoMobile : String? = ""
     var enterB2B : String? = ""
     var activities : String? = ""
     var selectedActivity : String? = ""
@@ -46,6 +47,7 @@ class TransactionDetails : AppCompatActivity() {
         packageAdult = intent.getStringExtra("packageAdult")
         packageChild = intent.getStringExtra("packageChild")
         selectedCo = intent.getStringExtra("selectedCo")
+        selectedCoMobile = intent.getStringExtra("selectedCoMobile")
         enterB2B = intent.getStringExtra("enterB2B")
         activities = intent.getStringExtra("activities")
         selectedActivity = intent.getStringExtra("selectedActivity")
@@ -80,6 +82,8 @@ class TransactionDetails : AppCompatActivity() {
         tvPackageChild.setText(packageChild)
         var tvCO = findViewById<TextView>(R.id.transactionDetailsCO)
         tvCO.setText(selectedCo)
+        var tvCoMobile = findViewById<TextView>(R.id.transactionDetailsCoMobile)
+        tvCoMobile.setText(selectedCoMobile)
         var tvB2B = findViewById<TextView>(R.id.transactionDetailsB2B)
         tvB2B.setText(enterB2B)
         var tvActivities = findViewById<TextView>(R.id.transactionDetailsActivities)

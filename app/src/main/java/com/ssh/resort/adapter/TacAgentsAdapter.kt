@@ -48,9 +48,9 @@ class TacAgentsAdapter(context: Context, agentList: ArrayList<TacAgentsListData>
             // Layout Inflater inflates each item to be displayed in GridView.
             listitemView = LayoutInflater.from(context).inflate(R.layout.tac_agents_list_items, parent, false)
         }
-        val clothingData: TacAgentsListData? = getItem(position)
-        val productName = listitemView!!.findViewById<TextView>(R.id.tacAgentsListName)
-        productName.setText(clothingData!!.name)
+        val tacAgentsData: TacAgentsListData? = getItem(position)
+        val agentName = listitemView!!.findViewById<TextView>(R.id.tacAgentsListName)
+        agentName.setText(tacAgentsData!!.name)
         return listitemView
     }
 
