@@ -3,6 +3,7 @@ package com.ssh.resort
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,8 +18,11 @@ import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ExistingAgentListAdapter
 import com.ssh.resort.data.ExistingAgentListData
@@ -45,7 +49,18 @@ class ExistingAgent : AppCompatActivity() {
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
 
-        getAgentDetailsFromServer()
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this) { isConnected ->
+            if (isConnected) {
+                getAgentDetailsFromServer()
+            } else {
+                Snackbar.make(getWindow().getDecorView().getRootView(), "No Internet Connection", Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(ContextCompat.getColor(this@ExistingAgent, R.color.colorAccent))
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .show()
+            }
+        }
 
         //RecyclerView
         agentListRecyclerView = findViewById(R.id.rvExistingAgent)

@@ -19,6 +19,13 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose Date:"
+                android:textStyle="bold"
+                android:textSize="15dp"/>
+
+            <TextView
                 android:id="@+id/tacAgentTransactionDate"
                 android:layout_width="110dp"
                 android:layout_height="40dp"
@@ -29,13 +36,14 @@
                 android:padding="5dp"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:layout_marginLeft="8dp"/>
 
             <Button
-                android:id="@+id/tacAgentTransactionshow"
+                android:id="@+id/tacAgentTransactionShow"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="8dp"
                 android:background="@drawable/edittext_background"
                 android:backgroundTint="@color/colorAccent"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -46,20 +54,26 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <!--<androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/passBookTransactionList"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTacAgentTransactions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/colorDivider"
+                android:divider="@color/loginBkColor"
                 android:dividerHeight="1px"
                 android:scrollbars="vertical"
-                tools:listitem="@layout/sb_passbook_list_item" />-->
+                tools:listitem="@layout/tac_agent_transactions_list_item" />
 
         </LinearLayout>
 

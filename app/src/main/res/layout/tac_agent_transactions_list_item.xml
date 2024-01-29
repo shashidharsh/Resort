@@ -32,7 +32,7 @@
             android:layout_marginEnd="10dp">
 
             <TextView
-                android:id="@+id/transactionsGuestName"
+                android:id="@+id/tacAgentTransactionsGuestName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -42,7 +42,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/transactionsDateTime"
+                android:id="@+id/tacAgentTransactionsDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -63,7 +63,7 @@
             android:layout_marginTop="5dp">
 
             <TextView
-                android:id="@+id/tvTransactionsAgentName"
+                android:id="@+id/tvTacAgentTransactionsAgentName"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -74,7 +74,7 @@
                 android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/tvTransactionsColon1"
+                android:id="@+id/tvtacAgentTransactionsColon1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -83,10 +83,10 @@
                 android:padding="3dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="14dp"
-                android:layout_toRightOf="@+id/tvTransactionsAgentName"/>
+                android:layout_toRightOf="@+id/tvTacAgentTransactionsAgentName"/>
 
             <TextView
-                android:id="@+id/transactionsAgentName"
+                android:id="@+id/tacAgentTransactionsAgentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_view_custom"
@@ -94,7 +94,7 @@
                 android:padding="3dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="14dp"
-                android:layout_toRightOf="@+id/tvTransactionsColon1"/>
+                android:layout_toRightOf="@+id/tvtacAgentTransactionsColon1"/>
 
         </RelativeLayout>
 
@@ -106,7 +106,7 @@
             android:layout_marginTop="5dp">
 
             <TextView
-                android:id="@+id/tvTransactionsTotal"
+                android:id="@+id/tvtacAgentTransactionsTotal"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -117,27 +117,27 @@
                 android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/tvTransactionsColon2"
+                android:id="@+id/tvtacAgentTransactionsColon2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:background="@drawable/text_view_custom"
                 android:text=":"
                 android:padding="3dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="14dp"
-                android:layout_toRightOf="@+id/tvTransactionsTotal"/>
+                android:layout_toRightOf="@+id/tvtacAgentTransactionsTotal"/>
 
             <TextView
-                android:id="@+id/transactionsTotal"
+                android:id="@+id/tacAgentTransactionsTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/text_view_custom"
                 android:hint="Total"
                 android:padding="3dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="14dp"
-                android:layout_toRightOf="@+id/tvTransactionsColon2"/>
+                android:layout_toRightOf="@+id/tvtacAgentTransactionsColon2"/>
 
         </RelativeLayout>
 

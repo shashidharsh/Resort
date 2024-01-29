@@ -4,7 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.cardview.widget.CardView
+import android.widget.Toast
+import com.ssh.appdataremotedb.Utils
 
 class AdminAgentRegistration : AppCompatActivity() {
 
@@ -16,14 +17,24 @@ class AdminAgentRegistration : AppCompatActivity() {
 
         var newAgent = findViewById<Button>(R.id.newAgent)
         newAgent.setOnClickListener{
-            val intent = Intent(this, NewAgentRegistration::class.java)
-            startActivity(intent)
+            if (Utils.checkInternetConnectivity(this) == false){
+                Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
+            }
+            else {
+                val intent = Intent(this, NewAgentRegistration::class.java)
+                startActivity(intent)
+            }
         }
 
         var existingAgent = findViewById<Button>(R.id.existingAgent)
         existingAgent.setOnClickListener{
-            val intent = Intent(this, ExistingAgent::class.java)
-            startActivity(intent)
+            if (Utils.checkInternetConnectivity(this) == false){
+                Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
+            }
+            else {
+                val intent = Intent(this, ExistingAgent::class.java)
+                startActivity(intent)
+            }
         }
     }
 }

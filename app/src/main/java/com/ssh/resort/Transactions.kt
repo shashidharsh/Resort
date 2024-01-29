@@ -1,6 +1,7 @@
 package com.ssh.resort
 
 import android.app.Dialog
+import android.graphics.Color
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,12 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.HTTPDownload
-import com.ssh.resort.adapter.ExistingAgentListAdapter
 import com.ssh.resort.adapter.TransactionListAdapter
-import com.ssh.resort.data.ExistingAgentListData
 import com.ssh.resort.data.TransactionListData
 
 class Transactions : AppCompatActivity() {
@@ -35,7 +37,18 @@ class Transactions : AppCompatActivity() {
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
 
-        getTransactionDetailsFromServer()
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this) { isConnected ->
+            if (isConnected) {
+                getTransactionDetailsFromServer()
+            } else {
+                Snackbar.make(getWindow().getDecorView().getRootView(), "No Internet Connection", Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(ContextCompat.getColor(this@Transactions, R.color.colorAccent))
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .show()
+            }
+        }
 
         //RecyclerView
         transactionListRecyclerView = findViewById(R.id.rvTransactionList)
