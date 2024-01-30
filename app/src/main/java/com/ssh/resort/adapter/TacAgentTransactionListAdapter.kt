@@ -1,6 +1,7 @@
 package com.ssh.resort.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ssh.resort.R
+import com.ssh.resort.TacAgentTransactionDetails
 import com.ssh.resort.data.TacAgentsTransactionListData
 
 class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayList<TacAgentsTransactionListData>) : RecyclerView.Adapter<TacAgentTransactionListAdapter.ItemViewHolder>() {
@@ -22,8 +24,8 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
         val viewHolder = ItemViewHolder(itemView)
         viewHolder.setOnClickListener(object : ItemViewHolder.ClickListener {
             override fun onItemClick(view: View?, position: Int) {
-                /*var transactionList = transactionList.get(position)
-                val intent = Intent(context, TransactionDetails::class.java)
+                var transactionList = transactionList.get(position)
+                val intent = Intent(context, TacAgentTransactionDetails::class.java)
                 intent.putExtra("id", transactionList.id)
                 intent.putExtra("guestName", transactionList.guestName)
                 intent.putExtra("noOfPersons", transactionList.noOfPersons)
@@ -52,7 +54,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
                 intent.putExtra("upiStatus", transactionList.upiStatus)
                 intent.putExtra("dateTime", transactionList.dateTime)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context!!.startActivity(intent)*/
+                context!!.startActivity(intent)
             }
         })
         return viewHolder
