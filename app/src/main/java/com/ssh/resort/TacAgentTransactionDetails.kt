@@ -17,6 +17,7 @@ class TacAgentTransactionDetails : AppCompatActivity() {
     var selectedCo : String? = ""
     var selectedCoMobile : String? = ""
     var enterB2B : String? = ""
+    var advance : String? = ""
     var activities : String? = ""
     var selectedActivity : String? = ""
     var noPersonActivity : String? = ""
@@ -49,6 +50,7 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         selectedCo = intent.getStringExtra("selectedCo")
         selectedCoMobile = intent.getStringExtra("selectedCoMobile")
         enterB2B = intent.getStringExtra("enterB2B")
+        advance = intent.getStringExtra("advance")
         activities = intent.getStringExtra("activities")
         selectedActivity = intent.getStringExtra("selectedActivity")
         noPersonActivity = intent.getStringExtra("noPersonActivity")
@@ -86,6 +88,8 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         tvCoMobile.setText(selectedCoMobile)
         var tvB2B = findViewById<TextView>(R.id.tacAgentTransactionDetailsB2B)
         tvB2B.setText(enterB2B)
+        var tvAdvance = findViewById<TextView>(R.id.tacAgentTransactionDetailsAdvance)
+        tvAdvance.setText(advance)
         var tvActivities = findViewById<TextView>(R.id.tacAgentTransactionDetailsActivities)
         tvActivities.setText(activities)
         var tvSelectedAcitvities = findViewById<TextView>(R.id.tacAgentTransactionDetailsSelectedActivity)

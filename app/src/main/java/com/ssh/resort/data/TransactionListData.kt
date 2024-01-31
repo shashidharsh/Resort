@@ -1,10 +1,11 @@
 package com.ssh.resort.data
 
 class TransactionListData(id: String, guestName: String, noOfPersons: String, noOfChildrens: String, packageAdult: String,
-                          packageChild: String, selectedCo: String, selectedCoMobile: String, enterB2B: String, activities: String, selectedActivity: String,
-                          noPersonActivity: String, roomNumber: String, driver: String, driverCost: String, type: String,
-                          partner: String, totalB2B: String, totActivityPrice: String, tac: String, total: String,
-                          paymentType: String, cash: String, upi: String, cashStatus: String, upiStatus: String, dateTime: String, date: String) {
+                          packageChild: String, selectedCo: String, selectedCoMobile: String, enterB2B: String, advance: String,
+                          activities: String, selectedActivity: String, noPersonActivity: String, roomNumber: String, driver: String,
+                          driverCost: String, type: String, partner: String, totalB2B: String, totActivityPrice: String, tac: String,
+                          total: String, paymentType: String, cash: String, upi: String, cashStatus: String, upiStatus: String,
+                          dateTime: String, date: String) {
 
     var id: String = id
     var guestName: String = guestName
@@ -15,6 +16,7 @@ class TransactionListData(id: String, guestName: String, noOfPersons: String, no
     var selectedCo: String = selectedCo
     var selectedCoMobile: String = selectedCoMobile
     var enterB2B: String = enterB2B
+    var advance: String = advance
     var activities: String = activities
     var selectedActivity: String = selectedActivity
     var noPersonActivity: String = noPersonActivity

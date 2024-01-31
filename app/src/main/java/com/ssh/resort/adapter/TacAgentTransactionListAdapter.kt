@@ -35,6 +35,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
                 intent.putExtra("selectedCo", transactionList.selectedCo)
                 intent.putExtra("selectedCoMobile", transactionList.selectedCoMobile)
                 intent.putExtra("enterB2B", transactionList.enterB2B)
+                intent.putExtra("advance", transactionList.advance)
                 intent.putExtra("activities", transactionList.activities)
                 intent.putExtra("selectedActivity", transactionList.selectedActivity)
                 intent.putExtra("noPersonActivity", transactionList.noPersonActivity)
