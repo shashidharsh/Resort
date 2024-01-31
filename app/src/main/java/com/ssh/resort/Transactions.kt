@@ -115,6 +115,7 @@ class Transactions : AppCompatActivity() {
                         json_data.getString("TotActivityPrice"),
                         json_data.getString("TAC"),
                         json_data.getString("Total"),
+                        json_data.getString("GrandTotal"),
                         json_data.getString("PaymentType"),
                         json_data.getString("Cash"),
                         json_data.getString("UPI"),

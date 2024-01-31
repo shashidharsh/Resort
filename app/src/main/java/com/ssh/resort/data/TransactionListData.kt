@@ -4,7 +4,7 @@ class TransactionListData(id: String, guestName: String, noOfPersons: String, no
                           packageChild: String, selectedCo: String, selectedCoMobile: String, enterB2B: String, advance: String,
                           activities: String, selectedActivity: String, noPersonActivity: String, roomNumber: String, driver: String,
                           driverCost: String, type: String, partner: String, totalB2B: String, totActivityPrice: String, tac: String,
-                          total: String, paymentType: String, cash: String, upi: String, cashStatus: String, upiStatus: String,
+                          total: String, grandTotal: String, paymentType: String, cash: String, upi: String, cashStatus: String, upiStatus: String,
                           dateTime: String, date: String) {
 
     var id: String = id
@@ -29,6 +29,7 @@ class TransactionListData(id: String, guestName: String, noOfPersons: String, no
     var totActivityPrice: String = totActivityPrice
     var tac: String = tac
     var total: String = total
+    var grandTotal: String = grandTotal
     var paymentType: String = paymentType
     var cash: String = cash
     var upi: String = upi

@@ -399,9 +399,9 @@ class Checkin : AppCompatActivity() {
             }
         }
 
-        // Pay Button
-        var pay = findViewById<Button>(R.id.btnPay)
-        pay.setOnClickListener(View.OnClickListener {
+        // Save Button
+        var save = findViewById<Button>(R.id.btnSave)
+        save.setOnClickListener(View.OnClickListener {
             val selectedActivitiesId: Int = radioGroupActivities!!.getCheckedRadioButtonId()
             val selectedDriverId: Int = radioGroupDriver!!.getCheckedRadioButtonId()
             val selectedPaymentTypeId: Int = radioGroupPaymentType!!.getCheckedRadioButtonId()

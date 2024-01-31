@@ -30,6 +30,7 @@ class TacAgentTransactionDetails : AppCompatActivity() {
     var totActivityPrice : String? = ""
     var tac : String? = ""
     var total : String? = ""
+    var grandTotal : String? = ""
     var paymentType : String? = ""
     var cash : String? = ""
     var upi : String? = ""
@@ -63,6 +64,7 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         totActivityPrice = intent.getStringExtra("totActivityPrice")
         tac = intent.getStringExtra("tac")
         total = intent.getStringExtra("total")
+        grandTotal = intent.getStringExtra("grandTotal")
         paymentType = intent.getStringExtra("paymentType")
         cash = intent.getStringExtra("cash")
         upi = intent.getStringExtra("upi")
@@ -114,6 +116,8 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         tvTAC.setText(tac)
         var tvTotal = findViewById<TextView>(R.id.tacAgentTransactionDetailsTotal)
         tvTotal.setText(total)
+        var tvGrandTotal = findViewById<TextView>(R.id.tacAgentTransactionDetailsGrandTotal)
+        tvGrandTotal.setText(grandTotal)
         var tvPaymentType = findViewById<TextView>(R.id.tacAgentTransactionDetailsPaymentType)
         tvPaymentType.setText(paymentType)
         var tvCash = findViewById<TextView>(R.id.tacAgentTransactionDetailsCash)

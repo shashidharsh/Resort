@@ -50,6 +50,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
                 intent.putExtra("totActivityPrice", transactionList.totActivityPrice)
                 intent.putExtra("tac", transactionList.tac)
                 intent.putExtra("total", transactionList.total)
+                intent.putExtra("grandTotal", transactionList.grandTotal)
                 intent.putExtra("paymentType", transactionList.paymentType)
                 intent.putExtra("cash", transactionList.cash)
                 intent.putExtra("upi", transactionList.upi)
