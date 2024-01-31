@@ -419,6 +419,12 @@ class Checkin : AppCompatActivity() {
             else if (selectedTypeId == -1){
                 Toast.makeText(this@Checkin, "Please Select Type", Toast.LENGTH_SHORT).show()
             }
+            else if (tvGrandTotal!!.text.toString().toFloat() < 0.0f){
+                moreAdvanceEnteredDialog()
+            }
+            else if (tvGrandTotal!!.text.toString().toFloat() != (total!!.toFloat() - advanceAmount!!.text.toString().toFloat())){
+                Toast.makeText(this@Checkin, "Please Calculate Again", Toast.LENGTH_SHORT).show()
+            }
             else if (guestName!!.text.toString().equals("") || packagePerHeadAddult!!.text.toString().equals("")
                 || packagePerHeadChild!!.text.toString().equals("") || noOfPerson!!.text.toString().equals("")
                 || noOfChildren!!.text.toString().equals("") || b2bPrice!!.text.toString().equals("")
@@ -1055,12 +1061,25 @@ class Checkin : AppCompatActivity() {
         }
     }
 
-    //More Amount Entered Dialog
+    //More Cash Amount Entered Dialog
     fun moreAmountEnteredDialog(){
         MaterialAlertDialogBuilder(this, R.style.MyAlertDialogTheme)
             .setIcon(R.drawable.ic_announcement)
             //.setView(R.layout.edit_text)
-            .setMessage("Please Enter Amount Less Than or Equal to Grand Total Amount..!")
+            .setMessage("Please Enter Cash Amount Less Than or Equal to Grand Total Amount..!")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    //More Advance Amount Entered Dialog
+    fun moreAdvanceEnteredDialog(){
+        MaterialAlertDialogBuilder(this, R.style.MyAlertDialogTheme)
+            .setIcon(R.drawable.ic_announcement)
+            //.setView(R.layout.edit_text)
+            .setMessage("Please Enter Advance Amount Less Than or Equal to Grand Total and Calculate Again..!")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }
