@@ -125,20 +125,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PhonePe Number"
+                    android:text="UPI ID"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/etUpdateAgentPhonePeNum"
+                    android:id="@+id/etUpdateAgentUpiId"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_background"
                     android:ems="10"
-                    android:hint="Enter Mobile Number"
-                    android:inputType="phone"
-                    android:maxLength="10"
+                    android:hint="Enter UPI ID"
+                    android:inputType="text"
                     android:padding="8dp"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"

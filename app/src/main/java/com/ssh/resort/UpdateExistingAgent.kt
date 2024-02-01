@@ -2,6 +2,7 @@ package com.ssh.resort
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.Color
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,9 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.appdataremotedb.Utils
 import org.json.JSONObject
@@ -28,22 +32,22 @@ import javax.net.ssl.HttpsURLConnection
 
 class UpdateExistingAgent : AppCompatActivity() {
 
-    val TAG = "AgentRegistration"
+    val TAG = "UpdateExistingAgent"
 
     var agentName: EditText? = null
     var agentMobile: EditText? = null
-    var agentPhonePeNo: EditText? = null
+    var agentUpiId: EditText? = null
     var agentEmail: EditText? = null
 
     var id: String? = ""
     var name: String? = ""
     var mobile: String? = ""
-    var phonePe: String? = ""
+    var upiId: String? = ""
     var email: String? = ""
 
     var agName: String? = ""
     var agMobile: String? = ""
-    var agPhonePe: String? = ""
+    var agUpiId: String? = ""
     var agEmail: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,16 +57,27 @@ class UpdateExistingAgent : AppCompatActivity() {
         id = intent.getStringExtra("id")
         name = intent.getStringExtra("name")
         mobile = intent.getStringExtra("mobile")
-        phonePe = intent.getStringExtra("phonePe")
+        upiId = intent.getStringExtra("upi_id")
         email = intent.getStringExtra("email")
 
-        downloadAgentDetails()
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this) { isConnected ->
+            if (isConnected) {
+                downloadAgentDetails()
+            } else {
+                Snackbar.make(getWindow().getDecorView().getRootView(), "No Internet Connection", Snackbar.LENGTH_LONG)
+                    .setTextColor(Color.WHITE)
+                    .setBackgroundTint(ContextCompat.getColor(this@UpdateExistingAgent, R.color.colorAccent))
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .show()
+            }
+        }
 
         agentName = findViewById(R.id.etUpdateAgentName)
         //agentName!!.setText(name)
         agentMobile = findViewById(R.id.etUpdateAgentMobile)
         //agentMobile!!.setText(mobile)
-        agentPhonePeNo = findViewById(R.id.etUpdateAgentPhonePeNum)
+        agentUpiId = findViewById(R.id.etUpdateAgentUpiId)
         //agentPhonePeNo!!.setText(phonePe)
         agentEmail = findViewById(R.id.etUpdateAgentEmail)
         //agentEmail!!.setText(email)
@@ -70,7 +85,7 @@ class UpdateExistingAgent : AppCompatActivity() {
         var update = findViewById<Button>(R.id.btnUpdate)
         update.setOnClickListener {
             if (agentName!!.text.toString().equals("") || agentMobile!!.text.toString().equals("")
-                || agentPhonePeNo!!.text.toString().equals("") || agentEmail!!.text.toString().equals("")) {
+                || agentUpiId!!.text.toString().equals("") || agentEmail!!.text.toString().equals("")) {
                 Toast.makeText(this, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
             } else if (agentMobile!!.text.toString().length != 10) {
                 agentMobile!!.setError("Enter Valid Mobile Number")
@@ -131,7 +146,7 @@ class UpdateExistingAgent : AppCompatActivity() {
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resort/UpdateAgent.php")
+        val url = URL("https://hillstoneresort.com/Resorts/UpdateAgent.php")
         Log.d(TAG, "updateData URL: " + url)
         var client: HttpURLConnection? = null
         try {
@@ -174,7 +189,7 @@ class UpdateExistingAgent : AppCompatActivity() {
         var dataJson: JSONObject = JSONObject()
         dataJson.put("name", agentName!!.text.toString())
         dataJson.put("mobile", agentMobile!!.text.toString())
-        dataJson.put("phonePeNum", agentPhonePeNo!!.text.toString())
+        dataJson.put("UpiID", agentUpiId!!.text.toString())
         dataJson.put("email", agentEmail!!.text.toString())
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
@@ -211,7 +226,7 @@ class UpdateExistingAgent : AppCompatActivity() {
 
                 agName = profileDetails.getString("name")
                 agMobile = profileDetails.getString("mobile")
-                agPhonePe = profileDetails.getString("phonePe")
+                agUpiId = profileDetails.getString("upi_id")
                 agEmail = profileDetails.getString("email")
 
                 return true
@@ -233,7 +248,7 @@ class UpdateExistingAgent : AppCompatActivity() {
                 else {
                     agentName!!.setText(agName)
                     agentMobile!!.setText(agMobile)
-                    agentPhonePeNo!!.setText(agPhonePe)
+                    agentUpiId!!.setText(agUpiId)
                     agentEmail!!.setText(agEmail)
                 }
             }

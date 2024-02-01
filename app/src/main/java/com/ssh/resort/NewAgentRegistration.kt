@@ -31,7 +31,7 @@ class NewAgentRegistration : AppCompatActivity() {
 
     var agentName: EditText? = null
     var agentMobile: EditText? = null
-    var agentPhonePeNo: EditText? = null
+    var agentUpiId: EditText? = null
     var agentEmail: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +40,13 @@ class NewAgentRegistration : AppCompatActivity() {
 
         agentName = findViewById(R.id.etAgentRegAgentName)
         agentMobile = findViewById(R.id.etAgentRegAgentMobile)
-        agentPhonePeNo = findViewById(R.id.etAgentRegPhonePeNum)
+        agentUpiId = findViewById(R.id.etAgentRegUpiId)
         agentEmail = findViewById(R.id.etAgentRegAgentEmail)
 
         var register = findViewById<Button>(R.id.btnRegister)
         register.setOnClickListener{
             if (agentName!!.text.toString().equals("") || agentMobile!!.text.toString().equals("")
-                || agentPhonePeNo!!.text.toString().equals("") || agentEmail!!.text.toString().equals("")) {
+                || agentUpiId!!.text.toString().equals("") || agentEmail!!.text.toString().equals("")) {
                 Toast.makeText(this, "Please Enter all the fields", Toast.LENGTH_SHORT).show()
             }
             else if (agentMobile!!.text.toString().length != 10){
@@ -95,7 +95,7 @@ class NewAgentRegistration : AppCompatActivity() {
                 Toast.makeText(this@NewAgentRegistration, result, Toast.LENGTH_LONG).show()
                 agentName!!.setText("")
                 agentMobile!!.setText("")
-                agentPhonePeNo!!.setText("")
+                agentUpiId!!.setText("")
                 agentEmail!!.setText("")
             }
         }
@@ -152,7 +152,7 @@ class NewAgentRegistration : AppCompatActivity() {
         var dataJson: JSONObject = JSONObject()
         dataJson.put("name", agentName!!.text.toString())
         dataJson.put("mobile", agentMobile!!.text.toString())
-        dataJson.put("phonePe", agentPhonePeNo!!.text.toString())
+        dataJson.put("upi_id", agentUpiId!!.text.toString())
         dataJson.put("email", agentEmail!!.text.toString())
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())

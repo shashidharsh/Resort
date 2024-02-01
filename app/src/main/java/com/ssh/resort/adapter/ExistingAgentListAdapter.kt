@@ -34,7 +34,7 @@ class ExistingAgentListAdapter(context: Context, agentLists : ArrayList<Existing
                 intent.putExtra("id", agentList.id)
                 intent.putExtra("name", agentList.name)
                 intent.putExtra("mobile", agentList.mobile)
-                intent.putExtra("phonePe", agentList.phonePe)
+                intent.putExtra("upi_id", agentList.upi_id)
                 intent.putExtra("email", agentList.email)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context!!.startActivity(intent)

@@ -2,6 +2,7 @@ package com.ssh.resort
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 
 class TacAgentTransactionDetails : AppCompatActivity() {
@@ -128,5 +129,8 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         tvCashStatus.setText(cashStatus)
         var tvUpiStatus = findViewById<TextView>(R.id.tacAgentTransactionDetailsUPIStatus)
         tvUpiStatus.setText(upiStatus)
+
+        var payAmount = findViewById<Button>(R.id.tacAgentTransactionDetailsPayAmount)
+        payAmount.setText(grandTotal)
     }
 }

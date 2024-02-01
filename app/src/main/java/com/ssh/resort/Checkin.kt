@@ -746,7 +746,7 @@ class Checkin : AppCompatActivity() {
                         json_data.getString("id"),
                         json_data.getString("name"),
                         json_data.getString("mobile"),
-                        json_data.getString("phonePe"),
+                        json_data.getString("upi_id"),
                         json_data.getString("email"))
                     agentList.add(agentListData)
                     agentsList.add(agentListData)
