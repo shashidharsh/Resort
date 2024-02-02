@@ -75,6 +75,7 @@ class TAC : AppCompatActivity() {
             intent.putExtra("AgentID", agentsList[position].id)
             intent.putExtra("AgentName", agentsList[position].name)
             intent.putExtra("AgentMobile", agentsList[position].mobile)
+            intent.putExtra("AgentUPI", agentsList[position].upi_id)
             startActivity(intent)
         }
 

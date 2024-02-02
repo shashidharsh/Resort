@@ -36,6 +36,7 @@ class TacAgentTransactions : AppCompatActivity() {
     var agentID : String? = ""
     var agentName : String? = ""
     var agentMobile : String? = ""
+    var agentUPI : String? = ""
 
     var tacAgentTransactionListRecyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
@@ -50,6 +51,7 @@ class TacAgentTransactions : AppCompatActivity() {
         agentID = intent.getStringExtra("AgentID")
         agentName = intent.getStringExtra("AgentName")
         agentMobile = intent.getStringExtra("AgentMobile")
+        agentUPI = intent.getStringExtra("AgentUPI")
 
         //Set From Date and End Date
         val calendar = Calendar.getInstance()
@@ -82,7 +84,7 @@ class TacAgentTransactions : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         tacAgentTransactionListRecyclerView!!.setLayoutManager(layoutManager)
 
-        adapter = TacAgentTransactionListAdapter(applicationContext, transactionList)
+        adapter = TacAgentTransactionListAdapter(applicationContext, transactionList, agentUPI!!)
         tacAgentTransactionListRecyclerView!!.adapter = adapter
 
         var showData = findViewById<Button>(R.id.tacAgentTransactionShow)

@@ -12,11 +12,12 @@ import com.ssh.resort.R
 import com.ssh.resort.TacAgentTransactionDetails
 import com.ssh.resort.data.TacAgentsTransactionListData
 
-class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayList<TacAgentsTransactionListData>) : RecyclerView.Adapter<TacAgentTransactionListAdapter.ItemViewHolder>() {
+class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayList<TacAgentsTransactionListData>, upiID: String) : RecyclerView.Adapter<TacAgentTransactionListAdapter.ItemViewHolder>() {
     private val TAG = "TacAgentTransactionListAdapter"
 
     var transactionList: ArrayList<TacAgentsTransactionListData>
     var context: Context? = null
+    var upi_id: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
 
@@ -55,6 +56,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
                 intent.putExtra("cashStatus", transactionList.cashStatus)
                 intent.putExtra("upiStatus", transactionList.upiStatus)
                 intent.putExtra("dateTime", transactionList.dateTime)
+                intent.putExtra("upiID", upi_id)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context!!.startActivity(intent)
             }
@@ -79,6 +81,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
     init {
         this.context = context
         this.transactionList = transactionLists
+        upi_id = upiID
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
