@@ -60,7 +60,7 @@ class Checkin : AppCompatActivity() {
 
     val TAG = "Checkin"
 
-    var UPI_ID: String? = "8088756868@ybl"
+    var UPI_ID: String? = "shashidharhunswadkar@ybl"
 
     var paymentStatus: String? = ""
     var paymentAmount: String? = ""

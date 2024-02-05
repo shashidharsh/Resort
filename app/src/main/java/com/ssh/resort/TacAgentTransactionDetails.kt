@@ -147,7 +147,11 @@ class TacAgentTransactionDetails : AppCompatActivity() {
 
         var pay = findViewById<Button>(R.id.tacAgentTransactionDetailsPay)
         pay.setOnClickListener{
-            payUsingUpi(upiID!!, selectedCo!!, "Payment", grandTotal!!)
+            if (grandTotal!!.toFloat() == 0.0f){
+                Toast.makeText(this@TacAgentTransactionDetails, "Payment Amount is 0", Toast.LENGTH_SHORT).show()
+            } else{
+                payUsingUpi(upiID!!, selectedCo!!, "Payment", grandTotal!!)
+            }
         }
     }
 

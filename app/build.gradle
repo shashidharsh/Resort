@@ -63,4 +63,6 @@ dependencies {
 
     //QR Code Generator
     implementation 'com.google.zxing:core:3.3.3'
+    //Listen Payment Status
+    implementation 'com.google.android.gms:play-services-wallet:19.2.1'
 }
