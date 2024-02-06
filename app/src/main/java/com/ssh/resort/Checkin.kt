@@ -900,10 +900,12 @@ class Checkin : AppCompatActivity() {
         if (radioButtonActivities!!.text.equals("Yes")) {
             dataJson.put("SelectedActivity", activities)
             dataJson.put("NoPersons", etNoOfPersonForActivity!!.text.toString())
+            dataJson.put("ActivityPaymentStatus", "Pending")
         }
         else{
             dataJson.put("SelectedActivity", "Nothing")
             dataJson.put("NoPersons", "0")
+            dataJson.put("ActivityPaymentStatus", "No Activity")
         }
 
         dataJson.put("RoomNumber", roomNumber!!.text.toString())

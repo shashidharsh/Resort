@@ -40,6 +40,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
                 intent.putExtra("activities", transactionList.activities)
                 intent.putExtra("selectedActivity", transactionList.selectedActivity)
                 intent.putExtra("noPersonActivity", transactionList.noPersonActivity)
+                intent.putExtra("ActivityPaymentStatus", transactionList.activityPaymentStatus)
                 intent.putExtra("roomNumber", transactionList.roomNumber)
                 intent.putExtra("driver", transactionList.driver)
                 intent.putExtra("driverCost", transactionList.driverCost)

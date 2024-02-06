@@ -32,6 +32,7 @@ class TacAgentTransactionDetails : AppCompatActivity() {
     var activities : String? = ""
     var selectedActivity : String? = ""
     var noPersonActivity : String? = ""
+    var activityPaymentStatus : String? = ""
     var roomNumber : String? = ""
     var driver : String? = ""
     var driverCost : String? = ""
@@ -67,6 +68,7 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         activities = intent.getStringExtra("activities")
         selectedActivity = intent.getStringExtra("selectedActivity")
         noPersonActivity = intent.getStringExtra("noPersonActivity")
+        activityPaymentStatus = intent.getStringExtra("ActivityPaymentStatus")
         roomNumber = intent.getStringExtra("roomNumber")
         driver = intent.getStringExtra("driver")
         driverCost = intent.getStringExtra("driverCost")
@@ -111,6 +113,8 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         tvSelectedAcitvities.setText(selectedActivity)
         var tvNoPersonActivity = findViewById<TextView>(R.id.tacAgentTransactionDetailsNoPersonActivity)
         tvNoPersonActivity.setText(noPersonActivity)
+        var tvActivityPaymentStatus = findViewById<TextView>(R.id.tacAgentTransactionDetailsActivityPaymentStatus)
+        tvActivityPaymentStatus.setText(activityPaymentStatus)
         var tvRoomNo = findViewById<TextView>(R.id.tacAgentTransactionDetailsRoomNumber)
         tvRoomNo.setText(roomNumber)
         var tvDriver = findViewById<TextView>(R.id.tacAgentTransactionDetailsDriver)

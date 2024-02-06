@@ -41,6 +41,7 @@ class TransactionListAdapter(context: Context, transactionLists : ArrayList<Tran
                 intent.putExtra("activities", transactionList.activities)
                 intent.putExtra("selectedActivity", transactionList.selectedActivity)
                 intent.putExtra("noPersonActivity", transactionList.noPersonActivity)
+                intent.putExtra("activityPaymentStatus", transactionList.activityPaymentStatus)
                 intent.putExtra("roomNumber", transactionList.roomNumber)
                 intent.putExtra("driver", transactionList.driver)
                 intent.putExtra("driverCost", transactionList.driverCost)

@@ -145,6 +145,7 @@ class TacAgentTransactions : AppCompatActivity() {
                         json_data.getString("Activities"),
                         json_data.getString("SelectedActivity"),
                         json_data.getString("NoPersonActivity"),
+                        json_data.getString("ActivityPaymentStatus"),
                         json_data.getString("RoomNumber"),
                         json_data.getString("Driver"),
                         json_data.getString("DriverCost"),

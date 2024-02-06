@@ -21,6 +21,7 @@ class TransactionDetails : AppCompatActivity() {
     var activities : String? = ""
     var selectedActivity : String? = ""
     var noPersonActivity : String? = ""
+    var activityPaymentStatus : String? = ""
     var roomNumber : String? = ""
     var driver : String? = ""
     var driverCost : String? = ""
@@ -55,6 +56,7 @@ class TransactionDetails : AppCompatActivity() {
         activities = intent.getStringExtra("activities")
         selectedActivity = intent.getStringExtra("selectedActivity")
         noPersonActivity = intent.getStringExtra("noPersonActivity")
+        activityPaymentStatus = intent.getStringExtra("activityPaymentStatus")
         roomNumber = intent.getStringExtra("roomNumber")
         driver = intent.getStringExtra("driver")
         driverCost = intent.getStringExtra("driverCost")
@@ -98,6 +100,8 @@ class TransactionDetails : AppCompatActivity() {
         tvSelectedAcitvities.setText(selectedActivity)
         var tvNoPersonActivity = findViewById<TextView>(R.id.transactionDetailsNoPersonActivity)
         tvNoPersonActivity.setText(noPersonActivity)
+        var tvActivityPaymentStatus = findViewById<TextView>(R.id.transactionDetailsActivityPaymentStatus)
+        tvActivityPaymentStatus.setText(activityPaymentStatus)
         var tvRoomNo = findViewById<TextView>(R.id.transactionDetailsRoomNumber)
         tvRoomNo.setText(roomNumber)
         var tvDriver = findViewById<TextView>(R.id.transactionDetailsDriver)
