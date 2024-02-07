@@ -25,5 +25,8 @@
     <color name="azure">#F0FFFF</color>
     <color name="honeydew">#F0FFF0</color>
     <color name="palegreen3">#7CCD7C</color>
+    <color name="red">#F44336</color>
+    <color name="green">#4CAF50</color>
+    <color name="orange">#FFA500</color>
 
 </resources>

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -14,6 +13,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -84,8 +84,9 @@ class TacAgentTransactions : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         tacAgentTransactionListRecyclerView!!.setLayoutManager(layoutManager)
 
-        adapter = TacAgentTransactionListAdapter(applicationContext, transactionList, agentUPI!!)
+        adapter = TacAgentTransactionListAdapter(this, transactionList, agentUPI!!)
         tacAgentTransactionListRecyclerView!!.adapter = adapter
+        adapter!!.notifyDataSetChanged()
 
         var showData = findViewById<Button>(R.id.tacAgentTransactionShow)
         showData.setOnClickListener{
@@ -183,7 +184,7 @@ class TacAgentTransactions : AppCompatActivity() {
                 }
                 else {
                     if (transactionList.size == 0){
-                        Snackbar.make(getWindow().getDecorView().getRootView(), "No Transactions On this Date", Snackbar.LENGTH_LONG)
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "No Transactions On this Date, Please Choose Other Date.", Snackbar.LENGTH_LONG)
                             .setTextColor(Color.WHITE)
                             .setBackgroundTint(ContextCompat.getColor(this@TacAgentTransactions, R.color.colorAccent))
                             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
