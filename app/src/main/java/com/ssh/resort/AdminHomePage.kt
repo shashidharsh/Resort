@@ -32,7 +32,7 @@ class AdminHomePage : AppCompatActivity() {
                 Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
             }
             else {
-                val intent = Intent(this, AdminAgentRegistration::class.java)
+                val intent = Intent(this, AgentRegistration::class.java)
                 startActivity(intent)
             }
         }

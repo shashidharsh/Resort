@@ -7,13 +7,13 @@ import android.widget.Button
 import android.widget.Toast
 import com.ssh.appdataremotedb.Utils
 
-class AdminAgentRegistration : AppCompatActivity() {
+class AgentRegistration : AppCompatActivity() {
 
     val TAG = "AdminAgentRegistration"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.admin_agent_registration)
+        setContentView(R.layout.agent_registration)
 
         var newAgent = findViewById<Button>(R.id.newAgent)
         newAgent.setOnClickListener{

@@ -48,7 +48,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".AdminAgentRegistration"
+            android:name=".AgentRegistration"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
