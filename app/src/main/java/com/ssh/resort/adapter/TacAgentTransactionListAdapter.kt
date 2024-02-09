@@ -36,6 +36,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
     var cntxt: Context? = null
     var upi_id: String? = null
     var transactionID: String = ""
+    var currentPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
 
@@ -116,7 +117,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
         }
 
         holder.btnPaymentReceived.setOnClickListener {
-            setdata(transactionList[position].id)
+            setdata(transactionList[position].id, position)
             updateActivityPaymentStatus()
         }
     }
@@ -131,8 +132,9 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
         upi_id = upiID
     }
 
-    fun setdata(id: String){
+    fun setdata(id: String, position: Int){
         transactionID = id
+        currentPosition = position
         Log.d(TAG, "setdata transactionID: " + transactionID)
     }
 
@@ -202,6 +204,11 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
                 pd.cancel()
 
                 if (result.contains("Updated Successfully")) {
+                    var curEntry = transactionList.get(currentPosition)
+                    curEntry.activityPaymentStatus = "Received"
+                    transactionList.set(currentPosition, curEntry)
+                    notifyDataSetChanged()
+
                     Toast.makeText(cntxt, result, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(cntxt, result, Toast.LENGTH_LONG).show()

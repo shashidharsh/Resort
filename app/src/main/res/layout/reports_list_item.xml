@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/white"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:orientation="vertical">
+
+    <TableRow
+        android:background="#F0F7F7"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/reportsListItemTAC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="TAC"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/reportsListItemB2B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="B2B"
+            android:textAlignment="center" />
+
+    </TableRow>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/loginBkColor"
+        android:layout_marginTop="3dp"/>
+
+</TableLayout>
