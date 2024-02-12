@@ -1,5 +1,6 @@
 package com.ssh.resort
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.os.AsyncTask
@@ -22,6 +23,9 @@ import com.ssh.resort.adapter.ReportsListAdapter
 import com.ssh.resort.adapter.TransactionListAdapter
 import com.ssh.resort.data.ReportsListData
 import com.ssh.resort.data.TransactionListData
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 class Reports : AppCompatActivity() {
 
@@ -32,6 +36,9 @@ class Reports : AppCompatActivity() {
     var adapter: ReportsListAdapter? = null
 
     val reportsList: ArrayList<ReportsListData> = ArrayList()
+
+    var tvFromDate: TextView? = null
+    var tvToDate: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +58,40 @@ class Reports : AppCompatActivity() {
                     .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                     .show()
             }
+        }
+
+        //Set From Date and End Date
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        tvFromDate = findViewById(R.id.reportsFromDate) as TextView
+        tvToDate = findViewById(R.id.reportsToDate) as TextView
+
+        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
+        val currentDate: String = simpleDateFormat.format(Date())
+        tvFromDate!!.text = currentDate
+        tvToDate!!.text = currentDate
+
+        //Button From Date
+        tvFromDate!!.setOnClickListener {
+            val datePickerDialog =
+                DatePickerDialog(this@Reports, DatePickerDialog.OnDateSetListener
+                { view, year, monthOfYear, dayOfMonth ->
+                    tvFromDate!!.setText("" + String.format("%02d", dayOfMonth) + "-" + String.format("%02d", monthOfYear + 1) + "-" + year)
+                }, year, month, day)
+            datePickerDialog.show()
+        }
+
+        //Button To Date
+        tvToDate!!.setOnClickListener {
+            val datePickerDialog =
+                DatePickerDialog(this@Reports, DatePickerDialog.OnDateSetListener
+                { view, year, monthOfYear, dayOfMonth ->
+                    tvToDate!!.setText("" + String.format("%02d", dayOfMonth) + "-" + String.format("%02d", monthOfYear + 1) + "-" + year)
+                }, year, month, day)
+            datePickerDialog.show()
         }
 
         //RecyclerView

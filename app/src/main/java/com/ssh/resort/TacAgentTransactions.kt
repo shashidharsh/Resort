@@ -113,7 +113,10 @@ class TacAgentTransactions : AppCompatActivity() {
         class TransactionDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetAgentTransactions.php?SelectedCoMobile=" + agentMobile + "&Date=" + tvCurrentDate!!.text.toString()
+                var currentDateFormat = SimpleDateFormat("yyyy-MM-dd").format(SimpleDateFormat("dd-MM-yyyy").parse(tvCurrentDate!!.text.toString()))
+                Log.d(TAG, "currentDateFormat: " + currentDateFormat)
+
+                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetAgentTransactions.php?SelectedCoMobile=" + agentMobile + "&Date=" + currentDateFormat
                 Log.d(TAG, "transactionDetailsUrl: " + transactionDetailsUrl)
 
                 var httpDownload = HTTPDownload()
@@ -189,6 +192,8 @@ class TacAgentTransactions : AppCompatActivity() {
                             .setBackgroundTint(ContextCompat.getColor(this@TacAgentTransactions, R.color.colorAccent))
                             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                             .show()
+                        transactionList.clear()
+                        adapter!!.notifyDataSetChanged()
                     }
                     else {
                         adapter!!.notifyDataSetChanged()

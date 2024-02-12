@@ -69,5 +69,16 @@ class AdminHomePage : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        var cvExpense = findViewById<CardView>(R.id.cvExpense)
+        cvExpense.setOnClickListener{
+            if (Utils.checkInternetConnectivity(this) == false){
+                Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
+            }
+            else {
+                val intent = Intent(this, Expense::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }

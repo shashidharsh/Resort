@@ -11,20 +11,36 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/reportsListItemTAC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="TAC"
-            android:textAlignment="center" />
-
-        <TextView
             android:id="@+id/reportsListItemB2B"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="B2B"
-            android:textAlignment="center" />
+            android:hint="Total B2B"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/reportsListItemBalanceB2B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Bal B2B"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/reportsListItemTAC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="TAC Paid"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/reportsListItemB2BReceive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="B2B Receive"
+            android:textAlignment="textEnd" />
 
     </TableRow>
 

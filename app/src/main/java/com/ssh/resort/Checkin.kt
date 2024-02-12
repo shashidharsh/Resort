@@ -148,7 +148,7 @@ class Checkin : AppCompatActivity() {
         currentDateTime = simpleDateFormat.format(Date())
 
         //Current Date
-        val smplDateFormat = SimpleDateFormat("dd-MM-yyyy")
+        val smplDateFormat = SimpleDateFormat("yyyy-MM-dd")
         currentDate = smplDateFormat.format(Date())
 
         //access the items of the list

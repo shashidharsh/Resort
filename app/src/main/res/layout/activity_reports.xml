@@ -23,19 +23,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TAC"
+                    android:text="Total B2B"
                     android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="B2B"
+                    android:text="Bal B2B"
                     android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TAC Paid"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="B2B Recvive"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
             </TableRow>
 
@@ -45,10 +63,10 @@
             android:id="@+id/rvReportsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="190dp"
             android:padding="5dp"
             android:scrollbars="vertical"
-            tools:listitem="@layout/reports_list_item"
-            android:layout_marginBottom="100dp"/>
+            tools:listitem="@layout/reports_list_item" />
 
     </LinearLayout>
 
@@ -59,9 +77,16 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,9 +101,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:hint="Total B2B"
+                android:textAlignment="textEnd"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:textAlignment="textEnd"/>
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -100,11 +125,84 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:hint="Total TAC"
+                android:textAlignment="textEnd"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:textAlignment="textEnd"/>
+                android:textStyle="bold" />
 
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black"
+            android:layout_marginTop="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From:"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/reportsFromDate"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/edittext_background"
+                android:drawableRight="@drawable/ic_date"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To:"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/reportsToDate"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/edittext_background"
+                android:drawableRight="@drawable/ic_date"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/tacAgentTransactionsActivityPaymentReceived"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_background"
+            android:backgroundTint="@color/colorAccent"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:text="Print Details"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
 
     </LinearLayout>
 
