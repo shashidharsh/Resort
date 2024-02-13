@@ -128,6 +128,7 @@ class AdminFragment : Fragment() {
                     intent.putExtra("UserName", userName!!.text.toString())
                     startActivity(intent)
                     requireActivity().finish()
+                    requireActivity().finishAffinity()
                 }else{
                     Toast.makeText(requireView().context, result, Toast.LENGTH_LONG).show()
                 }
