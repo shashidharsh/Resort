@@ -66,7 +66,7 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
 
         Log.d("TAG", "onBindViewHolder:" + reportList[position])
 
-        holder.tac.setText(reportList[position].tac)
+        holder.tac.setText(reportList[position].totalTAC)
         holder.b2b.setText(reportList[position].totalB2B)
     }
 
@@ -82,7 +82,7 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
     fun totalTAC(): String {
         var totalTAC: Float = 0.0f
         for ( i in 0 until  reportList.size){
-            totalTAC += reportList[i].tac.toFloat()
+            totalTAC += reportList[i].totalTAC.toFloat()
         }
         return totalTAC.toString()
     }

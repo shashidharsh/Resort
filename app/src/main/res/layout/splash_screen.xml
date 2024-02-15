@@ -12,19 +12,13 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="250dp"
-            android:layout_height="200dp"
-            android:background="@drawable/hillstone" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="HillStone Resort"
-            android:textColor="@color/darkGreen"
-            android:textSize="25sp"
-            android:textStyle="italic|bold" />
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:src="@drawable/hillstone"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp" />
 
     </LinearLayout>
 

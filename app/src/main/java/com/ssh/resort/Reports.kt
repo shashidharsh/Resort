@@ -2,6 +2,8 @@ package com.ssh.resort
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Color
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
@@ -11,18 +13,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ReportsListAdapter
-import com.ssh.resort.adapter.TransactionListAdapter
 import com.ssh.resort.data.ReportsListData
-import com.ssh.resort.data.TransactionListData
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -102,6 +106,11 @@ class Reports : AppCompatActivity() {
 
         adapter = ReportsListAdapter(applicationContext, reportsList)
         reportsListRecyclerView!!.adapter = adapter
+
+        var generatePDF = findViewById<Button>(R.id.reportsGeneratePDF)
+        generatePDF.setOnClickListener{
+            createPdf()
+        }
     }
 
     //Download Transaction Details from Server
@@ -172,5 +181,33 @@ class Reports : AppCompatActivity() {
             }
         }
         var result = TransactionDetails().execute()
+    }
+
+    private fun createPdf() {
+        val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
+        val onFinish: (File) -> Unit = { openFile(it) }
+        val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
+        val pdfService = PdfService()
+        pdfService.createUserTable(data = reportsList, paragraphList = paragraphList, onFinish = onFinish, onError = onError)
+    }
+
+    private fun openFile(file: File) {
+        val path = FileHandler().getPathFromUri(this, file.toUri())
+        val pdfFile = File(path)
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+        builder.detectFileUriExposure()
+        val pdfIntent = Intent(Intent.ACTION_VIEW)
+        pdfIntent.setDataAndType(pdfFile.toUri(), "application/pdf")
+        pdfIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        try {
+            startActivity(pdfIntent)
+        } catch (e: ActivityNotFoundException) {
+            toastErrorMessage("Can't read pdf file")
+        }
+    }
+
+    private fun toastErrorMessage(s: String) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
     }
 }
