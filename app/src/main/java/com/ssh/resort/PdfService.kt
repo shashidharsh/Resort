@@ -12,6 +12,8 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.resort.data.ReportsListData
+import com.ssh.resort.data.TacAgentsTransactionListData
+import com.ssh.resort.data.TransactionListData
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -101,7 +103,7 @@ class PdfService {
         return paragraph
     }
 
-    fun createUserTable(data: List<ReportsListData>, paragraphList: List<String>, onFinish: (file: File) -> Unit, onError: (Exception) -> Unit) {
+    fun createUserTable(data: List<TacAgentsTransactionListData>, paragraphList: List<String>, onFinish: (file: File) -> Unit, onError: (Exception) -> Unit, fromDate: String, toDate: String) {
         //Define the document
         val file = createFile()
         val document = createDocument()
@@ -110,7 +112,7 @@ class PdfService {
         setupPdfWriter(document, file)
 
         //Add Title
-        document.add(Paragraph("Reports", TITLE_FONT))
+        document.add(Paragraph("Reports From " + fromDate + "  To " + toDate, TITLE_FONT))
         //Add Empty Line as necessary
         addLineSpace(document, 1)
 
@@ -127,14 +129,18 @@ class PdfService {
         //addLineSpace(document, 1)
 
         //Define Table
-        val totalB2BWidth = 1f
-        val balanceB2BWidth = 1f
-        val TACPaidWidth = 1f
-        val B2BReceiveWidth = 1f
-        val columnWidth = floatArrayOf(totalB2BWidth, balanceB2BWidth, TACPaidWidth, B2BReceiveWidth)
-        val table = createTable(4, columnWidth)
+        val CustName = 2f
+        val noOfPersons = 2f
+        val agentName = 2f
+        val Package = 2f
+        val activity = 2f
+        val b2b = 2f
+        val advance = 2f
+        val balanceB2B = 2f
+        val columnWidth = floatArrayOf(CustName, noOfPersons, agentName, Package, activity, b2b, advance, balanceB2B)
+        val table = createTable(8, columnWidth)
         //Table header (first row)
-        val tableHeaderContent = listOf("Total B2B", "Bal B2B", "TAC Paid", "B2B Received")
+        val tableHeaderContent = listOf("Cust Name", "No Of Person", "Agent", "Package", "Activity", "B2B", "Advance", "Bal B2B")
         //write table header into table
         tableHeaderContent.forEach {
             //define a cell
@@ -144,18 +150,30 @@ class PdfService {
         }
         //write user data into table
         data.forEach {
-            //Write Each Total B2B
-            val totalB2BCell = createCell(it.totalB2B)
-            table.addCell(totalB2BCell)
+            //Write Each custName
+            val custNameCell = createCell(it.guestName)
+            table.addCell(custNameCell)
+            //Write Each noOfPerson
+            val noOfPersonCell = createCell(it.noOfPersons)
+            table.addCell(noOfPersonCell)
+            //Write Each Agent
+            val agentCell = createCell(it.selectedCo)
+            table.addCell(agentCell)
+            //Write Each Package
+            val packageCell = createCell(it.packageAdult)
+            table.addCell(packageCell)
+            //Write Each Activity
+            val activityCell = createCell(it.selectedActivity)
+            table.addCell(activityCell)
+            //Write Each B2B
+            val b2bCell = createCell(it.enterB2B)
+            table.addCell(b2bCell)
+            //Write Each Advance
+            val advanceCell = createCell(it.advance)
+            table.addCell(advanceCell)
             //Write Each Balance B2B
-            val balanceB2BCell = createCell("")
+            val balanceB2BCell = createCell(it.totalB2B)
             table.addCell(balanceB2BCell)
-            //Write Each Total TAC
-            val totalTACCell = createCell(it.totalTAC)
-            table.addCell(totalTACCell)
-            //Write Each B2B Receive
-            val receiveB2BCell = createCell("")
-            table.addCell(receiveB2BCell)
         }
         document.add(table)
         document.close()

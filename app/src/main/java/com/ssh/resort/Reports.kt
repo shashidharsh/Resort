@@ -26,6 +26,7 @@ import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ReportsListAdapter
 import com.ssh.resort.data.ReportsListData
+import com.ssh.resort.data.TacAgentsTransactionListData
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -40,6 +41,7 @@ class Reports : AppCompatActivity() {
     var adapter: ReportsListAdapter? = null
 
     val reportsList: ArrayList<ReportsListData> = ArrayList()
+    val reportsListDate: ArrayList<TacAgentsTransactionListData> = ArrayList()
 
     var tvFromDate: TextView? = null
     var tvToDate: TextView? = null
@@ -104,12 +106,12 @@ class Reports : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         reportsListRecyclerView!!.setLayoutManager(layoutManager)
 
-        adapter = ReportsListAdapter(applicationContext, reportsList)
+        adapter = ReportsListAdapter(this, reportsList)
         reportsListRecyclerView!!.adapter = adapter
 
         var generatePDF = findViewById<Button>(R.id.reportsGeneratePDF)
         generatePDF.setOnClickListener{
-            createPdf()
+            getTransactionDetailsDateRange()
         }
     }
 
@@ -183,12 +185,113 @@ class Reports : AppCompatActivity() {
         var result = TransactionDetails().execute()
     }
 
+    //Download Transaction Details from Server with date range
+    fun getTransactionDetailsDateRange() {
+        Log.d(TAG, "getTransactionDetailsDateRange")
+
+        var pd = Dialog(this)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.progress, null)
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        pd.getWindow()?.setBackgroundDrawableResource(R.color.transparent)
+        pd.setContentView(view)
+        pd.setCancelable(false)
+
+        class TransactionDetails : AsyncTask<Void, Void, Boolean>() {
+            override fun doInBackground(vararg params: Void?): Boolean {
+
+                var fromDateFormat = SimpleDateFormat("yyyy-MM-dd").format(SimpleDateFormat("dd-MM-yyyy").parse(tvFromDate!!.text.toString()))
+                Log.d(TAG, "fromDateFormat: " + fromDateFormat)
+
+                var toDateFormat = SimpleDateFormat("yyyy-MM-dd").format(SimpleDateFormat("dd-MM-yyyy").parse(tvToDate!!.text.toString()))
+                Log.d(TAG, "toDateFormat: " + toDateFormat)
+
+                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetDetailsDateRange.php?from=" + fromDateFormat + "&to=" + toDateFormat
+
+                var httpDownload = HTTPDownload()
+                val httpStatus = httpDownload.downloadUrl(transactionDetailsUrl)
+
+                if(httpStatus.status != HTTPDownload.STATUS_SUCCESS) {
+                    Log.d(TAG, "getTransactionDetailsDateRange jsonojb null" + httpStatus.status)
+                    return false
+                }
+
+                val transactionResult = httpStatus.value!!.optJSONArray("results")
+                if (transactionResult == null){
+                    return false
+                }
+                reportsListDate.clear()
+
+                for (i in 0 until transactionResult.length()) {
+                    val json_data = transactionResult.getJSONObject(i)
+                    val transactionListData = TacAgentsTransactionListData(
+                        json_data.getString("id"),
+                        json_data.getString("GuestName"),
+                        json_data.getString("NoOfPersons"),
+                        json_data.getString("NoOfChildrens"),
+                        json_data.getString("PackageAdult"),
+                        json_data.getString("PackageChild"),
+                        json_data.getString("SelectedCo"),
+                        json_data.getString("SelectedCoMobile"),
+                        json_data.getString("EnterB2BPrice"),
+                        json_data.getString("Advance"),
+                        json_data.getString("Activities"),
+                        json_data.getString("SelectedActivity"),
+                        json_data.getString("NoPersonActivity"),
+                        json_data.getString("ActivityPaymentStatus"),
+                        json_data.getString("RoomNumber"),
+                        json_data.getString("Driver"),
+                        json_data.getString("DriverCost"),
+                        json_data.getString("Type"),
+                        json_data.getString("Partner"),
+                        json_data.getString("B2B"),
+                        json_data.getString("TotActivityPrice"),
+                        json_data.getString("TAC"),
+                        json_data.getString("Total"),
+                        json_data.getString("GrandTotal"),
+                        json_data.getString("PaymentType"),
+                        json_data.getString("Cash"),
+                        json_data.getString("UPI"),
+                        json_data.getString("CashPayStatus"),
+                        json_data.getString("UPIPayStatus"),
+                        json_data.getString("DateTime"),
+                        json_data.getString("Date"))
+                    reportsListDate.add(transactionListData)
+                    Log.d(TAG, "getTransactionDetailsDateRange transactionData: " + transactionListData)
+                }
+                return true
+            }
+
+            override fun onPreExecute() {
+                super.onPreExecute()
+                pd.show()
+            }
+
+            override fun onPostExecute(result: Boolean) {
+                super.onPostExecute(result)
+                Log.d(TAG, "getTransactionDetailsDateRange onPostExecute result:" + result)
+                pd.cancel()
+                if (result == false) {
+                    Toast.makeText(applicationContext, "$result", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    if (reportsListDate.size == 0){
+                        Toast.makeText(this@Reports, "No Transactions", Toast.LENGTH_SHORT).show()
+                    } else{
+                        createPdf()
+                        Toast.makeText(this@Reports, "PDF Generated Successfully", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        var result = TransactionDetails().execute()
+    }
+
     private fun createPdf() {
         val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
         val onFinish: (File) -> Unit = { openFile(it) }
         val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
         val pdfService = PdfService()
-        pdfService.createUserTable(data = reportsList, paragraphList = paragraphList, onFinish = onFinish, onError = onError)
+        pdfService.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
     }
 
     private fun openFile(file: File) {

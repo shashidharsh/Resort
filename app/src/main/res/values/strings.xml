@@ -8,6 +8,7 @@
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
     <string name="paragraph1" />
     <string name="paragraph2" />
+    <string name="sattle"><u>Sattle</u></string>
 
     <string-array name="Activities">
         <item>B + K (150)</item>
