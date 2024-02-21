@@ -18,7 +18,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="140dp"
                 android:background="@color/colorAccent">
 
                 <TextView
@@ -65,10 +65,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="New Agent"
+            android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/colorAccent"
-            app:strokeWidth="2dp"
-            android:textAllCaps="false"/>
+            app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/existingAgent"
@@ -78,10 +78,10 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="Existing Agent"
+            android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/colorAccent"
-            app:strokeWidth="2dp"
-            android:textAllCaps="false"/>
+            app:strokeWidth="2dp" />
 
     </LinearLayout>
 
