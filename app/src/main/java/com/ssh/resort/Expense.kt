@@ -2,6 +2,7 @@ package com.ssh.resort
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -60,6 +61,12 @@ class Expense : AppCompatActivity() {
             else{
                 insertExpense()
             }
+        }
+
+        var viewExpenseDatewise = findViewById<Button>(R.id.btnViewExpenseDatewise)
+        viewExpenseDatewise.setOnClickListener{
+            val intent = Intent(this, ViewExpenseDatewise::class.java)
+            startActivity(intent)
         }
     }
 
