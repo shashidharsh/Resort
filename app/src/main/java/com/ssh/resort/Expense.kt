@@ -68,6 +68,12 @@ class Expense : AppCompatActivity() {
             val intent = Intent(this, ViewExpenseDatewise::class.java)
             startActivity(intent)
         }
+
+        var viewAllExpense = findViewById<Button>(R.id.btnViewAllExpenses)
+        viewAllExpense.setOnClickListener{
+            val intent = Intent(this, ViewAllExpenses::class.java)
+            startActivity(intent)
+        }
     }
 
     //Save Expense Data in Server
