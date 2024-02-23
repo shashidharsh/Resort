@@ -11,15 +11,13 @@ import com.itextpdf.text.Phrase
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
-import com.ssh.resort.data.ReportsListData
 import com.ssh.resort.data.TacAgentsTransactionListData
-import com.ssh.resort.data.TransactionListData
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class PdfService {
+class PdfReports {
     val TITLE_FONT = Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD)
     val BODY_FONT = Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.NORMAL)
     private lateinit var pdf: PdfWriter

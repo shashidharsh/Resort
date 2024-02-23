@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ReportsListAdapter
 import com.ssh.resort.data.ReportsListData
@@ -290,8 +289,8 @@ class Reports : AppCompatActivity() {
         val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
         val onFinish: (File) -> Unit = { openFile(it) }
         val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
-        val pdfService = PdfService()
-        pdfService.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
+        val pdfReports = PdfReports()
+        pdfReports.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
     }
 
     private fun openFile(file: File) {
