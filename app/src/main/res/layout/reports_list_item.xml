@@ -11,51 +11,55 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/reportsListItemB2B"
-            android:layout_width="60dp"
+            android:id="@+id/reportsListItemTotalB2B"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Total B2B"
             android:textAlignment="textEnd" />
 
         <TextView
-            android:id="@+id/reportsListItemBalanceB2B"
-            android:layout_width="60dp"
+            android:id="@+id/reportsListItemTotalTAC"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Total TAC"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/reportsListItemAdvance"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Advance"
+            android:textAlignment="textEnd"/>
+
+        <TextView
+            android:id="@+id/reportsListItemBalanceTAC"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Bal TAC"
-            android:textAlignment="textEnd"
-            android:layout_marginLeft="3dp"/>
+            android:textAlignment="textEnd" />
 
         <TextView
-            android:id="@+id/reportsListItemTAC"
-            android:layout_width="60dp"
+            android:id="@+id/reportsListItemBalanceB2B"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="TAC Paid"
-            android:textAlignment="textEnd"
-            android:layout_marginLeft="3dp"/>
-
-        <TextView
-            android:id="@+id/reportsListItemB2BReceive"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="B2B Rcve"
-            android:textAlignment="textEnd"
-            android:layout_marginLeft="3dp"/>
+            android:hint="Bal B2B"
+            android:textAlignment="textEnd" />
 
         <TextView
             android:id="@+id/reportsListItemSattle"
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/sattle"
             android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1"
             android:textAlignment="center"
             android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_marginLeft="3dp"
+            android:textSize="15dp"
             android:foreground="?attr/selectableItemBackgroundBorderless"/>
 
     </TableRow>

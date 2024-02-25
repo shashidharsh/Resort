@@ -927,6 +927,16 @@ class Checkin : AppCompatActivity() {
         }
 
         dataJson.put("TotalB2B", tvB2B!!.text.toString())
+
+        if (advanceAmount!!.text.toString().toFloat() > tvTAC!!.text.toString().toFloat()) {
+            dataJson.put("BalanceB2B", (advanceAmount!!.text.toString().toFloat() - tvTAC!!.text.toString().toFloat()).toString())
+            dataJson.put("BalanceTAC", "---")
+        }
+        else{
+            dataJson.put("BalanceB2B",  "---")
+            dataJson.put("BalanceTAC", (tvTAC!!.text.toString().toFloat() - advanceAmount!!.text.toString().toFloat()).toString())
+        }
+
         dataJson.put("TotalActivityPrice", tvActivityPrice!!.text.toString())
         dataJson.put("TotalTAC", tvTAC!!.text.toString())
         dataJson.put("Total", tvTotal!!.text.toString())
@@ -1081,7 +1091,7 @@ class Checkin : AppCompatActivity() {
         MaterialAlertDialogBuilder(this, R.style.MyAlertDialogTheme)
             .setIcon(R.drawable.ic_announcement)
             //.setView(R.layout.edit_text)
-            .setMessage("Please Enter Advance Amount Less Than or Equal to Grand Total and Calculate Again..!")
+            .setMessage("Please Enter Advance Amount Less Than or Equal to Total and Calculate Again..!")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }

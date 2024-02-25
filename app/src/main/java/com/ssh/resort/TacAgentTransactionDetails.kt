@@ -39,8 +39,10 @@ class TacAgentTransactionDetails : AppCompatActivity() {
     var type : String? = ""
     var partner : String? = ""
     var totB2B : String? = ""
+    var balB2B : String? = ""
     var totActivityPrice : String? = ""
     var tac : String? = ""
+    var balTAC : String? = ""
     var total : String? = ""
     var grandTotal : String? = ""
     var paymentType : String? = ""
@@ -75,8 +77,10 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         type = intent.getStringExtra("type")
         partner = intent.getStringExtra("partner")
         totB2B = intent.getStringExtra("totB2B")
+        balB2B = intent.getStringExtra("balanceB2B")
         totActivityPrice = intent.getStringExtra("totActivityPrice")
         tac = intent.getStringExtra("tac")
+        balTAC = intent.getStringExtra("balanceTAC")
         total = intent.getStringExtra("total")
         grandTotal = intent.getStringExtra("grandTotal")
         paymentType = intent.getStringExtra("paymentType")
@@ -127,10 +131,14 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         tvPartner.setText(partner)
         var tvTotalB2B = findViewById<TextView>(R.id.tacAgentTransactionDetailsTotalB2B)
         tvTotalB2B.setText(totB2B)
+        var tvBalanceB2B = findViewById<TextView>(R.id.tacAgentTransactionDetailsBalanceB2B)
+        tvBalanceB2B.setText(balB2B)
         var tvTotalActivityPrice = findViewById<TextView>(R.id.tacAgentTransactionDetailsTotalActivityPrice)
         tvTotalActivityPrice.setText(totActivityPrice)
         var tvTAC = findViewById<TextView>(R.id.tacAgentTransactionDetailsTAC)
         tvTAC.setText(tac)
+        var tvBalanceTAC = findViewById<TextView>(R.id.tacAgentTransactionDetailsBalanceTAC)
+        tvBalanceTAC.setText(balTAC)
         var tvTotal = findViewById<TextView>(R.id.tacAgentTransactionDetailsTotal)
         tvTotal.setText(total)
         var tvGrandTotal = findViewById<TextView>(R.id.tacAgentTransactionDetailsGrandTotal)
@@ -147,14 +155,16 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         tvUpiStatus.setText(upiStatus)
 
         var payAmount = findViewById<Button>(R.id.tacAgentTransactionDetailsPayAmount)
-        payAmount.setText(grandTotal)
+        payAmount.setText(balTAC)
 
         var pay = findViewById<Button>(R.id.tacAgentTransactionDetailsPay)
         pay.setOnClickListener{
-            if (grandTotal!!.toFloat() == 0.0f){
+            if (balTAC!!.contains("---")){
+                Toast.makeText(this@TacAgentTransactionDetails, "No Payment Amount", Toast.LENGTH_SHORT).show()
+            } else if (balTAC!!.equals("0.0")){
                 Toast.makeText(this@TacAgentTransactionDetails, "Payment Amount is 0", Toast.LENGTH_SHORT).show()
             } else{
-                payUsingUpi(upiID!!, selectedCo!!, "Payment", grandTotal!!)
+                payUsingUpi(upiID!!, selectedCo!!, "Payment", tvBalanceTAC!!.text.toString())
             }
         }
     }

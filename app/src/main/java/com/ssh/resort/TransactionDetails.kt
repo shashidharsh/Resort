@@ -28,8 +28,10 @@ class TransactionDetails : AppCompatActivity() {
     var type : String? = ""
     var partner : String? = ""
     var totB2B : String? = ""
+    var balB2B : String? = ""
     var totActivityPrice : String? = ""
     var tac : String? = ""
+    var balTAC : String? = ""
     var total : String? = ""
     var grandTotal : String? = ""
     var paymentType : String? = ""
@@ -63,8 +65,10 @@ class TransactionDetails : AppCompatActivity() {
         type = intent.getStringExtra("type")
         partner = intent.getStringExtra("partner")
         totB2B = intent.getStringExtra("totB2B")
+        balB2B = intent.getStringExtra("balanceB2B")
         totActivityPrice = intent.getStringExtra("totActivityPrice")
         tac = intent.getStringExtra("tac")
+        balTAC = intent.getStringExtra("balanceTAC")
         total = intent.getStringExtra("total")
         grandTotal = intent.getStringExtra("grandTotal")
         paymentType = intent.getStringExtra("paymentType")
@@ -114,10 +118,14 @@ class TransactionDetails : AppCompatActivity() {
         tvPartner.setText(partner)
         var tvTotalB2B = findViewById<TextView>(R.id.transactionDetailsTotalB2B)
         tvTotalB2B.setText(totB2B)
+        var balanceB2B = findViewById<TextView>(R.id.transactionDetailsBalanceB2B)
+        balanceB2B.setText(balB2B)
         var tvTotalActivityPrice = findViewById<TextView>(R.id.transactionDetailsTotalActivityPrice)
         tvTotalActivityPrice.setText(totActivityPrice)
         var tvTAC = findViewById<TextView>(R.id.transactionDetailsTAC)
         tvTAC.setText(tac)
+        var balanceTAC = findViewById<TextView>(R.id.transactionDetailsBalanceTAC)
+        balanceTAC.setText(balTAC)
         var tvTotal = findViewById<TextView>(R.id.transactionDetailsTotal)
         tvTotal.setText(total)
         var tvGrandTotal = findViewById<TextView>(R.id.transactionDetailsGrandTotal)

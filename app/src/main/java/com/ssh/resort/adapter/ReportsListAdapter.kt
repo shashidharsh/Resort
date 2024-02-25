@@ -43,39 +43,7 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
         viewHolder.setOnClickListener(object : ItemViewHolder.ClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 var reportList = reportList.get(position)
-                /*val intent = Intent(context, TransactionDetails::class.java)
-                intent.putExtra("id", reportList.id)
-                intent.putExtra("guestName", reportList.guestName)
-                intent.putExtra("noOfPersons", reportList.noOfPersons)
-                intent.putExtra("noOfChildrens", reportList.noOfChildrens)
-                intent.putExtra("packageAdult", reportList.packageAdult)
-                intent.putExtra("packageChild", reportList.packageChild)
-                intent.putExtra("selectedCo", reportList.selectedCo)
-                intent.putExtra("selectedCoMobile", reportList.selectedCoMobile)
-                intent.putExtra("enterB2B", reportList.enterB2B)
-                intent.putExtra("advance", reportList.advance)
-                intent.putExtra("activities", reportList.activities)
-                intent.putExtra("selectedActivity", reportList.selectedActivity)
-                intent.putExtra("noPersonActivity", reportList.noPersonActivity)
-                intent.putExtra("activityPaymentStatus", reportList.activityPaymentStatus)
-                intent.putExtra("roomNumber", reportList.roomNumber)
-                intent.putExtra("driver", reportList.driver)
-                intent.putExtra("driverCost", reportList.driverCost)
-                intent.putExtra("type", reportList.type)
-                intent.putExtra("partner", reportList.partner)
-                intent.putExtra("totB2B", reportList.totalB2B)
-                intent.putExtra("totActivityPrice", reportList.totActivityPrice)
-                intent.putExtra("tac", reportList.tac)
-                intent.putExtra("total", reportList.total)
-                intent.putExtra("grandTotal", reportList.grandTotal)
-                intent.putExtra("paymentType", reportList.paymentType)
-                intent.putExtra("cash", reportList.cash)
-                intent.putExtra("upi", reportList.upi)
-                intent.putExtra("cashStatus", reportList.cashStatus)
-                intent.putExtra("upiStatus", reportList.upiStatus)
-                intent.putExtra("dateTime", reportList.dateTime)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context!!.startActivity(intent)*/
+
             }
         })
         return viewHolder
@@ -85,8 +53,9 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
 
         Log.d("TAG", "onBindViewHolder:" + reportList[position])
 
-        holder.b2b.setText(reportList[position].totalB2B)
-        holder.tac.setText(reportList[position].totalTAC)
+        holder.totalB2B.setText(reportList[position].totalB2B)
+        holder.totalTAC.setText(reportList[position].totalTAC)
+        holder.advance.setText(reportList[position].advance)
 
         holder.tvSattle.setOnClickListener {
             setData(reportList[position].id, reportList[position].totalB2B, reportList[position].totalTAC, position)
@@ -129,8 +98,11 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val TAG = "TransactionListAdapter"
 
-        var b2b: TextView
-        var tac: TextView
+        var totalB2B: TextView
+        var totalTAC: TextView
+        var advance: TextView
+        var balanceTAC: TextView
+        var balanceB2B: TextView
         var tvSattle: TextView
 
         private var mClickListener: ClickListener? = null
@@ -144,8 +116,11 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
         }
 
         init {
-            b2b = itemView.findViewById(R.id.reportsListItemB2B)
-            tac = itemView.findViewById(R.id.reportsListItemTAC)
+            totalB2B = itemView.findViewById(R.id.reportsListItemTotalB2B)
+            totalTAC = itemView.findViewById(R.id.reportsListItemTotalTAC)
+            advance = itemView.findViewById(R.id.reportsListItemAdvance)
+            balanceTAC = itemView.findViewById(R.id.reportsListItemBalanceTAC)
+            balanceB2B = itemView.findViewById(R.id.reportsListItemBalanceB2B)
             tvSattle = itemView.findViewById(R.id.reportsListItemSattle)
 
             itemView.setOnClickListener { view ->

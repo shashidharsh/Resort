@@ -149,7 +149,8 @@ class Reports : AppCompatActivity() {
                     val transactionListData = ReportsListData(
                         json_data.getString("id"),
                         json_data.getString("B2B"),
-                        json_data.getString("TAC"))
+                        json_data.getString("TAC"),
+                        json_data.getString("Advance"))
                     reportsList.add(transactionListData)
                     Log.d(TAG, "getTransactionDetailsFromServer transactionData: " + transactionListData)
                 }
@@ -243,8 +244,10 @@ class Reports : AppCompatActivity() {
                         json_data.getString("Type"),
                         json_data.getString("Partner"),
                         json_data.getString("B2B"),
+                        json_data.getString("BalanceB2B"),
                         json_data.getString("TotActivityPrice"),
                         json_data.getString("TAC"),
+                        json_data.getString("BalanceTAC"),
                         json_data.getString("Total"),
                         json_data.getString("GrandTotal"),
                         json_data.getString("PaymentType"),
