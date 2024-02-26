@@ -174,6 +174,11 @@ class ViewExpenseDatewise : AppCompatActivity() {
                             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                             .show()
                     } else{
+                        //Total Expense
+                        var totalExpense = findViewById<TextView>(R.id.expensesDatewiseTotalExpense)
+                        var totExpense = adapter!!.totalExpense()
+                        totalExpense!!.setText(totExpense)
+
                         adapter!!.notifyDataSetChanged()
                     }
                 }

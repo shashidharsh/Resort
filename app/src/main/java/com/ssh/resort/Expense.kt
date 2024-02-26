@@ -159,7 +159,7 @@ class Expense : AppCompatActivity() {
 
     fun getDataToJson(): String {
         var dataJson: JSONObject = JSONObject()
-        dataJson.put("ExpenseAmount", expenseAmount!!.text.toString())
+        dataJson.put("ExpenseAmount", (expenseAmount!!.text.toString().toFloat()).toString())
         dataJson.put("ExpenseReason", expenseReason!!.text.toString())
         dataJson.put("ExpenseBy", expenseBy!!.text.toString())
         dataJson.put("Date", currentDate)

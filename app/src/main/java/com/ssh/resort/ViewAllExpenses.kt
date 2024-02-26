@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -131,6 +132,11 @@ class ViewAllExpenses : AppCompatActivity() {
                             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                             .show()
                     } else{
+                        //Total Expense
+                        var totalExpense = findViewById<TextView>(R.id.allExpensesTotalExpense)
+                        var totExpense = adapter!!.totalExpense()
+                        totalExpense!!.setText(totExpense)
+
                         adapter!!.notifyDataSetChanged()
                     }
                 }
