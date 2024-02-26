@@ -10,12 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.ssh.resort.R
-import com.ssh.resort.data.ReportsListData
+import com.ssh.resort.data.TacAgentsTransactionListData
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -27,13 +26,12 @@ import java.net.MalformedURLException
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListData>) : RecyclerView.Adapter<ReportsListAdapter.ItemViewHolder>() {
+class ReportsListAdapter(context: Context, reportLists : ArrayList<TacAgentsTransactionListData>) : RecyclerView.Adapter<ReportsListAdapter.ItemViewHolder>() {
     private val TAG = "ReportsListAdapter"
 
-    var reportList: ArrayList<ReportsListData>
+    var reportList: ArrayList<TacAgentsTransactionListData>
     var context: Context? = null
     var ID: String = ""
-    var amount: Float = 0.0f
     var currentPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -56,6 +54,8 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
         holder.totalB2B.setText(reportList[position].totalB2B)
         holder.totalTAC.setText(reportList[position].totalTAC)
         holder.advance.setText(reportList[position].advance)
+        holder.balanceTAC.setText(reportList[position].balanceTAC)
+        holder.balanceB2B.setText(reportList[position].balanceB2B)
 
         holder.tvSattle.setOnClickListener {
             setData(reportList[position].id, reportList[position].totalB2B, reportList[position].totalTAC, position)
@@ -69,7 +69,6 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
 
     fun setData(id: String, b2bAmount: String, tacAmt: String, position: Int){
         ID = id
-        amount = b2bAmount.toFloat() + tacAmt.toFloat()
         currentPosition = position
         Log.d(TAG, "setdata ID: " + ID)
     }
@@ -176,7 +175,7 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/UpdateTotalB2B.php")
+        val url = URL("https://hillstoneresort.com/Resorts/UpdateBalanceB2B.php")
         Log.d(TAG, "updateData URL: " + url)
         var client: HttpURLConnection? = null
         try {
@@ -218,8 +217,7 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<ReportsListDa
     fun getDataToJson(): String {
         var dataJson: JSONObject = JSONObject()
         dataJson.put("id", ID)
-        dataJson.put("amount", amount)
-        dataJson.put("tacAmount", "0.0")
+        dataJson.put("sattlementAmount", "0.0")
 
         Log.d(TAG, "getDataToJson: " + dataJson.toString())
         return dataJson.toString()

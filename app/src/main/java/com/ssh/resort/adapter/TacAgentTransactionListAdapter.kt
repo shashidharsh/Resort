@@ -68,7 +68,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
                 intent.putExtra("totB2B", transactionList.totalB2B)
                 intent.putExtra("balanceB2B", transactionList.balanceB2B)
                 intent.putExtra("totActivityPrice", transactionList.totActivityPrice)
-                intent.putExtra("tac", transactionList.tac)
+                intent.putExtra("tac", transactionList.totalTAC)
                 intent.putExtra("balanceTAC", transactionList.balanceTAC)
                 intent.putExtra("total", transactionList.total)
                 intent.putExtra("grandTotal", transactionList.grandTotal)

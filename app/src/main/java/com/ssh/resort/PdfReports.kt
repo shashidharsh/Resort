@@ -170,7 +170,7 @@ class PdfReports {
             val advanceCell = createCell(it.advance)
             table.addCell(advanceCell)
             //Write Each Balance B2B
-            val balanceB2BCell = createCell(it.totalB2B)
+            val balanceB2BCell = createCell(it.balanceB2B)
             table.addCell(balanceB2BCell)
         }
         document.add(table)

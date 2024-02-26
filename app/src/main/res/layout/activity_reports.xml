@@ -13,7 +13,7 @@
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginBottom="180dp">
 
             <LinearLayout
@@ -94,7 +94,6 @@
                     android:id="@+id/rvReportsList"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="190dp"
                     android:padding="5dp"
                     android:scrollbars="vertical"
                     tools:listitem="@layout/reports_list_item" />

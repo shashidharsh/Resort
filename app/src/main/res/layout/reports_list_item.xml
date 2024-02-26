@@ -57,9 +57,9 @@
             android:text="@string/sattle"
             android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1"
-            android:textAlignment="center"
+            android:textAlignment="textEnd"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="16dp"
             android:foreground="?attr/selectableItemBackgroundBorderless"/>
 
     </TableRow>

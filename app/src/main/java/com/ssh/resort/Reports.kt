@@ -24,7 +24,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ReportsListAdapter
-import com.ssh.resort.data.ReportsListData
 import com.ssh.resort.data.TacAgentsTransactionListData
 import java.io.File
 import java.text.SimpleDateFormat
@@ -39,7 +38,7 @@ class Reports : AppCompatActivity() {
     var layoutManager: RecyclerView.LayoutManager? = null
     var adapter: ReportsListAdapter? = null
 
-    val reportsList: ArrayList<ReportsListData> = ArrayList()
+    val reportsList: ArrayList<TacAgentsTransactionListData> = ArrayList()
     val reportsListDate: ArrayList<TacAgentsTransactionListData> = ArrayList()
 
     var tvFromDate: TextView? = null
@@ -146,11 +145,40 @@ class Reports : AppCompatActivity() {
 
                 for (i in 0 until transactionResult.length()) {
                     val json_data = transactionResult.getJSONObject(i)
-                    val transactionListData = ReportsListData(
+                    val transactionListData = TacAgentsTransactionListData(
                         json_data.getString("id"),
+                        json_data.getString("GuestName"),
+                        json_data.getString("NoOfPersons"),
+                        json_data.getString("NoOfChildrens"),
+                        json_data.getString("PackageAdult"),
+                        json_data.getString("PackageChild"),
+                        json_data.getString("SelectedCo"),
+                        json_data.getString("SelectedCoMobile"),
+                        json_data.getString("EnterB2BPrice"),
+                        json_data.getString("Advance"),
+                        json_data.getString("Activities"),
+                        json_data.getString("SelectedActivity"),
+                        json_data.getString("NoPersonActivity"),
+                        json_data.getString("ActivityPaymentStatus"),
+                        json_data.getString("RoomNumber"),
+                        json_data.getString("Driver"),
+                        json_data.getString("DriverCost"),
+                        json_data.getString("Type"),
+                        json_data.getString("Partner"),
                         json_data.getString("B2B"),
+                        json_data.getString("BalanceB2B"),
+                        json_data.getString("TotActivityPrice"),
                         json_data.getString("TAC"),
-                        json_data.getString("Advance"))
+                        json_data.getString("BalanceTAC"),
+                        json_data.getString("Total"),
+                        json_data.getString("GrandTotal"),
+                        json_data.getString("PaymentType"),
+                        json_data.getString("Cash"),
+                        json_data.getString("UPI"),
+                        json_data.getString("CashPayStatus"),
+                        json_data.getString("UPIPayStatus"),
+                        json_data.getString("DateTime"),
+                        json_data.getString("Date"))
                     reportsList.add(transactionListData)
                     Log.d(TAG, "getTransactionDetailsFromServer transactionData: " + transactionListData)
                 }

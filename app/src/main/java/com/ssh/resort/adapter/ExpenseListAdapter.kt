@@ -1,31 +1,14 @@
 package com.ssh.resort.adapter
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Dialog
 import android.content.Context
-import android.os.AsyncTask
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.ssh.resort.R
 import com.ssh.resort.data.ExpenseListData
-import com.ssh.resort.data.ReportsListData
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.InputStreamReader
-import java.io.OutputStream
-import java.io.OutputStreamWriter
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection
 
 class ExpenseListAdapter(context: Context, expenseLists : ArrayList<ExpenseListData>) : RecyclerView.Adapter<ExpenseListAdapter.ItemViewHolder>() {
     private val TAG = "ExpenseListAdapter"

@@ -160,9 +160,9 @@ class TacAgentTransactionDetails : AppCompatActivity() {
         var pay = findViewById<Button>(R.id.tacAgentTransactionDetailsPay)
         pay.setOnClickListener{
             if (balTAC!!.contains("---")){
-                Toast.makeText(this@TacAgentTransactionDetails, "No Payment Amount", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@TacAgentTransactionDetails, "No TAC Payment Amount", Toast.LENGTH_SHORT).show()
             } else if (balTAC!!.equals("0.0")){
-                Toast.makeText(this@TacAgentTransactionDetails, "Payment Amount is 0", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@TacAgentTransactionDetails, "Balance TAC Amount is 0", Toast.LENGTH_SHORT).show()
             } else{
                 payUsingUpi(upiID!!, selectedCo!!, "Payment", tvBalanceTAC!!.text.toString())
             }
