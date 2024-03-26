@@ -1,6 +1,8 @@
 package com.ssh.resort
 
+import android.content.Context
 import android.os.Environment
+import android.util.Log
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
@@ -17,19 +19,25 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class PdfReports {
+class PdfReports(context: Context) {
     val TITLE_FONT = Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD)
     val BODY_FONT = Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.NORMAL)
     private lateinit var pdf: PdfWriter
+    var cntxt: Context = context
 
     private fun createFile(): File {
         val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy h:mm a")
         val currentDateTime: String = simpleDateFormat.format(Date())
         //Prepare file
         val title = "Reports-" + currentDateTime + ".pdf"
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val file = File(path, title)
-        if (!file.exists()) file.createNewFile()
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/Resort"
+        val dir = File(path)
+        if (!dir.exists())
+            dir.mkdirs()
+        Log.d("Path", "createFile Path: " + path)
+        val file = File(dir, title)
+        if (!file.exists())
+            file.createNewFile()
         return file
     }
 

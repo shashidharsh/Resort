@@ -3,12 +3,15 @@ package com.ssh.resort
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.ActivityNotFoundException
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.StrictMode
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +19,8 @@ import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +31,8 @@ import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ReportsListAdapter
 import com.ssh.resort.data.TacAgentsTransactionListData
 import java.io.File
+import java.io.IOException
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -320,7 +327,7 @@ class Reports : AppCompatActivity() {
         val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
         val onFinish: (File) -> Unit = { openFile(it) }
         val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
-        val pdfReports = PdfReports()
+        val pdfReports = PdfReports(this)
         pdfReports.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
     }
 
@@ -342,5 +349,26 @@ class Reports : AppCompatActivity() {
 
     private fun toastErrorMessage(s: String) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun saveFileToExternalStorage(displayName: String, content: String) {
+        val externalUri = MediaStore.Files.getContentUri(MediaStore.VOLUME_INTERNAL)
+        val relativeLocation = Environment.DIRECTORY_DOCUMENTS
+        val contentValues = ContentValues()
+        contentValues.put(MediaStore.Files.FileColumns.DISPLAY_NAME, "$displayName.txt")
+        contentValues.put(MediaStore.Files.FileColumns.MIME_TYPE, "application/text")
+        contentValues.put(MediaStore.Files.FileColumns.TITLE, "Test")
+        contentValues.put(MediaStore.Files.FileColumns.DATE_ADDED, System.currentTimeMillis() / 1000)
+        contentValues.put(MediaStore.Files.FileColumns.RELATIVE_PATH, relativeLocation)
+        contentValues.put(MediaStore.Files.FileColumns.DATE_TAKEN, System.currentTimeMillis())
+        val fileUri = contentResolver.insert(externalUri, contentValues)
+        try {
+            val outputStream: OutputStream? = contentResolver.openOutputStream(fileUri!!)
+            outputStream!!.write(content.toByteArray())
+            outputStream!!.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 }

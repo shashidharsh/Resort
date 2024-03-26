@@ -46,6 +46,7 @@ import com.ssh.resort.data.ExistingAgentListData
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.io.ByteArrayOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.io.OutputStreamWriter
@@ -523,14 +524,26 @@ class Checkin : AppCompatActivity() {
             }
         }
 
+        // Retrieve and cache the system's default "short" animation time.
+        //shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
+
         // Hook up taps on the thumbnail views.
         //Zoom QR Code
         ivQrCode!!.setOnClickListener {
-            zoomImageFromThumb(it, qrCodeImageBitmap)
-        }
+            //zoomImageFromThumb(it, qrCodeImageBitmap)
+            if (qrCodeImageBitmap != null) {
+                //Convert to byte array
+                val stream = ByteArrayOutputStream()
+                qrCodeImageBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val byteArray = stream.toByteArray()
 
-        // Retrieve and cache the system's default "short" animation time.
-        shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
+                val intent = Intent(this, DisplayQR::class.java)
+                intent.putExtra("QrCodeImage", byteArray)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "QR Code Not Generated", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     // Function to remove all the digit from string

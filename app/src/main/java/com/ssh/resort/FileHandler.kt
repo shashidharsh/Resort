@@ -22,12 +22,12 @@ class FileHandler {
                 val split = docId.split(":").toTypedArray()
                 val type = split[0]
                 if ("primary".equals(type, ignoreCase = true)) {
-                    return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
+                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/" + split[1]
                 }
             } else if (isDownloadsDocument(uri)) {
                 val fileName = getFilePath(context, uri)
                 if (fileName != null) {
-                    return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName
+                    return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + fileName
                 }
 
                 var id = DocumentsContract.getDocumentId(uri)

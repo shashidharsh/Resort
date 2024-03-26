@@ -179,6 +179,7 @@ class TacAgentTransactionDetails : AppCompatActivity() {
             .appendQueryParameter("cu", "INR")
             .build()
 
+        Log.d(TAG, "payUsingUpi: uri" + uri)
 
         val upiPayIntent = Intent(Intent.ACTION_VIEW)
         upiPayIntent.data = uri
