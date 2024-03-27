@@ -3,6 +3,7 @@ package com.ssh.resort
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import android.widget.Toast
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
@@ -16,6 +17,8 @@ import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.resort.data.TacAgentsTransactionListData
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.reflect.InvocationTargetException
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -36,8 +39,17 @@ class PdfReports(context: Context) {
             dir.mkdirs()
         Log.d("Path", "createFile Path: " + path)
         val file = File(dir, title)
-        if (!file.exists())
-            file.createNewFile()
+        if (!file.exists()) {
+            try {
+                file.createNewFile()
+            } catch (invEx: InvocationTargetException) {
+                invEx.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        } else {
+            Toast.makeText(cntxt, "File already exist", Toast.LENGTH_SHORT).show()
+        }
         return file
     }
 

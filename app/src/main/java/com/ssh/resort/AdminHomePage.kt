@@ -1,9 +1,12 @@
 package com.ssh.resort
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import com.ssh.appdataremotedb.Utils
 
@@ -14,6 +17,17 @@ class AdminHomePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.admin_home_page)
+
+        // assigning ID of the toolbar to a variable
+        val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        // using toolbar as ActionBar
+        setSupportActionBar(toolbar)
+
+        var addRooms = findViewById<ImageView>(R.id.ivAddRooms)
+        addRooms.setOnClickListener{
+            val intent = Intent(this, AddRooms::class.java)
+            startActivity(intent)
+        }
 
         var cvCheckin = findViewById<CardView>(R.id.cvCheckin)
         cvCheckin.setOnClickListener{
