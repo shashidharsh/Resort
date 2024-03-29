@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -27,16 +28,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
+import com.itextpdf.text.Element
 import com.itextpdf.text.Font
+import com.itextpdf.text.PageSize
 import com.itextpdf.text.Paragraph
+import com.itextpdf.text.Phrase
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ReportsListAdapter
 import com.ssh.resort.data.TacAgentsTransactionListData
 import java.io.File
-import java.io.IOException
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -54,6 +59,8 @@ class Reports : AppCompatActivity() {
 
     var tvFromDate: TextView? = null
     var tvToDate: TextView? = null
+
+    private lateinit var pdf: PdfWriter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,8 +129,6 @@ class Reports : AppCompatActivity() {
         generatePDF.setOnClickListener{
             getTransactionDetailsDateRange()
         }
-
-        saveFileToExternalStorage()
     }
 
     //Download Transaction Details from Server
@@ -320,8 +325,13 @@ class Reports : AppCompatActivity() {
                     if (reportsListDate.size == 0){
                         Toast.makeText(this@Reports, "No Transactions", Toast.LENGTH_SHORT).show()
                     } else{
-                        createPdf()
-                        Toast.makeText(this@Reports, "PDF Generated Successfully", Toast.LENGTH_SHORT).show()
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
+                            createUserTable(data = reportsListDate, paragraphList = paragraphList, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
+                        } else {
+                            createPdf()
+                            Toast.makeText(this@Reports, "PDF Generated Successfully", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
@@ -330,16 +340,11 @@ class Reports : AppCompatActivity() {
     }
 
     private fun createPdf() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val pdfReports = PdfReports(this)
-            pdfReports.createPDF()
-        } else {
-            val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
-            val onFinish: (File) -> Unit = { openFile(it) }
-            val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
-            val pdfReports = PdfReports(this)
-            pdfReports.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
-        }
+        val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
+        val onFinish: (File) -> Unit = { openFile(it) }
+        val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
+        val pdfReports = PdfReports(this)
+        pdfReports.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
     }
 
     private fun openFile(file: File) {
@@ -363,37 +368,183 @@ class Reports : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun saveFileToExternalStorage() {
+    fun createUserTable(data: List<TacAgentsTransactionListData>, paragraphList: List<String>, fromDate: String, toDate: String) {
+        //Define the document
+        val file = saveFileToExternalStorage()
+        val document = createDocument()
+
+        //Setup PDF Writer
+        setupPdfWriter(document, file!!)
+
+        //Add Title
+        document.add(Paragraph("Reports From " + fromDate + "  To " + toDate, Font(Font.FontFamily.TIMES_ROMAN, 18f, Font.BOLD)))
+        //Add Empty Line as necessary
+        addLineSpace(document, 1)
+
+        //Add paragraph
+        paragraphList.forEach {content->
+            val paragraph = createParagraph(content)
+            document.add(paragraph)
+        }
+        addLineSpace(document, 1)
+        //Add Empty Line as necessary
+
+        //Define Table
+        val CustName = 2f
+        val noOfPersons = 2f
+        val agentName = 2f
+        val Package = 2f
+        val activity = 2f
+        val b2b = 2f
+        val advance = 2f
+        val balanceB2B = 2f
+        val columnWidth = floatArrayOf(CustName, noOfPersons, agentName, Package, activity, b2b, advance, balanceB2B)
+        val table = createTable(8, columnWidth)
+        //Table header (first row)
+        val tableHeaderContent = listOf("Cust Name", "No Of Person", "Agent", "Package", "Activity", "B2B", "Advance", "Bal B2B")
+        //write table header into table
+        tableHeaderContent.forEach {
+            //define a cell
+            val cell = createHeaderCell(it)
+            //add our cell into our table
+            table.addCell(cell)
+        }
+        //write user data into table
+        data.forEach {
+            //Write Each custName
+            val custNameCell = createCell(it.guestName)
+            table.addCell(custNameCell)
+            //Write Each noOfPerson
+            val noOfPersonCell = createCell(it.noOfPersons)
+            table.addCell(noOfPersonCell)
+            //Write Each Agent
+            val agentCell = createCell(it.selectedCo)
+            table.addCell(agentCell)
+            //Write Each Package
+            val packageCell = createCell(it.packageAdult)
+            table.addCell(packageCell)
+            //Write Each Activity
+            val activityCell = createCell(it.selectedActivity)
+            table.addCell(activityCell)
+            //Write Each B2B
+            val b2bCell = createCell(it.enterB2B)
+            table.addCell(b2bCell)
+            //Write Each Advance
+            val advanceCell = createCell(it.advance)
+            table.addCell(advanceCell)
+            //Write Each Balance B2B
+            val balanceB2BCell = createCell(it.balanceB2B)
+            table.addCell(balanceB2BCell)
+        }
+        document.add(table)
+        document.close()
+        Toast.makeText(this, "PDF Generated Successfully", Toast.LENGTH_SHORT).show()
+        openPdfFileAboveAndroid10(file)
+
+        try {
+            pdf.close()
+        } catch (ex: Exception) {
+            Log.d(TAG, "createUserTable Ex: " + ex)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun saveFileToExternalStorage() : Uri? {
+        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy h:mm a")
+        val currentDateTime: String = simpleDateFormat.format(Date())
+        //File Name
+        val fileName = "Reports-" + currentDateTime
+
         val contentValues = ContentValues()
-        contentValues.put(MediaStore.Files.FileColumns.DISPLAY_NAME, "Reports")
+        contentValues.put(MediaStore.Files.FileColumns.DISPLAY_NAME, fileName)
         contentValues.put(MediaStore.Files.FileColumns.MIME_TYPE, "application/pdf")
         contentValues.put(MediaStore.Files.FileColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Resort")
         val fileUri = contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
 
-        if (fileUri != null){
-            val outputStream = contentResolver.openOutputStream(fileUri)
-            var document = Document()
-            PdfWriter.getInstance(document, outputStream)
-            document.open()
-            document.addAuthor("Shashidhar")
-            addDataIntoPDF(document)
-            document.close()
-            Toast.makeText(this, "PDF Generated Successfully", Toast.LENGTH_SHORT).show()
+        return fileUri
+    }
+
+    private fun createDocument(): Document {
+        //Create Document
+        val document = Document()
+        document.setMargins(24f, 24f, 32f, 32f)
+        document.pageSize = PageSize.A4
+        return document
+    }
+
+    private fun setupPdfWriter(document: Document, fileUri: Uri) {
+        val outputStream = contentResolver.openOutputStream(fileUri)
+        pdf = PdfWriter.getInstance(document, outputStream)
+        pdf.setFullCompression()
+        //Open the document
+        document.open()
+    }
+
+    private fun createTable(column: Int, columnWidth: FloatArray): PdfPTable {
+        val table = PdfPTable(column)
+        table.widthPercentage = 100f
+        table.setWidths(columnWidth)
+        table.headerRows = 1
+        table.defaultCell.verticalAlignment = Element.ALIGN_CENTER
+        table.defaultCell.horizontalAlignment = Element.ALIGN_CENTER
+        return table
+    }
+
+    private fun createCell(content: String): PdfPCell {
+        val cell = PdfPCell(Phrase(content))
+        cell.horizontalAlignment = Element.ALIGN_CENTER
+        cell.verticalAlignment = Element.ALIGN_MIDDLE
+        //setup padding
+        cell.setPadding(8f)
+        cell.isUseAscender = true
+        cell.paddingLeft = 4f
+        cell.paddingRight = 4f
+        cell.paddingTop = 8f
+        cell.paddingBottom = 8f
+        return cell
+    }
+
+    private fun createHeaderCell(content: String): PdfPCell {
+        val cell = PdfPCell(Phrase(content))
+        cell.horizontalAlignment = Element.ALIGN_CENTER
+        cell.verticalAlignment = Element.ALIGN_MIDDLE
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY)
+        //setup padding
+        cell.setPadding(8f)
+        cell.isUseAscender = true
+        cell.paddingLeft = 4f
+        cell.paddingRight = 4f
+        cell.paddingTop = 8f
+        cell.paddingBottom = 8f
+        return cell
+    }
+
+    private fun addLineSpace(document: Document, number: Int) {
+        for (i in 0 until number) {
+            document.add(Paragraph(" "))
         }
     }
 
-    fun addDataIntoPDF(document: Document) {
-        var paraGraph = Paragraph()
-        val headingFont = Font(Font.FontFamily.HELVETICA, 24f, Font.BOLD)
-        paraGraph.add(Paragraph("Reports PDF", headingFont))
-        addEmptyLines(paraGraph, 1)
-        paraGraph.add(Paragraph("Shashidhar"))
-        document.add(paraGraph)
+    private fun createParagraph(content: String): Paragraph {
+        val paragraph = Paragraph(content, Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.NORMAL))
+        paragraph.firstLineIndent = 25f
+        paragraph.alignment = Element.ALIGN_CENTER
+        return paragraph
     }
 
-    fun addEmptyLines (paragraph: Paragraph, lineCount: Int) {
-        for (i in 0 until lineCount){
-            paragraph.add(Paragraph(""))
+    private fun openPdfFileAboveAndroid10(fileUri: Uri) {
+        val path = FileHandler().getPathFromUri(this, fileUri)
+        val pdfFile = File(path)
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+        builder.detectFileUriExposure()
+        val pdfIntent = Intent(Intent.ACTION_VIEW)
+        pdfIntent.setDataAndType(pdfFile.toUri(), "application/pdf")
+        pdfIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        try {
+            startActivity(pdfIntent)
+        } catch (e: ActivityNotFoundException) {
+            toastErrorMessage("Can't read pdf file")
         }
     }
 }
