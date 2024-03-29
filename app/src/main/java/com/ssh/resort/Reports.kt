@@ -27,6 +27,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.itextpdf.text.Document
+import com.itextpdf.text.Font
+import com.itextpdf.text.Paragraph
+import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.resort.adapter.ReportsListAdapter
 import com.ssh.resort.data.TacAgentsTransactionListData
@@ -118,6 +122,8 @@ class Reports : AppCompatActivity() {
         generatePDF.setOnClickListener{
             getTransactionDetailsDateRange()
         }
+
+        saveFileToExternalStorage()
     }
 
     //Download Transaction Details from Server
@@ -324,11 +330,16 @@ class Reports : AppCompatActivity() {
     }
 
     private fun createPdf() {
-        val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
-        val onFinish: (File) -> Unit = { openFile(it) }
-        val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
-        val pdfReports = PdfReports(this)
-        pdfReports.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val pdfReports = PdfReports(this)
+            pdfReports.createPDF()
+        } else {
+            val onError: (Exception) -> Unit = { toastErrorMessage(it.message.toString()) }
+            val onFinish: (File) -> Unit = { openFile(it) }
+            val paragraphList = listOf(getString(R.string.paragraph1), getString(R.string.paragraph2))
+            val pdfReports = PdfReports(this)
+            pdfReports.createUserTable(data = reportsListDate, paragraphList = paragraphList, onFinish = onFinish, onError = onError, tvFromDate!!.text.toString(), tvToDate!!.text.toString())
+        }
     }
 
     private fun openFile(file: File) {
@@ -352,23 +363,37 @@ class Reports : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun saveFileToExternalStorage(displayName: String, content: String) {
-        val externalUri = MediaStore.Files.getContentUri(MediaStore.VOLUME_INTERNAL)
-        val relativeLocation = Environment.DIRECTORY_DOCUMENTS
+    private fun saveFileToExternalStorage() {
         val contentValues = ContentValues()
-        contentValues.put(MediaStore.Files.FileColumns.DISPLAY_NAME, "$displayName.txt")
-        contentValues.put(MediaStore.Files.FileColumns.MIME_TYPE, "application/text")
-        contentValues.put(MediaStore.Files.FileColumns.TITLE, "Test")
-        contentValues.put(MediaStore.Files.FileColumns.DATE_ADDED, System.currentTimeMillis() / 1000)
-        contentValues.put(MediaStore.Files.FileColumns.RELATIVE_PATH, relativeLocation)
-        contentValues.put(MediaStore.Files.FileColumns.DATE_TAKEN, System.currentTimeMillis())
-        val fileUri = contentResolver.insert(externalUri, contentValues)
-        try {
-            val outputStream: OutputStream? = contentResolver.openOutputStream(fileUri!!)
-            outputStream!!.write(content.toByteArray())
-            outputStream!!.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        contentValues.put(MediaStore.Files.FileColumns.DISPLAY_NAME, "Reports")
+        contentValues.put(MediaStore.Files.FileColumns.MIME_TYPE, "application/pdf")
+        contentValues.put(MediaStore.Files.FileColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Resort")
+        val fileUri = contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+
+        if (fileUri != null){
+            val outputStream = contentResolver.openOutputStream(fileUri)
+            var document = Document()
+            PdfWriter.getInstance(document, outputStream)
+            document.open()
+            document.addAuthor("Shashidhar")
+            addDataIntoPDF(document)
+            document.close()
+            Toast.makeText(this, "PDF Generated Successfully", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun addDataIntoPDF(document: Document) {
+        var paraGraph = Paragraph()
+        val headingFont = Font(Font.FontFamily.HELVETICA, 24f, Font.BOLD)
+        paraGraph.add(Paragraph("Reports PDF", headingFont))
+        addEmptyLines(paraGraph, 1)
+        paraGraph.add(Paragraph("Shashidhar"))
+        document.add(paraGraph)
+    }
+
+    fun addEmptyLines (paragraph: Paragraph, lineCount: Int) {
+        for (i in 0 until lineCount){
+            paragraph.add(Paragraph(""))
         }
     }
 }

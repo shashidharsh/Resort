@@ -1,11 +1,15 @@
 package com.ssh.resort
 
 import android.content.Context
+import android.content.Intent
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import com.itextpdf.text.BaseColor
+import com.itextpdf.text.Chunk
 import com.itextpdf.text.Document
+import com.itextpdf.text.DocumentException
 import com.itextpdf.text.Element
 import com.itextpdf.text.Font
 import com.itextpdf.text.PageSize
@@ -16,6 +20,7 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.ssh.resort.data.TacAgentsTransactionListData
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.reflect.InvocationTargetException
@@ -32,13 +37,13 @@ class PdfReports(context: Context) {
         val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy h:mm a")
         val currentDateTime: String = simpleDateFormat.format(Date())
         //Prepare file
-        val title = "Reports-" + currentDateTime + ".pdf"
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/Resort"
+        val fileName = "Reports-" + currentDateTime + ".pdf"
+        var path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/Resort"
+        Log.d("Path", "createFile Path Below 10: " + path)
         val dir = File(path)
         if (!dir.exists())
             dir.mkdirs()
-        Log.d("Path", "createFile Path: " + path)
-        val file = File(dir, title)
+        val file = File(dir, fileName)
         if (!file.exists()) {
             try {
                 file.createNewFile()
@@ -202,6 +207,64 @@ class PdfReports(context: Context) {
             onError(ex)
         } finally {
             onFinish(file)
+        }
+    }
+
+    //Create PDF above android 10
+    fun createPDF(){
+        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy h:mm a")
+        val currentDateTime: String = simpleDateFormat.format(Date())
+        val fileName = "Reports-" + currentDateTime + ".pdf"
+
+        val document = Document()
+        val dest: String = cntxt.getExternalFilesDir(null).toString() + "/Resort"
+        Log.d("PdfReports", "createPDF: " + dest)
+
+        val dir = File(dest)
+        if (!dir.exists())
+            dir.mkdirs()
+
+        try {
+            val file = File(dest, fileName)
+            file.createNewFile()
+            val fOut = FileOutputStream(file, false)
+            PdfWriter.getInstance(document, fOut)
+        } catch (e: DocumentException) {
+            e.printStackTrace()
+            Log.v("PdfError", e.toString())
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            Log.v("PdfError", e.toString())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: DocumentException) {
+            e.printStackTrace()
+        }
+
+        // Open to write
+        document.open()
+        document.add(Paragraph(""))
+        document.add(Chunk("Hello"))
+        document.close()
+
+        val pdfFile = File("$dest/$fileName")
+        if (!pdfFile.exists()) {
+            pdfFile.mkdir()
+        }
+
+        if (pdfFile != null && pdfFile.exists()) //Checking for the file is exist or not
+        {
+            val intent = Intent(Intent.ACTION_VIEW)
+            val mURI = FileProvider.getUriForFile(cntxt, cntxt.getApplicationContext().getPackageName() + ".provider", pdfFile)
+            intent.setDataAndType(mURI, "application/pdf")
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            try {
+                cntxt.startActivity(intent)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            Toast.makeText(cntxt, "The file not exists! ", Toast.LENGTH_SHORT).show()
         }
     }
 }
