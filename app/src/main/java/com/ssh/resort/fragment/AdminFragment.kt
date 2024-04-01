@@ -19,13 +19,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.appdataremotedb.Utils
 import com.ssh.resort.AdminHomePage
-import com.ssh.resort.ManagerHomePage
 import com.ssh.resort.NetworkConnection
 import com.ssh.resort.R
 import com.ssh.resort.UpdateApp

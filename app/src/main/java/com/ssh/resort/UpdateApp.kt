@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
@@ -17,18 +16,24 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.ssh.appdataremotedb.Utils
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class UpdateApp : AppCompatActivity() {
 
     val TAG = "UpdateApp"
     val REQUEST_INSTALL = 100
+
+    val FILE_NAME = "Resort.apk"
+    val FILE_BASE_PATH = "file://"
+    val MIME_TYPE = "application/vnd.android.package-archive"
+    val PROVIDER_PATH = ".provider"
+    val APP_INSTALL_PATH = "\"application/vnd.android.package-archive\""
+    val apkUrl = "https://hillstoneresort.com/Resorts/APK/DownloadResort.php"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +48,8 @@ class UpdateApp : AppCompatActivity() {
                 Toast.makeText(this, "Please Turn On Your Mobile Data", Toast.LENGTH_LONG).show()
             }
             else {
-                downloadAPK()
+                //downloadAPK()
+                enqueueDownload(apkUrl)
             }
         }
     }
@@ -142,18 +148,60 @@ class UpdateApp : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun saveFileToExternalStorage() : Uri? {
-        val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy h:mm a")
-        val currentDateTime: String = simpleDateFormat.format(Date())
-        //File Name
-        val fileName = "Reports-" + currentDateTime
+    private fun saveFileToExternalStoragePath() : Uri? {
 
         val contentValues = ContentValues()
-        contentValues.put(MediaStore.Files.FileColumns.DISPLAY_NAME, fileName)
+        contentValues.put(MediaStore.Files.FileColumns.DISPLAY_NAME, "Resort")
         contentValues.put(MediaStore.Files.FileColumns.MIME_TYPE, "application/vnd.android.package-archive")
-        contentValues.put(MediaStore.Files.FileColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Resort")
+        contentValues.put(MediaStore.Files.FileColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         val fileUri = contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+        Log.d(TAG, "saveFileToExternalStoragePath: " + fileUri)
 
         return fileUri
+    }
+
+    fun enqueueDownload(url: String) {
+        var destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/"
+        destination += FILE_NAME
+        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
+        val file = File(destination)
+        if (file.exists()) file.delete()
+        val downloadManager = this.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val downloadUri = Uri.parse(url)
+        val request = DownloadManager.Request(downloadUri)
+        request.setMimeType(MIME_TYPE)
+        request.setTitle("APK is downloading")
+        request.setDescription("Downloading...")
+        // set destination
+        request.setDestinationUri(uri)
+        showInstallOption(destination, uri)
+        // Enqueue a new download and same the referenceId
+        downloadManager.enqueue(request)
+        Toast.makeText(this, "Downloading...", Toast.LENGTH_LONG).show()
+    }
+
+    private fun showInstallOption(destination: String, uri: Uri) {
+        // set BroadcastReceiver to install app when .apk is downloaded
+        val onComplete = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + PROVIDER_PATH, File(destination))
+                    val install = Intent(Intent.ACTION_VIEW)
+                    install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+                    install.data = contentUri
+                    context.startActivity(install)
+                    context.unregisterReceiver(this)
+                } else {
+                    val install = Intent(Intent.ACTION_VIEW)
+                    install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    install.setDataAndType(uri, "application/vnd.android.package-archive")
+                    context.startActivity(install)
+                    context.unregisterReceiver(this)
+                }
+            }
+        }
+        this.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 }
