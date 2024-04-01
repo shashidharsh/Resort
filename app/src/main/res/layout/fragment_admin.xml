@@ -104,6 +104,17 @@
                                 android:layout_marginTop="20dp"
                                 android:text="Login" />
 
+                            <TextView
+                                android:id="@+id/tvLoginAppVersion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:hint="App Version"
+                                android:layout_gravity="center"
+                                android:textColor="#000000"
+                                android:foreground="?android:attr/selectableItemBackground"/>
+
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
