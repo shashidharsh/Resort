@@ -161,11 +161,25 @@ class UpdateApp : AppCompatActivity() {
     }
 
     fun enqueueDownload(url: String) {
-        var destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/"
-        destination += FILE_NAME
-        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
-        val file = File(destination)
-        if (file.exists()) file.delete()
+
+        var destinationUri: Uri?
+        var destinationPath: String? = ""
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            destinationUri = saveFileToExternalStoragePath()
+            destinationPath = FileHandler().getPathFromUri(this, destinationUri!!)
+            Log.d(TAG, "destinationPath: " + destinationPath)
+            /*val file = File(destinationPath)
+            if (file.exists())
+                file.delete()*/
+        } else {
+            destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/" + FILE_NAME
+            destinationUri = Uri.parse("file://$destinationPath")
+            /*val file = File(destinationPath)
+            if (file.exists())
+                file.delete()*/
+        }
+
         val downloadManager = this.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadUri = Uri.parse(url)
         val request = DownloadManager.Request(downloadUri)
@@ -173,8 +187,8 @@ class UpdateApp : AppCompatActivity() {
         request.setTitle("APK is downloading")
         request.setDescription("Downloading...")
         // set destination
-        request.setDestinationUri(uri)
-        showInstallOption(destination, uri)
+        request.setDestinationUri(destinationUri)
+        showInstallOption(destinationPath!!, destinationUri!!)
         // Enqueue a new download and same the referenceId
         downloadManager.enqueue(request)
         Toast.makeText(this, "Downloading...", Toast.LENGTH_LONG).show()
