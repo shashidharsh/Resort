@@ -113,4 +113,9 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
+    <!--Material Progress Dialog-->
+    <style name="CustomDialogTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

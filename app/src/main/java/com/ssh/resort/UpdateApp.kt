@@ -1,12 +1,19 @@
 package com.ssh.resort
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.CursorLoader
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
@@ -19,10 +26,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import com.ssh.appdataremotedb.Utils
 import java.io.File
 import java.io.FileOutputStream
@@ -64,31 +76,48 @@ class UpdateApp : AppCompatActivity() {
     fun updateApplication() {
         Log.d(TAG, "updateApplication")
 
-        var pd = Dialog(this)
-        val view: View = LayoutInflater.from(this).inflate(R.layout.progress, null)
-        pd.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        pd.getWindow()?.setBackgroundDrawableResource(R.color.transparent)
-        pd.setTitle("Updating App...")
-        pd.setContentView(view)
-        pd.setCancelable(false)
+        val inflater = (this).layoutInflater
+        val view = inflater.inflate(R.layout.progress_dialog, null)
+
+        var cpTitle = view.findViewById<TextView>(R.id.cp_title)
+        var cpCardView = view.findViewById<CardView>(R.id.cp_cardview)
+        var progressBar = view.findViewById<ProgressBar>(R.id.cp_pbar)
+
+        // Card Color
+        cpCardView.setCardBackgroundColor(Color.parseColor("#70000000"))
+        // Progress Bar Color
+        setColorFilter(progressBar.indeterminateDrawable, ResourcesCompat.getColor(this.resources, R.color.colorAccent, null))
+        // Text Color
+        cpTitle.setText("Downloading APK")
+        cpTitle.setTextColor(Color.WHITE)
+        // Custom Dialog initialization
+        var dialog = CustomDialog(this)
+        dialog.setCancelable(false)
+        dialog.setContentView(view)
 
         class DownloadApp : AsyncTask<Void, Void, String>() {
+            @RequiresApi(Build.VERSION_CODES.R)
             override fun doInBackground(vararg params: Void?): String {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     uri = saveFileToExternalStorage()
                     var filePath = FileUtils().getPath(this@UpdateApp, uri!!)
                     file = File(filePath)
+
+                    if (fileExists("Resort.apk") == true) {
+                        file!!.delete()
+                    }
+
                 } else {
                     file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Resort.apk")
                     uri = Uri.fromFile(file)
                     val path = FileHandler().getPathFromUri(this@UpdateApp, uri!!)
                     Log.d(TAG, "Path below Q: " + path)
-                }
 
-                //Delete update file if exists
-                if (file!!.exists()) //file.delete() - test this, I think sometimes it doesnt work
-                    file!!.delete()
+                    //Delete update file if exists
+                    if (file!!.exists() && file!=null) //file.delete() - test this, I think sometimes it doesnt work
+                        file!!.delete()
+                }
 
                 var input: InputStream? = null
                 var output: OutputStream? = null
@@ -128,23 +157,25 @@ class UpdateApp : AppCompatActivity() {
 
             override fun onPreExecute() {
                 super.onPreExecute()
-                pd.show()
+                dialog.show()
             }
 
             override fun onPostExecute(result: String) {
                 super.onPostExecute(result)
                 Log.d(TAG, "downloadApplication onPostExecute result:" + result)
-                pd.cancel()
+                dialog.cancel()
                 if (result.equals("Install Cancelled")) {
                     Toast.makeText(applicationContext, "$result", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-                        val install = Intent(Intent.ACTION_VIEW)
-                        install.setData(uri)
-                        install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        startActivity(install)
+                        val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
+                        intent.setDataAndType(uri, "application/vnd.android.package-archive")
+                        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+                        intent.putExtra(Intent.EXTRA_RETURN_RESULT, true)
+                        intent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, applicationInfo.packageName)
+                        startActivity(intent)
                     } else {
                         val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
                         intent.setDataAndType(uri, "application/vnd.android.package-archive")
@@ -170,6 +201,30 @@ class UpdateApp : AppCompatActivity() {
         val fileUri = contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
 
         return fileUri
+    }
+
+    fun fileExists(fname: String?): Boolean {
+        val file = getFileStreamPath(fname)
+        return file.exists()
+    }
+
+    private fun setColorFilter(drawable: Drawable, color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            drawable.colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
+        } else {
+            @Suppress("DEPRECATION")
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
+    }
+
+    class CustomDialog(context: Context) : Dialog(context, R.style.CustomDialogTheme) {
+        init {
+            // Set Semi-Transparent Color for Dialog Background
+            window?.decorView?.rootView?.setBackgroundResource(R.color.transparent)
+            window?.decorView?.setOnApplyWindowInsetsListener { _, insets ->
+                insets.consumeSystemWindowInsets()
+            }
+        }
     }
 
     private fun downloadapk() {
