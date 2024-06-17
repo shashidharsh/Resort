@@ -49,7 +49,7 @@ class UpdateApp : AppCompatActivity() {
 
     val TAG = "UpdateApp"
 
-    val apkUrl = "https://hillstoneresort.com/Resorts/APK/DownloadResort.php"
+    val apkUrl = Constants.BASE_URL + "APK/DownloadResort.php"
 
     var uri: Uri? = null
     var file: File? = null
@@ -229,7 +229,7 @@ class UpdateApp : AppCompatActivity() {
 
     private fun downloadapk() {
         try {
-            val url = URL("http://www.efimoto.com/nilesh/HelloWorldProject.apk")
+            val url = URL(Constants.BASE_URL + "APK/DownloadResort.php")
             val urlConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.doOutput = true

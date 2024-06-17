@@ -156,10 +156,10 @@ class ViewExpenseDatewise : AppCompatActivity() {
                 var toDateFormat = SimpleDateFormat("yyyy-MM-dd").format(SimpleDateFormat("dd-MM-yyyy").parse(tvToDate!!.text.toString()))
                 Log.d(TAG, "toDateFormat: " + toDateFormat)
 
-                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetExpenseDatewise.php?from=" + fromDateFormat + "&to=" + toDateFormat
+                val expenseDatewiseUrl = Constants.BASE_URL + "GetExpenseDatewise.php?from=" + fromDateFormat + "&to=" + toDateFormat
 
                 var httpDownload = HTTPDownload()
-                val httpStatus = httpDownload.downloadUrl(transactionDetailsUrl)
+                val httpStatus = httpDownload.downloadUrl(expenseDatewiseUrl)
 
                 if(httpStatus.status != HTTPDownload.STATUS_SUCCESS) {
                     Log.d(TAG, "getExpenseDetailsDateRange jsonojb null" + httpStatus.status)

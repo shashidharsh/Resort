@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.Utils
 import com.ssh.resort.AdminHomePage
+import com.ssh.resort.Constants
 import com.ssh.resort.ManagerHomePage
 import com.ssh.resort.NetworkConnection
 import com.ssh.resort.R
@@ -141,7 +142,7 @@ class ManagerFragment : Fragment() {
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/AdminLogin.php")
+        val url = URL(Constants.BASE_URL + "AdminLogin.php")
         Log.d(TAG, "loginData URL: " + url)
         var client: HttpURLConnection? = null
         try {

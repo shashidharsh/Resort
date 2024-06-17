@@ -145,7 +145,7 @@ class Reports : AppCompatActivity() {
         class TransactionDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetCheckinData.php"
+                val transactionDetailsUrl = Constants.BASE_URL + "GetCheckinData.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(transactionDetailsUrl)
@@ -251,7 +251,7 @@ class Reports : AppCompatActivity() {
                 var toDateFormat = SimpleDateFormat("yyyy-MM-dd").format(SimpleDateFormat("dd-MM-yyyy").parse(tvToDate!!.text.toString()))
                 Log.d(TAG, "toDateFormat: " + toDateFormat)
 
-                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetDetailsDateRange.php?from=" + fromDateFormat + "&to=" + toDateFormat
+                val transactionDetailsUrl = Constants.BASE_URL + "GetDetailsDateRange.php?from=" + fromDateFormat + "&to=" + toDateFormat
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(transactionDetailsUrl)

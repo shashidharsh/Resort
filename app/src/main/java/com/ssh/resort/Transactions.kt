@@ -74,7 +74,7 @@ class Transactions : AppCompatActivity() {
         class TransactionDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetCheckinData.php"
+                val transactionDetailsUrl = Constants.BASE_URL + "GetCheckinData.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(transactionDetailsUrl)

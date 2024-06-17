@@ -736,7 +736,7 @@ class Checkin : AppCompatActivity() {
         class AgentDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val agentDetailsUrl = "https://hillstoneresort.com/Resorts/GetAgents.php"
+                val agentDetailsUrl = Constants.BASE_URL + "GetAgents.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(agentDetailsUrl)
@@ -858,7 +858,7 @@ class Checkin : AppCompatActivity() {
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/InsertCheckin.php")
+        val url = URL(Constants.BASE_URL + "InsertCheckin.php")
         Log.d(TAG, "getCheckinData URL: " + url)
         var client: HttpURLConnection? = null
         try {

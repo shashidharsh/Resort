@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.ssh.resort.Constants
 import com.ssh.resort.R
 import com.ssh.resort.TacAgentTransactionDetails
 import com.ssh.resort.data.TacAgentsTransactionListData
@@ -227,7 +228,7 @@ class TacAgentTransactionListAdapter(context: Context, transactionLists : ArrayL
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/UpdatePaymentStatus.php")
+        val url = URL(Constants.BASE_URL + "UpdatePaymentStatus.php")
         Log.d(TAG, "updateData URL: " + url)
         var client: HttpURLConnection? = null
         try {

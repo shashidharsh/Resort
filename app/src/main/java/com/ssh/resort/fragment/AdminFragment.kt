@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ssh.appdataremotedb.HTTPDownload
 import com.ssh.appdataremotedb.Utils
 import com.ssh.resort.AdminHomePage
+import com.ssh.resort.Constants
 import com.ssh.resort.NetworkConnection
 import com.ssh.resort.R
 import com.ssh.resort.UpdateApp
@@ -152,7 +153,7 @@ class AdminFragment : Fragment() {
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/AdminLogin.php")
+        val url = URL(Constants.BASE_URL + "AdminLogin.php")
         Log.d(TAG, "loginData URL: " + url)
         var client: HttpURLConnection? = null
         try {
@@ -235,7 +236,7 @@ class AdminFragment : Fragment() {
 
         class DownloadAppVersion : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
-                val profileDetailsUrl = "https://hillstoneresort.com/Resorts/CheckAppVersion.php"
+                val profileDetailsUrl = Constants.BASE_URL + "CheckAppVersion.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(profileDetailsUrl)

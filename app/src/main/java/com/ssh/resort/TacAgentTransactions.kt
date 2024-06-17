@@ -116,7 +116,7 @@ class TacAgentTransactions : AppCompatActivity() {
                 var currentDateFormat = SimpleDateFormat("yyyy-MM-dd").format(SimpleDateFormat("dd-MM-yyyy").parse(tvCurrentDate!!.text.toString()))
                 Log.d(TAG, "currentDateFormat: " + currentDateFormat)
 
-                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetAgentTransactions.php?SelectedCoMobile=" + agentMobile + "&Date=" + currentDateFormat
+                val transactionDetailsUrl = Constants.BASE_URL + "GetAgentTransactions.php?SelectedCoMobile=" + agentMobile + "&Date=" + currentDateFormat
                 Log.d(TAG, "transactionDetailsUrl: " + transactionDetailsUrl)
 
                 var httpDownload = HTTPDownload()

@@ -128,7 +128,7 @@ class TAC : AppCompatActivity() {
         class AgentDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val agentDetailsUrl = "https://hillstoneresort.com/Resorts/GetAgents.php"
+                val agentDetailsUrl = Constants.BASE_URL + "GetAgents.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(agentDetailsUrl)

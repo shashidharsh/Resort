@@ -116,7 +116,7 @@ class ViewAllExpenses : AppCompatActivity() {
         class ExpenseDetails : AsyncTask<Void, Void, Boolean>() {
             override fun doInBackground(vararg params: Void?): Boolean {
 
-                val transactionDetailsUrl = "https://hillstoneresort.com/Resorts/GetAllExpenses.php"
+                val transactionDetailsUrl = Constants.BASE_URL + "GetAllExpenses.php"
 
                 var httpDownload = HTTPDownload()
                 val httpStatus = httpDownload.downloadUrl(transactionDetailsUrl)

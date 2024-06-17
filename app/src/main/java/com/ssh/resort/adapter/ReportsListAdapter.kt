@@ -13,6 +13,7 @@ import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.ssh.resort.Constants
 import com.ssh.resort.R
 import com.ssh.resort.data.TacAgentsTransactionListData
 import org.json.JSONObject
@@ -175,7 +176,7 @@ class ReportsListAdapter(context: Context, reportLists : ArrayList<TacAgentsTran
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/UpdateBalanceB2B.php")
+        val url = URL(Constants.BASE_URL + "UpdateBalanceB2B.php")
         Log.d(TAG, "updateData URL: " + url)
         var client: HttpURLConnection? = null
         try {

@@ -118,7 +118,7 @@ class Expense : AppCompatActivity() {
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/InsertExpense.php")
+        val url = URL(Constants.BASE_URL + "InsertExpense.php")
         Log.d(TAG, "getExpenseData URL: " + url)
         var client: HttpURLConnection? = null
         try {

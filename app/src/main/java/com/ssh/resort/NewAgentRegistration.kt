@@ -108,7 +108,7 @@ class NewAgentRegistration : AppCompatActivity() {
 
         var response: String = ""
 
-        val url = URL("https://hillstoneresort.com/Resorts/RegisterAgent.php")
+        val url = URL(Constants.BASE_URL + "RegisterAgent.php")
         Log.d(TAG, "getRegisterAgent URL: " + url)
         var client: HttpURLConnection? = null
         try {
