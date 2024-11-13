@@ -221,7 +221,7 @@ class UpdateApp : AppCompatActivity() {
         }
     }
 
-    private fun downloadapk() {
+    /*private fun downloadapk() {
         try {
             val url = URL(Constants.BASE_URL + "APK/DownloadResort.php")
             val urlConnection = url.openConnection() as HttpURLConnection
@@ -252,13 +252,13 @@ class UpdateApp : AppCompatActivity() {
     fun installApk(file: File) {
         val intent = Intent(Intent.ACTION_VIEW)
         var uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            FileProvider.getUriForFile(this@UpdateApp, BuildConfig.APPLICATION_ID + ".provider", file)
+            FileProvider.getUriForFile(this@UpdateApp, Context.APPLICATION_ID + ".provider", file)
         else
             Uri.fromFile(file)
         //val uri = Uri.fromFile(File(path))
         intent.setDataAndType(uri, "application/vnd.android.package-archive")
         startActivity(intent)
-    }
+    }*/
 
     @SuppressLint("NewApi")
     fun getRealPathFromURI_API11to18(context: Context?, contentUri: Uri?): String? {
